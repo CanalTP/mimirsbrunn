@@ -35,7 +35,7 @@ extern crate curl;
 extern crate mimirsbrunn;
 
 use std::path::Path;
-
+use mimirsbrunn::rubber::Rubber;
 
 #[derive(RustcDecodable, RustcEncodable)]
 pub struct Bano {
@@ -95,8 +95,10 @@ impl Bano {
 }
 
 fn index_bano(files: &[String]) {
+    let rubber = Rubber {index_name: "munin".to_string()};
+
     println!("purge and create Munin...");
-    mimirsbrunn::purge_and_create_munin().unwrap();
+    rubber.create_index().unwrap();
     println!("Munin purged and created.");
 
     for f in files.iter() {
@@ -107,7 +109,7 @@ fn index_bano(files: &[String]) {
             let b: Bano = r.unwrap();
             b.into_addr()
         });
-        let nb = mimirsbrunn::index(iter).unwrap();
+        let nb = rubber.index(iter).unwrap();
         println!("importing {}: {} addresses added.", f, nb);
     }
 }

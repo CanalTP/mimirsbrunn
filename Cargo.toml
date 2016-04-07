@@ -10,5 +10,7 @@ docopt = "*"
 rustc-serialize = "*"
 csv = "*"
 curl = "*"
+rs-es = "*"
+
 [dependencies.osmpbfreader]
 git = "https://github.com/TeXitoi/osmpbfreader-rs"

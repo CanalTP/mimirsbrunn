@@ -33,6 +33,9 @@ extern crate csv;
 extern crate rustc_serialize;
 extern crate curl;
 extern crate mimirsbrunn;
+#[macro_use]
+extern crate log;
+extern crate env_logger;
 
 use std::path::Path;
 use mimirsbrunn::rubber::Rubber;
@@ -95,7 +98,7 @@ impl Bano {
 }
 
 fn index_bano(files: &[String]) {
-    let rubber = Rubber {index_name: "munin".to_string()};
+    let mut rubber = Rubber::new("localhost".to_string(), 9200, "munin".to_string());
 
     println!("purge and create Munin...");
     rubber.create_index().unwrap();
@@ -125,7 +128,8 @@ Usage:
 ";
 
 fn main() {
-    println!("importing bano into Mimir");
+    env_logger::init().unwrap();
+    info!("importing bano into Mimir");
 
     let args: Args = docopt::Docopt::new(USAGE)
                          .and_then(|d| d.decode())

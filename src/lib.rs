@@ -30,6 +30,9 @@
 
 pub mod rubber;
 
+#[macro_use]
+extern crate log;
+
 extern crate rustc_serialize;
 use rustc_serialize::Encodable;
 
@@ -88,4 +91,3 @@ pub struct Addr {
     pub coord: Coord,
     pub weight: u32,
 }
-

@@ -30,6 +30,7 @@
 
 extern crate curl;
 extern crate rustc_serialize;
+extern crate rs_es;
 
 use std::collections::HashMap;
 use std::collections::hash_map::Entry::{Occupied, Vacant};
@@ -38,17 +39,25 @@ use rustc_serialize::Encodable;
 
 use super::{Addr, Incr};
 
-
 pub struct Rubber {
-    pub index_name: String
+    pub index_name: String,
+    client: rs_es::Client
 }
 
 impl Rubber {
+    pub fn new(host: String, port: u32, index: String) -> Rubber {
+        Rubber {
+            index_name: index,
+            client: rs_es::Client::new(&host, port)
+        }
+    }
 
-    pub fn create_index(&self) -> Result<(), curl::ErrCode> {
+    pub fn create_index(&mut self) -> Result<(), curl::ErrCode> {
+        debug!("creating index");
+        self.client.delete_index(&self.index_name).unwrap();  // TODO handle error
         // first, we must delete with its own handle the old munin
-        try!(curl::http::handle().delete("http://localhost:9200/".to_string() + &self.index_name).exec());
 
+        // Note: for the moment I don't see an easy way to do this with rs_es
         let analysis = include_str!("../json/settings.json");
         assert!(analysis.parse::<json::Json>().is_ok());
         let res = try!(curl::http::handle().put("http://localhost:9200/munin", analysis).exec());
@@ -57,48 +66,47 @@ impl Rubber {
         Ok(())
     }
 
-    fn push_bulk<'a, T: Encodable>(&self, s: &mut String, elt: &T) {
-        s.push_str("{index: {}}\n");
-        s.push_str(&json::encode(elt).unwrap());
-        s.push('\n');
-    }
-    fn bulk_index<'a, T, I>(&self, url: &str, mut iter: I) -> Result<u32, curl::ErrCode>
+    fn bulk_index<'a, T, I>(&mut self, type_name: &str, mut iter: I) -> Result<u32, curl::ErrCode>
         where T: Encodable, I: Iterator<Item = T>
     {
-        let url = format!("{}/_bulk", url);
-        let mut handle = curl::http::handle();
+        use self::rs_es::operations::bulk::Action;
+        let mut chunk = Vec::new();
         let mut nb = 0;
-        let mut chunk = String::new();
+
         loop {
             chunk.clear();
             let addr = match iter.next() { Some(a) => a, None => break };
-            self.push_bulk(&mut chunk, &addr);
+            chunk.push(Action::index(json::encode(&addr).unwrap()));
+
             nb += 1;
             for addr in iter.by_ref().take(1000) {
-                self.push_bulk(&mut chunk, &addr);
+                chunk.push(Action::index(json::encode(&addr).unwrap()));
                 nb += 1;
             }
-            let res = try!(handle.post(&*url, &chunk).exec());
-            assert!(res.get_code() != 201, format!("result of bulk insert is not 201: {}", res));
+            self.client.bulk(&chunk).with_index(&self.index_name).with_doc_type(type_name).send().unwrap(); //TODO use result
         }
+
         Ok(nb)
     }
 
-    fn upsert<T: Incr>(&self, elt: &T, map: &mut HashMap<String, T>) {
-        match map.entry(elt.id().to_string()) {
-            Vacant(e) => { e.insert(elt.clone()); }
-            Occupied(mut e) => e.get_mut().incr()
-        }
-    }
-
-    pub fn index<I: Iterator<Item = Addr>>(&self, iter: I) -> Result<u32, curl::ErrCode> {
+    pub fn index<I: Iterator<Item = Addr>>(&mut self, iter: I) -> Result<u32, curl::ErrCode> {
         let mut admins = HashMap::new();
         let mut streets = HashMap::new();
-        try!(self.bulk_index("http://localhost:9200/munin/addr", iter.inspect(|addr| {
-            self.upsert(&addr.street.administrative_region, &mut admins);
-            self.upsert(&addr.street, &mut streets);
+
+
+        try!(self.bulk_index("addr", iter.inspect(|addr| {
+            upsert(&addr.street.administrative_region, &mut admins);
+            upsert(&addr.street, &mut streets);
         })));
-        try!(self.bulk_index("http://localhost:9200/munin/admin", admins.into_iter().map(|e| e.1)));
-        self.bulk_index("http://localhost:9200/munin/street", streets.into_iter().map(|e| e.1))
+        try!(self.bulk_index("admin", admins.into_iter().map(|e| e.1)));
+        self.bulk_index("street", streets.into_iter().map(|e| e.1))
+    }
+}
+
+
+fn upsert<T: Incr>(elt: &T, map: &mut HashMap<String, T>) {
+    match map.entry(elt.id().to_string()) {
+        Vacant(e) => { e.insert(elt.clone()); }
+        Occupied(mut e) => e.get_mut().incr()
     }
 }

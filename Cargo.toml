@@ -2,6 +2,7 @@
 name = "mimirsbrunn"
 version = "0.0.1"
 authors = ["Canal TP <dt.ro@canaltp.fr>"]
+build = "build.rs"
 
 [dependencies]
 log = "0.3"
@@ -11,6 +12,12 @@ rustc-serialize = "*"
 csv = "*"
 curl = "*"
 rs-es = "*"
+serde = "*"
+serde_json = "*"
 
 [dependencies.osmpbfreader]
 git = "https://github.com/TeXitoi/osmpbfreader-rs"
+
+[build-dependencies]
+serde_codegen = "*"
+syntex = "*"

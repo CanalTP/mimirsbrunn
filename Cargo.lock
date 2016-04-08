@@ -10,6 +10,10 @@ dependencies = [
  "osmpbfreader 0.1.0 (git+https://github.com/TeXitoi/osmpbfreader-rs)",
  "rs-es 0.3.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "rustc-serialize 0.3.18 (registry+https://github.com/rust-lang/crates.io-index)",
+ "serde 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "serde_codegen 0.7.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "serde_json 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syntex 0.30.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]

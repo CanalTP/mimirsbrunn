@@ -29,13 +29,12 @@
 // www.navitia.io
 
 extern crate curl;
-extern crate rustc_serialize;
 extern crate rs_es;
+extern crate serde;
+extern crate serde_json;
 
 use std::collections::HashMap;
 use std::collections::hash_map::Entry::{Occupied, Vacant};
-use self::rustc_serialize::json;
-use rustc_serialize::Encodable;
 
 use super::{Addr, Incr};
 
@@ -59,7 +58,7 @@ impl Rubber {
 
         // Note: for the moment I don't see an easy way to do this with rs_es
         let analysis = include_str!("../json/settings.json");
-        assert!(analysis.parse::<json::Json>().is_ok());
+        //assert!(analysis.parse::<json::Json>().is_ok());
         let res = try!(curl::http::handle().put("http://localhost:9200/munin", analysis).exec());
         assert!(res.get_code() == 200, "Error adding analysis: {}", res);
 
@@ -67,7 +66,7 @@ impl Rubber {
     }
 
     fn bulk_index<'a, T, I>(&mut self, type_name: &str, mut iter: I) -> Result<u32, curl::ErrCode>
-        where T: Encodable, I: Iterator<Item = T>
+        where T: serde::Serialize, I: Iterator<Item = T>
     {
         use self::rs_es::operations::bulk::Action;
         let mut chunk = Vec::new();
@@ -76,14 +75,14 @@ impl Rubber {
         loop {
             chunk.clear();
             let addr = match iter.next() { Some(a) => a, None => break };
-            chunk.push(Action::index(json::encode(&addr).unwrap()));
+            chunk.push(Action::index(addr));
 
             nb += 1;
             for addr in iter.by_ref().take(1000) {
-                chunk.push(Action::index(json::encode(&addr).unwrap()));
+                chunk.push(Action::index(addr));
                 nb += 1;
             }
-            self.client.bulk(&chunk).with_index(&self.index_name).with_doc_type(type_name).send().unwrap(); //TODO use result
+            self.client.bulk(&chunk).with_index(&self.index_name).with_doc_type(type_name).send().unwrap(); //TODO handle error
         }
 
         Ok(nb)

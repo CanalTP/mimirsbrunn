@@ -38,8 +38,9 @@ pub trait Incr: Clone {
 }
 
 pub trait DocType {
-  fn doc_type() -> &'static str; // provides the elasticsearch type name
+    fn doc_type() -> &'static str; // provides the elasticsearch type name
 }
+
 impl <'a, T: DocType> DocType for &'a T {
     fn doc_type() -> &'static str {
         T::doc_type()
@@ -70,7 +71,7 @@ impl Incr for Admin {
     }
 }
 impl DocType for Admin {
-  fn doc_type() -> &'static str { "admin" }
+    fn doc_type() -> &'static str { "admin" }
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -90,7 +91,7 @@ impl Incr for Street {
     }
 }
 impl DocType for Street {
-  fn doc_type() -> &'static str { "street" }
+    fn doc_type() -> &'static str { "street" }
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -103,5 +104,5 @@ pub struct Addr {
     pub weight: u32,
 }
 impl DocType for Addr {
-  fn doc_type() -> &'static str { "addr" }
+    fn doc_type() -> &'static str { "addr" }
 }

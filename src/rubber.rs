@@ -43,12 +43,13 @@ use super::objects::{Addr, Incr, DocType};
 pub struct Rubber {
     index_name: String,
     client: rs_es::Client,
+    cnx_string: String, // full cnx string since curl is still used
 }
 
 impl Rubber {
     // build a rubber with a connection string (http://host:port/index)
     pub fn new(cnx: &str) -> Rubber {
-        let re = regex::Regex::new(r"(?P<host>.+?):(?P<port>\d{4})/(?P<index>\w+)").unwrap();
+        let re = regex::Regex::new(r"(?:https?://)?(?P<host>.+?):(?P<port>\d{4})/(?P<index>\w+)").unwrap();
         let cap = re.captures(cnx).unwrap();
         let host = cap.name("host").unwrap();
         let port = cap.name("port").unwrap().parse::<u32>().unwrap();
@@ -61,6 +62,7 @@ impl Rubber {
         Rubber {
             index_name: index.to_string(),
             client: rs_es::Client::new(&host, port),
+            cnx_string: cnx.to_string()
         }
     }
 
@@ -75,7 +77,7 @@ impl Rubber {
         // Note: for the moment I don't see an easy way to do this with rs_es
         let analysis = include_str!("../json/settings.json");
         // assert!(analysis.parse::<json::Json>().is_ok());
-        let res = curl::http::handle().put("http://localhost:9200/munin", analysis).exec().unwrap();
+        let res = curl::http::handle().put(self.cnx_string.clone(), analysis).exec().unwrap();
 
         assert!(res.get_code() == 200, "Error adding analysis: {}", res);
 

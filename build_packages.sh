@@ -7,6 +7,9 @@ raw_version="`git describe`"
 # for debian version number, we don't want the leading 'v' of the git tag
 version=${raw_version#v}
 
+if [ -d $temporary_install_dir ]; then
+rm -rf $temporary_install_dir
+fi
 mkdir -p $temporary_install_dir
 
 # build and install mimirsbrunn to a temporary directory
@@ -20,4 +23,3 @@ fpm -s dir -t deb \
     --force \
     --exclude *.crates.toml \
     $temporary_install_dir=/usr/
-

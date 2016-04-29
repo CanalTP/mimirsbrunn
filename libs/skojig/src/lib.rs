@@ -50,6 +50,8 @@ use rustless::Application;
 
 #[macro_use]
 extern crate mdo;
+#[macro_use]
+extern crate log;
 
 
 mod api;

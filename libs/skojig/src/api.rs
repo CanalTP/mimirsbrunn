@@ -27,7 +27,6 @@
 // IRC #navitia on freenode
 // https://groups.google.com/d/forum/navitia
 // www.navitia.io
-
 use rustless;
 use serde;
 use serde_json;
@@ -38,6 +37,7 @@ use valico::json_dsl;
 use valico::common::error as valico_error;
 use super::query;
 use model::v1::*;
+use model;
 
 fn render<T>(mut client: rustless::Client,
              obj: T)
@@ -58,7 +58,6 @@ pub fn root() -> rustless::Api {
         });
 
         api.error_formatter(|error, _media| {
-
             let err = if error.is::<rustless::errors::Validation>() {
                 let val_err = error.downcast::<rustless::errors::Validation>().unwrap();
                 //TODO better message, we shouldn't use {:?} but access the `path` and `detail` of all errrors in val_err.reason
@@ -104,6 +103,26 @@ pub fn status() -> rustless::Api {
     })
 }
 
+fn check_bound(val: &json::Json,
+               path: &str,
+               min: f64,
+               max: f64,
+               error_msg: &str)
+               -> Result<(), valico_error::ValicoErrors> {
+    if let json::Json::F64(lon) = *val {
+        if min <= lon && lon <= max {
+            Ok(())
+        } else {
+            Err(vec![Box::new(json_dsl::errors::WrongValue {
+                         path: path.to_string(),
+                         detail: Some(error_msg.to_string()),
+                     })])
+        }
+    } else {
+        panic!("should never happen, already checked");
+    }
+}
+
 pub fn autocomplete() -> rustless::Namespace {
     rustless::Namespace::build("autocomplete", |ns| {
         ns.get("", |endpoint| {
@@ -112,34 +131,44 @@ pub fn autocomplete() -> rustless::Namespace {
 
                 params.opt("lon", |lon| {
                     lon.coerce(json_dsl::f64());
-                    fn valid_lon(val: &json::Json,
-                                 path: &str)
-                                 -> Result<(), valico_error::ValicoErrors> {
-                        match *val {
-                            json::Json::F64(lon) => {
-                                if -180f64 <= lon && lon <= 180f64 {
-                                    Ok(())
-                                }
-                                else {
-                                    Err(vec![Box::new(json_dsl::errors::WrongValue {
-                                                    path: path.to_string(),
-                                                    detail: Some("lon is not a valid longitude"
-                                                                     .to_string())
-                                                })])
-                                }
-                            }
-                            _ => panic!("should never happen, already checked")
-                        }
-                    }
-
-                    lon.validate_with(valid_lon);
+                    lon.validate_with(|val, path| {
+                        check_bound(val, path, -180f64, 180f64, "lon is not a valid longitude")
+                    });
                 });
-                // TODO lat
-                // TODO lat + check if lon then lat
+
+                params.opt("lat", |lat| {
+                    lat.coerce(json_dsl::f64());
+                    lat.validate_with(|val, path| {
+                        check_bound(val, path, -90f64, 900f64, "lat is not a valid latitude")
+                    });
+                });
+                params.validate_with(|val, path| {
+                    // if we have a lat we should have a lon (and the opposite)
+                    if let json::Json::Object(ref obj) = *val {
+                        let has_lon = obj.get("lon").is_some();
+                        let has_lat = obj.get("lat").is_some();
+                        if has_lon ^ has_lat {
+                            Err(vec![Box::new(json_dsl::errors::WrongValue {
+                                         path: path.to_string(),
+                                         detail: Some("you need to provide a lon AND a lat if \
+                                                       you provide one of them"
+                                                          .to_string()),
+                                     })])
+                        } else {
+                            Ok(())
+                        }
+                    } else {
+                        panic!("should never happen, already checked");
+                    }
+                });
             });
             endpoint.handle(|client, params| {
                 let q = params.find("q").unwrap().as_string().unwrap().to_string();
-                let autocomplete = query::autocomplete(q, None);
+                let lon = params.find("lon").and_then(|p| p.as_f64());
+                let lat = params.find("lat").and_then(|p| p.as_f64());
+                // we have already checked that if there is a lon, lat is not None, so we can unwrap
+                let coord = lon.and_then(|lon| Some(model::Coord{lon: lon, lat: lat.unwrap()}));
+                let autocomplete = query::autocomplete(q, coord);
                 render(client, autocomplete)
             })
         });

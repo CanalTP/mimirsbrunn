@@ -28,7 +28,6 @@
 // https://groups.google.com/d/forum/navitia
 // www.navitia.io
 
-use std::vec;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Autocomplete {

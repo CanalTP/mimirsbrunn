@@ -420,10 +420,15 @@ fn parse_poi(osmobj: &osmpbfreader::OsmObj,
              -> mimir::Poi {
     let admins_geofinder = make_admin_geofinder(admins);
     let (id, coord) = match *osmobj {
-        osmpbfreader::OsmObj::Node(ref node) => (format_poi_id("node", node.id), mimir::Coord::new(node.lat, node.lon)),
-        osmpbfreader::OsmObj::Way(ref way) => (format_poi_id("way", way.id), get_way_coord(obj_map, way)),
+        osmpbfreader::OsmObj::Node(ref node) => {
+            (format_poi_id("node", node.id), mimir::Coord::new(node.lat, node.lon))
+        }
+        osmpbfreader::OsmObj::Way(ref way) => {
+            (format_poi_id("way", way.id), get_way_coord(obj_map, way))
+        }
         osmpbfreader::OsmObj::Relation(ref relation) => {
-            (format_poi_id("relation", relation.id), make_centroid(&build_boundary(&relation, &obj_map)))
+            (format_poi_id("relation", relation.id), 
+             make_centroid(&build_boundary(&relation, &obj_map)))
         }
     };
 

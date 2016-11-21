@@ -34,14 +34,12 @@ use std::rc::Rc;
 use gst::rtree::{RTree, Rect};
 
 pub struct AdminGeoFinder {
-    admins: RTree<Rc<Admin>>
+    admins: RTree<Rc<Admin>>,
 }
 
 impl AdminGeoFinder {
     pub fn new() -> AdminGeoFinder {
-        AdminGeoFinder {
-            admins: RTree::new()
-        }
+        AdminGeoFinder { admins: RTree::new() }
     }
 
     pub fn insert(&mut self, admin: Rc<Admin>) {
@@ -66,10 +64,12 @@ impl AdminGeoFinder {
                 let (x, y) = (first_coord.x() as f32, first_coord.y() as f32);
                 Rect::from_float(down(x), up(x), down(y), up(y))
             };
-            coords.fold(first_rect, |accu, p| Rect::from_float(min(accu.xmin, p.x()),
-                                                               max(accu.xmax, p.x()),
-                                                               min(accu.ymin, p.y()),
-                                                               max(accu.ymax, p.y())))
+            coords.fold(first_rect, |accu, p| {
+                Rect::from_float(min(accu.xmin, p.x()),
+                                 max(accu.xmax, p.x()),
+                                 min(accu.ymin, p.y()),
+                                 max(accu.ymax, p.y()))
+            })
         };
         self.admins.insert(rect, admin);
     }
@@ -78,11 +78,15 @@ impl AdminGeoFinder {
     pub fn get(&self, coord: &geo::Coordinate) -> Vec<Rc<Admin>> {
         let (x, y) = (coord.x as f32, coord.y as f32);
         let search = Rect::from_float(down(x), up(x), down(y), up(y));
-        self.admins.get(&search).into_iter().map(|(_, a)| a).filter(|a| {
-            a.boundary.as_ref().map_or(false, |b| {
-                b.contains(&geo::Point(coord.clone()))
+        self.admins
+            .get(&search)
+            .into_iter()
+            .map(|(_, a)| a)
+            .filter(|a| {
+                a.boundary.as_ref().map_or(false, |b| b.contains(&geo::Point(coord.clone())))
             })
-        }).cloned().collect()
+            .cloned()
+            .collect()
     }
 }
 
@@ -98,8 +102,10 @@ fn up(f: f32) -> f32 {
 fn test_up_down() {
     for &f in [1.0f64, 0., -0., -1., 0.1, -0.1, 0.9, -0.9, 42., -42.].iter() {
         let small_f = f as f32;
-        assert!(down(small_f) as f64 <= f, format!("{} <= {}", down(small_f) as f64, f));
-        assert!(f <= up(small_f) as f64, format!("{} <= {}", f, up(small_f) as f64));
+        assert!(down(small_f) as f64 <= f,
+                format!("{} <= {}", down(small_f) as f64, f));
+        assert!(f <= up(small_f) as f64,
+                format!("{} <= {}", f, up(small_f) as f64));
     }
 }
 
@@ -133,7 +139,7 @@ mod tests {
             weight: ::std::cell::Cell::new(1),
             coord: ::mimir::Coord::new(4.0 + offset, 4.0 + offset),
             boundary: Some(boundary),
-            insee: "outlook".to_string()
+            insee: "outlook".to_string(),
         })
     }
 

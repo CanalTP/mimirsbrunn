@@ -263,8 +263,7 @@ fn get_zip_codes_from_admins(admins: &AdminsVec) -> Vec<String> {
         .flat_map(|adm| adm.zip_codes.iter().cloned())
         .collect()
 }
-fn streets(pbf: &mut OsmPbfReader, admins: &AdminsVec, city_level: u32) -> StreetsVec {
-    let admins_geofinder = admins.iter().cloned().collect::<AdminGeoFinder>();
+fn streets(pbf: &mut OsmPbfReader, admins_geofinder: &AdminGeoFinder, city_level: u32) -> StreetsVec {
 
     let is_valid_obj = |obj: &osmpbfreader::OsmObj| -> bool {
         match *obj {
@@ -406,10 +405,9 @@ fn format_poi_id(_type: &str, id: i64) -> String {
 
 fn parse_poi(osmobj: &osmpbfreader::OsmObj,
              obj_map: &BTreeMap<osmpbfreader::OsmId, osmpbfreader::OsmObj>,
-             admins: &AdminsVec,
+             admins_geofinder: &AdminGeoFinder,
              city_level: u32)
              -> mimir::Poi {
-    let admins_geofinder = admins.iter().cloned().collect::<AdminGeoFinder>();
     let (id, coord) = match *osmobj {
         osmpbfreader::OsmObj::Node(ref node) => (format_poi_id("node", node.id), mimir::Coord::new(node.lat, node.lon)),
         osmpbfreader::OsmObj::Way(ref way) => (format_poi_id("way", way.id), get_way_coord(obj_map, way)),
@@ -420,12 +418,17 @@ fn parse_poi(osmobj: &osmpbfreader::OsmObj,
 
     let name = osmobj.tags().get("name").map_or("", |name| name);
     let adms = admins_geofinder.get(&coord);
+    let zip_codes = match osmobj.tags().get("addr:postcode"){
+      Some(val) if ! val.is_empty() => vec![val.clone()],
+      _ => get_zip_codes_from_admins(&adms) 
+    };
+
     mimir::Poi {
         id: id,
         name: name.to_string(),
         label: format_label(&adms, city_level, name),
         coord: coord,
-        zip_codes: get_zip_codes_from_admins(&adms),
+        zip_codes: zip_codes,
         administrative_regions: adms,
         weight: 1,
     }
@@ -434,14 +437,14 @@ fn parse_poi(osmobj: &osmpbfreader::OsmObj,
 
 fn pois(pbf: &mut OsmPbfReader,
         poi_types: PoiTypes,
-        admins: &AdminsVec,
+        admins_geofinder: &AdminGeoFinder,
         city_level: u32)
         -> PoisVec {
     let matcher = PoiMatcher::new(poi_types);
     let objects = osmpbfreader::get_objs_and_deps(pbf, |o| matcher.is_poi(o)).unwrap();
     objects.iter()
         .filter(|&(_, obj)| matcher.is_poi(&obj))
-        .map(|(_, obj)| parse_poi(obj, &objects, admins, city_level))
+        .map(|(_, obj)| parse_poi(obj, &objects, admins_geofinder, city_level))
         .collect()
 }
 
@@ -480,32 +483,34 @@ fn main() {
 
     info!("creating adminstrative regions");
     let admins = administrative_regions(&mut parsed_pbf, levels);
-
-    info!("computing city weight");
-    let mut streets = streets(&mut parsed_pbf, &admins, city_level);
-
-    for st in &mut streets {
-        for admin in &mut st.administrative_regions {
-            admin.weight.set(admin.weight.get() + 1)
-        }
-    }
-
-    for st in &mut streets {
-        for admin in &mut st.administrative_regions {
-            if admin.level == city_level {
-                st.weight = admin.weight.get();
-                break;
+    let admins_geofinder = admins.iter().cloned().collect::<AdminGeoFinder>();
+	{
+        info!("Extracting street from osm");
+        let mut streets = streets(&mut parsed_pbf, &admins_geofinder, city_level);
+        
+    	info!("computing city weight");
+        for st in &mut streets {
+            for admin in &mut st.administrative_regions {
+                admin.weight.set(admin.weight.get() + 1)
             }
         }
-    }
-
-    if args.flag_import_way {
-        info!("importing streets into Mimir");
-        let nb_streets = rubber.index("way", &args.flag_dataset, streets.into_iter())
-            .unwrap();
-        info!("Nb of indexed street: {}", nb_streets);
-    }
-
+    
+        if args.flag_import_way {
+        	info!("computing street weight");
+            for st in &mut streets {
+                for admin in &mut st.administrative_regions {
+                    if admin.level == city_level {
+                        st.weight = admin.weight.get();
+                        break;
+                    }
+                }
+            }
+            info!("importing streets into Mimir");
+            let nb_streets = rubber.index("way", &args.flag_dataset, streets.into_iter())
+                .unwrap();
+            info!("Nb of indexed street: {}", nb_streets);
+        }
+	}
     let nb_admins = rubber.index("admin", &args.flag_dataset, admins.iter())
         .unwrap();
     info!("Nb of indexed admin: {}", nb_admins);
@@ -516,7 +521,7 @@ fn main() {
         poi_types.insert("leisure".to_string(), default_leisure_types());
 
         info!("Extracting pois from osm");
-        let pois = pois(&mut parsed_pbf, poi_types, &admins, city_level);
+        let pois = pois(&mut parsed_pbf, poi_types, &admins_geofinder, city_level);
 
         info!("Importing pois into Mimir");
         let nb_pois = rubber.index("poi", &args.flag_dataset, pois.iter())

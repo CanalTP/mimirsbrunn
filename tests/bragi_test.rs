@@ -335,7 +335,7 @@ pub fn bragi_tests(es_wrapper: ::ElasticSearchWrapper) {
     let count = count_types(&types, "poi");
     assert_eq!(count, 1);
     assert_eq!(get_labels(&geocodings), vec!["Le-Mée-sur-Seine Courtilleraies"]);
-    assert!(get_postcodes(&geocodings).iter().all(|r| *r == ""));
+    assert!(get_postcodes(&geocodings).iter().all(|r| *r == "77350"));
 
 
     let geocodings = get_results(bragi_get("/autocomplete?q=Melun Rp"));

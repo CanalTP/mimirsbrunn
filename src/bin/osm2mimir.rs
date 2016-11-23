@@ -420,12 +420,17 @@ fn parse_poi(osmobj: &osmpbfreader::OsmObj,
 
     let name = osmobj.tags().get("name").map_or("", |name| name);
     let adms = admins_geofinder.get(&coord);
+    let zip_codes = match osmobj.tags().get("addr:postcode"){
+      Some(val) if ! val.is_empty() => vec![val.clone()],
+      _ => get_zip_codes_from_admins(&adms) 
+    };
+
     mimir::Poi {
         id: id,
         name: name.to_string(),
         label: format_label(&adms, city_level, name),
         coord: coord,
-        zip_codes: get_zip_codes_from_admins(&adms),
+        zip_codes: zip_codes,
         administrative_regions: adms,
         weight: 1,
     }

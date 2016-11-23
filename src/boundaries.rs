@@ -133,9 +133,10 @@ fn test_get_nodes() {
 pub fn build_boundary(relation: &osmpbfreader::Relation,
                       objects: &BTreeMap<osmpbfreader::OsmId, osmpbfreader::OsmObj>)
                       -> Option<MultiPolygon> {
+    let roles = vec!["outer".to_string(), "enclave".to_string()];
     let mut boundary_parts: Vec<BoundaryPart> = relation.refs
         .iter()
-        .filter(|rf| rf.role == "outer" || rf.role == "" || rf.role == "enclave")
+        .filter(|rf| roles.contains(&rf.role))
         .filter_map(|refe| {
             objects.get(&refe.member).or_else(|| {
                 warn!("missing element for relation {}", relation.id);

@@ -92,7 +92,20 @@
                                 "id": { "type": "string", "index": "no" },
                                 "level": { "type": "long", "index": "no" },
                                 "zip_codes": { "type": "string", "index": "not_analyzed" },
-                                "weight": { "type": "long" }
+                                "weight": { "type": "long" },
+                                "label": {
+                                  "type": "string",
+                                  "index_options": "docs",
+                                  "analyzer": "word",
+                                  "fields": {
+                                    "ngram": {
+                                      "type": "string",
+                                      "index_options": "docs",
+                                      "analyzer": "ngram_with_synonyms",
+                                      "search_analyzer": "ngram"
+                                    }
+                                  }
+                                }
                             }
                         },
                         "weight": { "type": "long" },
@@ -141,7 +154,20 @@
                         "id": { "type": "string", "index": "no" },
                         "level": { "type": "long", "index": "no" },
                         "zip_codes": { "type": "string", "index": "not_analyzed" },
-                        "weight": { "type": "long" }
+                        "weight": { "type": "long" },
+                        "label": {
+                          "type": "string",
+                          "index_options": "docs",
+                          "analyzer": "word",
+                          "fields": {
+                            "ngram": {
+                              "type": "string",
+                              "index_options": "docs",
+                              "analyzer": "ngram_with_synonyms",
+                              "search_analyzer": "ngram"
+                            }
+                          }
+                        }
                     }
                 },
                 "weight": { "type": "long" },
@@ -239,7 +265,20 @@
                         "id": { "type": "string", "index": "no" },
                         "level": { "type": "long", "index": "no" },
                         "zip_codes": { "type": "string", "index": "not_analyzed" },
-                        "weight": { "type": "long" }
+                        "weight": { "type": "long" },
+                        "label": {
+                          "type": "string",
+                          "index_options": "docs",
+                          "analyzer": "word",
+                          "fields": {
+                            "ngram": {
+                              "type": "string",
+                              "index_options": "docs",
+                              "analyzer": "ngram_with_synonyms",
+                              "search_analyzer": "ngram"
+                            }
+                          }
+                        }
                     }
                 },
                 "weight": { "type": "long" },
@@ -332,6 +371,19 @@
                 },
                 "weight": {
                   "type": "long"
+                },
+                "label": {
+                  "type": "string",
+                  "index_options": "docs",
+                  "analyzer": "word",
+                  "fields": {
+                    "ngram": {
+                      "type": "string",
+                      "index_options": "docs",
+                      "analyzer": "ngram_with_synonyms",
+                      "search_analyzer": "ngram"
+                    }
+                  }
                 }
               }
             },

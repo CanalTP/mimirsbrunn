@@ -117,19 +117,12 @@ fn build_query(q: &str,
         vec![boost_addr,
              boost_admin,
              boost_stop,
-             rs_q::build_bool()
-                 .with_must_not(rs_q::build_exists("administrative_region.label").build())
+             rs_q::build_match("administrative_regions.label".to_string(), q.to_string())
+                 .with_boost(50)
                  .build(),
-             rs_q::build_bool()
-                 .with_must_not(rs_q::build_exists("street.administrative_region.label").build())
-                 .build(),
-             rs_q::build_match("administrative_region.label.ngram".to_string(),
+             rs_q::build_match("street.administrative_regions.label".to_string(),
                                q.to_string())
-                 .with_boost(100)
-                 .build(),
-             rs_q::build_match("street.administrative_region.label.ngram".to_string(),
-                               q.to_string())
-                 .with_boost(100)
+                 .with_boost(50)
                  .build(),
              boost_main_match_query,
              boost_zipcode_match_query];

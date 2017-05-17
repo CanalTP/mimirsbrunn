@@ -96,15 +96,7 @@
                                 "label": {
                                   "type": "string",
                                   "index_options": "docs",
-                                  "analyzer": "word",
-                                  "fields": {
-                                    "ngram": {
-                                      "type": "string",
-                                      "index_options": "docs",
-                                      "analyzer": "ngram_with_synonyms",
-                                      "search_analyzer": "ngram"
-                                    }
-                                  }
+                                  "analyzer": "word"
                                 }
                             }
                         },
@@ -158,15 +150,7 @@
                         "label": {
                           "type": "string",
                           "index_options": "docs",
-                          "analyzer": "word",
-                          "fields": {
-                            "ngram": {
-                              "type": "string",
-                              "index_options": "docs",
-                              "analyzer": "ngram_with_synonyms",
-                              "search_analyzer": "ngram"
-                            }
-                          }
+                          "analyzer": "word"
                         }
                     }
                 },
@@ -269,15 +253,7 @@
                         "label": {
                           "type": "string",
                           "index_options": "docs",
-                          "analyzer": "word",
-                          "fields": {
-                            "ngram": {
-                              "type": "string",
-                              "index_options": "docs",
-                              "analyzer": "ngram_with_synonyms",
-                              "search_analyzer": "ngram"
-                            }
-                          }
+                          "analyzer": "word"
                         }
                     }
                 },
@@ -375,15 +351,7 @@
                 "label": {
                   "type": "string",
                   "index_options": "docs",
-                  "analyzer": "word",
-                  "fields": {
-                    "ngram": {
-                      "type": "string",
-                      "index_options": "docs",
-                      "analyzer": "ngram_with_synonyms",
-                      "search_analyzer": "ngram"
-                    }
-                  }
+                  "analyzer": "word"
                 }
               }
             },

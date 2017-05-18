@@ -113,12 +113,11 @@ fn build_query(q: &str,
         .with_boost(100)
         .build();
 
-    let mut should_query =
-        vec![boost_addr,
-             boost_admin,
-             boost_stop,
-             boost_main_match_query,
-             boost_zipcode_match_query];
+    let mut should_query = vec![boost_addr,
+                                boost_admin,
+                                boost_stop,
+                                boost_main_match_query,
+                                boost_zipcode_match_query];
     // for fuzzy search we also search by the prefix index (with a greater boost than ngram)
     // to have better results
     if match_type == MatchType::Fuzzy {
@@ -142,14 +141,14 @@ fn build_query(q: &str,
                 .build())
             .build();
         should_query.push(boost_on_weight);
-        
-	    should_query.push(rs_q::build_match("administrative_regions.label".to_string(), q.to_string())
+
+        should_query.push(rs_q::build_match("administrative_regions.label".to_string(), q.to_string())
                  .with_boost(50)
                  .build());
-	    should_query.push(rs_q::build_match("street.administrative_regions.label".to_string(),
-                               q.to_string())
-                 .with_boost(50)
-                 .build())
+        should_query.push(rs_q::build_match("street.administrative_regions.label".to_string(),
+                                            q.to_string())
+            .with_boost(50)
+            .build())
     }
 
     let sub_query = rs_q::build_bool()

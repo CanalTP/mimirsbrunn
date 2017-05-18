@@ -142,9 +142,11 @@ fn build_query(q: &str,
             .build();
         should_query.push(boost_on_weight);
 
-        should_query.push(rs_q::build_match("administrative_regions.label".to_string(), q.to_string())
-                 .with_boost(50)
-                 .build());
+        should_query.push(
+            rs_q::build_match("administrative_regions.label".to_string(), q.to_string())
+            .with_boost(50)
+            .build()
+        );
         should_query.push(rs_q::build_match("street.administrative_regions.label".to_string(),
                                             q.to_string())
             .with_boost(50)

@@ -92,7 +92,7 @@ fn build_query(q: &str,
                -> rs_es::query::Query {
 
     use rs_es::query::functions::Function;
-    let boost_ad_label = 50;
+    let boost_admin_label = 100;
     // we order the type of object we want
     // Note: the addresses are boosted more because even if we don't want them first
     // because they are more severely filtered
@@ -145,12 +145,12 @@ fn build_query(q: &str,
 
         should_query.push(
             rs_q::build_match("administrative_regions.label".to_string(), q.to_string())
-            .with_boost(boost_ad_label)
+            .with_boost(boost_admin_label)
             .build()
         );
         should_query.push(rs_q::build_match("street.administrative_regions.label".to_string(),
                                             q.to_string())
-            .with_boost(boost_ad_label)
+            .with_boost(boost_admin_label)
             .build())
     }
 

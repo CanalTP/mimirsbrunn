@@ -87,12 +87,17 @@
                     "properties": {
                         "id": { "type": "string", "index": "no" },
                         "street_name": { "type": "string" },
-                        "administrative_region": {
+                        "administrative_regions": {
                             "properties": {
                                 "id": { "type": "string", "index": "no" },
                                 "level": { "type": "long", "index": "no" },
                                 "zip_codes": { "type": "string", "index": "not_analyzed" },
-                                "weight": { "type": "double" }
+                                "weight": { "type": "double" },
+                                "name": {
+                                  "type": "string",
+                                  "index_options": "docs",
+                                  "analyzer": "word"
+                                }
                             }
                         },
                         "weight": { "type": "double" },
@@ -136,12 +141,17 @@
                         }
                     }
                 },
-                "administrative_region": {
+                "administrative_regions": {
                     "properties": {
                         "id": { "type": "string", "index": "no" },
                         "level": { "type": "long", "index": "no" },
                         "zip_codes": { "type": "string", "index": "not_analyzed" },
-                        "weight": { "type": "double" }
+                        "weight": { "type": "double" },
+                        "name": {
+                          "type": "string",
+                          "index_options": "docs",
+                          "analyzer": "word"
+                        }
                     }
                 },
                 "weight": { "type": "double" },
@@ -234,12 +244,17 @@
                         }
                     }
                 },
-                "administrative_region": {
+                "administrative_regions": {
                     "properties": {
                         "id": { "type": "string", "index": "no" },
                         "level": { "type": "long", "index": "no" },
                         "zip_codes": { "type": "string", "index": "not_analyzed" },
-                        "weight": { "type": "double" }
+                        "weight": { "type": "double" },
+                        "name": {
+                          "type": "string",
+                          "index_options": "docs",
+                          "analyzer": "word"
+                        }
                     }
                 },
                 "weight": { "type": "double" },
@@ -316,7 +331,7 @@
                 }
               }
             },
-            "administrative_region": {
+            "administrative_regions": {
               "properties": {
                 "id": {
                   "type": "string",
@@ -332,6 +347,11 @@
                 },
                 "weight": {
                   "type": "double"
+                },
+                "name": {
+                  "type": "string",
+                  "index_options": "docs",
+                  "analyzer": "word"
                 }
               }
             },

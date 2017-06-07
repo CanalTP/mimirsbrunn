@@ -96,18 +96,24 @@ fn build_query(q: &str,
         Query::build_term("_type", T::doc_type()).with_boost(boost).build()
     }
     let type_query = Query::build_bool()
-        .with_should(vec![match_type_with_boost::<Addr>(12.),
+        .with_should(vec![match_type_with_boost::<Addr>(3.),
                           match_type_with_boost::<Admin>(11.),
                           match_type_with_boost::<Stop>(10.),
-                          match_type_with_boost::<Poi>(2.),
-                          match_type_with_boost::<Street>(1.)])
-        .with_boost(20.)
+                          match_type_with_boost::<Poi>(1.),
+                          match_type_with_boost::<Street>(2.)])
+        .with_boost(50.)
         .build();
 
     // Priorization by query string
-    let mut string_should = vec![Query::build_match("label", q).with_boost(1.).build(),
-                                 Query::build_match("label.prefix", q).with_boost(1.).build(),
-                                 Query::build_match("zip_codes.prefix", q).with_boost(1.).build()];
+    let mut string_should =
+        vec![Query::build_match("label", q).with_boost(1.).build(),
+             Query::build_match("label.prefix", q).with_boost(1.).build(),
+             Query::build_match("zip_codes", q).with_boost(1.).build(),
+             Query::build_multi_match(vec!["administrative_regions.name".to_string(),
+                                           "administrative_regions.street.name".to_string()],
+                                      q)
+                 .with_boost(1.)
+                 .build()];
     if let MatchType::Fuzzy = match_type {
         string_should.push(Query::build_match("label.ngram", q).with_boost(1.).build());
     }
@@ -119,7 +125,7 @@ fn build_query(q: &str,
         &None => {
             Query::build_function_score()
                 .with_function(Function::build_field_value_factor("weight").build())
-                .with_boost(30.)
+                .with_boost(50.)
                 .build()
         }
     };
@@ -149,8 +155,7 @@ fn build_query(q: &str,
         // WITH the cross_fields match type, the request will be spilted into terms to match
         // "label" and "zip_codes"
         MatchType::Prefix => {
-            Query::build_multi_match(vec!["label.prefix".to_string(),
-                                          "zip_codes.prefix".to_string()],
+            Query::build_multi_match(vec!["label.prefix".to_string(), "zip_codes".to_string()],
                                      q.to_string())
                 .with_type(rs_es::query::full_text::MatchQueryType::CrossFields)
                 .with_operator("and")
@@ -164,8 +169,7 @@ fn build_query(q: &str,
         // Very long requests:
         //     Caisse Primaire d'Assurance Maladie de Haute Garonne, 33 Rue du Lot, 31100 Toulouse
         MatchType::Fuzzy => {
-            Query::build_multi_match(vec!["label.ngram".to_string(),
-                                          "zip_codes.prefix".to_string()],
+            Query::build_multi_match(vec!["label.ngram".to_string(), "zip_codes".to_string()],
                                      q.to_string())
                 .with_minimum_should_match(MinimumShouldMatch::from(40f64))
                 .build()

@@ -133,7 +133,7 @@ impl<'a, T: MimirObject> MimirObject for &'a T {
     }
 }
 
-impl<'a, T: MimirObject> MimirObject for &'a Rc<T> {
+impl<T: MimirObject> MimirObject for Rc<T> {
     fn is_geo_data() -> bool {
         T::is_geo_data()
     }
@@ -152,7 +152,7 @@ pub struct Poi {
     pub name: String,
     pub coord: Coord,
     pub administrative_regions: Vec<Rc<Admin>>,
-    pub weight: u32,
+    pub weight: f64,
     pub zip_codes: Vec<String>,
     pub poi_type: PoiType,
 }
@@ -191,7 +191,7 @@ pub struct Stop {
     pub name: String,
     pub coord: Coord,
     pub administrative_regions: Vec<Rc<Admin>>,
-    pub weight: u32,
+    pub weight: f64,
     pub zip_codes: Vec<String>,
 }
 
@@ -223,7 +223,7 @@ pub struct Admin {
     pub label: String,
     pub name: String,
     pub zip_codes: Vec<String>,
-    pub weight: Cell<u32>,
+    pub weight: Cell<f64>,
     pub coord: Coord,
     #[serde(serialize_with="custom_multi_polygon_serialize",
             deserialize_with="custom_multi_polygon_deserialize",
@@ -319,7 +319,7 @@ pub struct Street {
     pub street_name: String,
     pub administrative_regions: Vec<Rc<Admin>>,
     pub label: String,
-    pub weight: u32,
+    pub weight: f64,
     pub coord: Coord,
     pub zip_codes: Vec<String>,
 }
@@ -328,7 +328,7 @@ impl Incr for Street {
         &self.id
     }
     fn incr(&mut self) {
-        self.weight += 1;
+        self.weight += 1.;
     }
 }
 
@@ -360,7 +360,7 @@ pub struct Addr {
     pub street: Street,
     pub label: String,
     pub coord: Coord,
-    pub weight: u32,
+    pub weight: f64,
     pub zip_codes: Vec<String>,
 }
 
@@ -418,11 +418,17 @@ impl Coord {
     pub fn lon(&self) -> f64 {
         self.y
     }
-    pub fn default() -> Coord {
-        Coord(geo::Coordinate { x: 0., y: 0. })
-    }
     pub fn is_default(&self) -> bool {
         self.lat() == 0. && self.lon() == 0.
+    }
+    pub fn is_valid(&self) -> bool {
+        !self.is_default() && -90. <= self.lat() && self.lat() <= 90. && -180. <= self.lon() &&
+        self.lon() <= 180.
+    }
+}
+impl Default for Coord {
+    fn default() -> Coord {
+        Coord(geo::Coordinate { x: 0., y: 0. })
     }
 }
 

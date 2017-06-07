@@ -161,7 +161,7 @@ impl<'a, R: std::io::Read + 'a> Iterator for StopPointIter<'a, R> {
                     id: format!("stop_area:{}", stop_id), // prefix to match navitia's id
                     coord: mimir::Coord::new(stop_lat, stop_lon),
                     label: stop_name.to_string(),
-                    weight: 1,
+                    weight: 0.,
                     zip_codes: vec![],
                     administrative_regions: vec![],
                     name: stop_name.to_string(),
@@ -214,11 +214,14 @@ fn attach_stops_to_admins<'a, It: Iterator<Item = &'a mut mimir::Stop>>(stops: I
 }
 
 // Update weight value for each stop_area from HashMap.
-fn finalize_stop_area_weight<'a, It: Iterator<Item = &'a mut mimir::Stop>>(stops: It,
-    nb_stop_points: &HashMap<String, u32>) {
+fn finalize_stop_area_weight<'a, It: Iterator<Item = &'a mut mimir::Stop>>(
+    stops: It,
+    nb_stop_points: &HashMap<String, u32>)
+{
+    let max = *nb_stop_points.values().max().unwrap_or(&1) as f64;
     for stop in stops {
         if let Some(weight) = nb_stop_points.get(&stop.id) {
-            stop.weight = *weight;
+            stop.weight = *weight as f64 / max;
         }
     }
 }

@@ -32,6 +32,7 @@ extern crate docopt;
 extern crate csv;
 extern crate rustc_serialize;
 extern crate mimir;
+extern crate mimirsbrunn;
 #[macro_use]
 extern crate log;
 extern crate geo;
@@ -39,6 +40,7 @@ extern crate geo;
 use std::path::Path;
 use mimir::rubber::Rubber;
 use mimir::objects::{Admin, Addr, MimirObject};
+use mimirsbrunn::admin_geofinder::AdminGeoFinder;
 use std::fs;
 use std::rc::Rc;
 use std::collections::BTreeMap;
@@ -66,19 +68,35 @@ impl Bano {
         assert!(self.id.len() >= 10);
         &self.id[..10]
     }
-    pub fn into_addr(self, admins: &AdminFromInsee) -> mimir::Addr {
+    pub fn into_addr(self,
+                     admins_from_insee: &AdminFromInsee,
+                     admins_geofinder: &AdminGeoFinder)
+                     -> mimir::Addr {
         let street_name = format!("{} ({})", self.street, self.city);
         let addr_name = format!("{} {}", self.nb, self.street);
         let addr_label = format!("{} ({})", addr_name, self.city);
         let street_id = format!("street:{}", self.fantoir().to_string());
-        let admin = admins.get(&format!("admin:fr:{}", self.insee()));
+        let mut admins = admins_geofinder.get(&geo::Coordinate {
+            x: self.lat,
+            y: self.lon,
+        });
+
+        // If we have an admin corresponding to the INSEE, we know
+        // that's the good one, thus we remove all the admins of its
+        // level found by the geofinder, and add our admin.
+        if let Some(admin) = admins_from_insee.get(self.insee()) {
+            admins.retain(|a| a.level != admin.level);
+            admins.push(admin.clone());
+        }
+
+        let weight = admins.iter().find(|a| a.level == 8).map_or(0., |a| a.weight.get());
 
         let street = mimir::Street {
             id: street_id,
             street_name: self.street,
             label: street_name.to_string(),
-            administrative_regions: admin.map_or(vec![], |a| vec![a.clone()]),
-            weight: 1,
+            administrative_regions: admins,
+            weight: weight,
             zip_codes: vec![self.zip.clone()],
             coord: mimir::Coord::new(self.lat, self.lon),
         };
@@ -88,7 +106,7 @@ impl Bano {
             street: street,
             label: addr_label,
             coord: mimir::Coord::new(self.lat, self.lon),
-            weight: 1,
+            weight: weight,
             zip_codes: vec![self.zip.clone()],
         }
     }
@@ -99,17 +117,19 @@ fn index_bano<I>(cnx_string: &str, dataset: &str, files: I)
 {
     let mut rubber = Rubber::new(cnx_string);
 
-    let admins_by_insee = rubber.get_admins_from_dataset(dataset)
+    let admins = rubber.get_admins_from_dataset(dataset)
         .unwrap_or_else(|err| {
             info!("Administratives regions not found in es db for dataset {}. (error: {})",
                   dataset,
                   err);
             vec![]
-        })
-        .into_iter()
+        });
+    let admins_geofinder = admins.iter().cloned().collect();
+    let admins_by_insee = admins.into_iter()
+        .filter(|a| !a.insee.is_empty())
         .map(|mut a| {
             a.boundary = None; // to save some space we remove the admin boundary
-            (a.id.to_string(), Rc::new(a))
+            (a.insee.clone(), Rc::new(a))
         })
         .collect();
 
@@ -121,7 +141,7 @@ fn index_bano<I>(cnx_string: &str, dataset: &str, files: I)
 
         let iter = rdr.decode().map(|r| {
             let b: Bano = r.unwrap();
-            b.into_addr(&admins_by_insee)
+            b.into_addr(&admins_by_insee, &admins_geofinder)
         });
         match rubber.bulk_index(&addr_index, iter) {
             Err(e) => panic!("failed to bulk insert file {:?} because: {}", &f, e),

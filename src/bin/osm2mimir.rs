@@ -89,14 +89,14 @@ fn main() {
     let mut rubber = Rubber::new(&args.flag_connection_string);
 
     info!("creating adminstrative regions");
-    let admins = administrative_regions(&mut parsed_pbf, levels);
-    let admins_geofinder = admins.iter().cloned().collect::<AdminGeoFinder>();
+    let admins_geofinder =
+        administrative_regions(&mut parsed_pbf, levels).into_iter().collect::<AdminGeoFinder>();
     {
         info!("Extracting streets from osm");
         let mut streets = streets(&mut parsed_pbf, &admins_geofinder, city_level);
 
         info!("computing city weight");
-        compute_admin_weight(&mut streets);
+        compute_admin_weight(&mut streets, &admins_geofinder);
 
         info!("computing street weight");
         compute_street_weight(&mut streets, city_level);
@@ -107,7 +107,7 @@ fn main() {
             info!("Nb of indexed street: {}", nb_streets);
         }
     }
-    let nb_admins = rubber.index(&args.flag_dataset, admins.iter()).unwrap();
+    let nb_admins = rubber.index(&args.flag_dataset, admins_geofinder.admins()).unwrap();
     info!("Nb of indexed admin: {}", nb_admins);
 
     if args.flag_import_poi {

@@ -31,6 +31,7 @@
 extern crate osmpbfreader;
 extern crate mimir;
 
+use admin_geofinder::AdminGeoFinder;
 use boundaries::{build_boundary, make_centroid};
 use std::cell::Cell;
 use std::collections::BTreeSet;
@@ -63,6 +64,7 @@ impl AdminMatcher {
 
 pub fn administrative_regions(pbf: &mut OsmPbfReader, levels: BTreeSet<u32>) -> Vec<mimir::Admin> {
     let mut administrative_regions = Vec::<mimir::Admin>::new();
+    let mut insee_inserted = BTreeSet::default();
     let matcher = AdminMatcher::new(levels);
     info!("reading pbf...");
     let objects = pbf.get_objs_and_deps(|o| matcher.is_admin(o)).unwrap();
@@ -76,8 +78,9 @@ pub fn administrative_regions(pbf: &mut OsmPbfReader, levels: BTreeSet<u32>) -> 
             let level = relation.tags.get("admin_level").and_then(|s| s.parse().ok());
             let level = match level {
                 None => {
-                    info!("invalid admin_level for relation {}: admin_level {:?}",
+                    warn!("relation/{} ({}): invalid admin_level: {:?}, skipped",
                           relation.id.0,
+                          relation.tags.get("name").map_or("", String::as_str),
                           relation.tags.get("admin_level"));
                     continue;
                 }
@@ -87,10 +90,8 @@ pub fn administrative_regions(pbf: &mut OsmPbfReader, levels: BTreeSet<u32>) -> 
             let name = match relation.tags.get("name") {
                 Some(val) => val,
                 None => {
-                    warn!("adminstrative region without name for relation {}:  admin_level {} \
-                           ignored.",
-                          relation.id.0,
-                          level);
+                    warn!("relation/{}: adminstrative region without name, skipped",
+                          relation.id.0);
                     continue;
                 }
             };
@@ -102,9 +103,20 @@ pub fn administrative_regions(pbf: &mut OsmPbfReader, levels: BTreeSet<u32>) -> 
                 .and_then(|r| objects.get(&r.member))
                 .and_then(|o| o.node())
                 .map(|node| mimir::Coord::new(node.lat(), node.lon()));
-            let (admin_id, insee_id) = match relation.tags.get("ref:INSEE") {
+            let (admin_id, insee_id) = match relation.tags
+                .get("ref:INSEE")
+                .map(|v| v.trim_left_matches('0')) {
+                Some(val) if !insee_inserted.contains(val) => {
+                    insee_inserted.insert(val.to_string());
+                    (format!("admin:fr:{}", val), val)
+                }
                 Some(val) => {
-                    (format!("admin:fr:{}", val.trim_left_matches('0')), val.trim_left_matches('0'))
+                    let id = format!("admin:osm:{}", relation.id.0);
+                    warn!("relation/{}: have the INSEE {} that is already used, using {} as id",
+                          relation.id.0,
+                          val,
+                          id);
+                    (id, val)
                 }
                 None => (format!("admin:osm:{}", relation.id.0), ""),
             };
@@ -113,7 +125,10 @@ pub fn administrative_regions(pbf: &mut OsmPbfReader, levels: BTreeSet<u32>) -> 
                 .get("addr:postcode")
                 .or_else(|| relation.tags.get("postal_code"))
                 .map_or("", |val| &val[..]);
-            let zip_codes = zip_code.split(';').map(|s| s.to_string()).sorted();
+            let zip_codes = zip_code.split(';')
+                .filter(|s| !s.is_empty())
+                .map(|s| s.to_string())
+                .sorted();
             let boundary = build_boundary(relation, &objects);
             let admin = mimir::Admin {
                 id: admin_id,
@@ -122,7 +137,7 @@ pub fn administrative_regions(pbf: &mut OsmPbfReader, levels: BTreeSet<u32>) -> 
                 name: name.to_string(),
                 label: format!("{}{}", name.to_string(), format_zip_codes(&zip_codes)),
                 zip_codes: zip_codes,
-                weight: Cell::new(0),
+                weight: Cell::new(0.),
                 coord: coord_center.unwrap_or_else(|| make_centroid(&boundary)),
                 boundary: boundary,
             };
@@ -132,11 +147,17 @@ pub fn administrative_regions(pbf: &mut OsmPbfReader, levels: BTreeSet<u32>) -> 
     administrative_regions
 }
 
-pub fn compute_admin_weight(streets: &mut StreetsVec) {
+pub fn compute_admin_weight(streets: &StreetsVec, admins_geofinder: &AdminGeoFinder) {
+    let mut max = 1.;
     for st in streets {
-        for admin in &mut st.administrative_regions {
-            admin.weight.set(admin.weight.get() + 1);
+        for admin in &st.administrative_regions {
+            admin.weight.set(admin.weight.get() + 1.);
+            max = f64::max(max, admin.weight.get());
         }
+    }
+
+    for admin in admins_geofinder.admins_without_boundary() {
+        admin.weight.set(admin.weight.get() / max);
     }
 }
 

@@ -50,7 +50,7 @@ fn check_has_bob(es: &::ElasticSearchWrapper) {
         assert_eq!(es_bob.pointer("/id"), Some(&json!("bob")));
         assert_eq!(es_bob.pointer("/street_name"), Some(&json!("bob's street")));
         assert_eq!(es_bob.pointer("/label"), Some(&json!("bob's name")));
-        assert_eq!(es_bob.pointer("/weight"), Some(&json!(42)));
+        assert_eq!(es_bob.pointer("/weight"), Some(&json!(0.42)));
     };
     check_has_elt(es, check_is_bob);
 }
@@ -67,7 +67,7 @@ pub fn rubber_zero_downtime_test(mut es: ::ElasticSearchWrapper) {
         street_name: "bob's street".to_string(),
         label: "bob's name".to_string(),
         administrative_regions: vec![],
-        weight: 42u32,
+        weight: 0.42,
         zip_codes: vec![],
         coord: Coord::new(0., 0.),
     };
@@ -87,7 +87,7 @@ pub fn rubber_zero_downtime_test(mut es: ::ElasticSearchWrapper) {
         street_name: "bobette's street".to_string(),
         label: "bobette's name".to_string(),
         administrative_regions: vec![],
-        weight: 24u32,
+        weight: 0.24,
         zip_codes: vec![],
         coord: Coord::new(48.5110722f64, 2.68326290f64),
     };
@@ -116,7 +116,7 @@ pub fn rubber_zero_downtime_test(mut es: ::ElasticSearchWrapper) {
         assert_eq!(es_bob.pointer("/street_name"),
                    Some(&json!("bobette's street")));
         assert_eq!(es_bob.pointer("/label"), Some(&json!("bobette's name")));
-        assert_eq!(es_bob.pointer("/weight"), Some(&json!(24)));
+        assert_eq!(es_bob.pointer("/weight"), Some(&json!(0.24)));
 
         let es_coord = es_bob.pointer("/coord").unwrap();
         assert_eq!(es_coord.pointer("/lat"), Some(&json!(48.5110722)));
@@ -137,7 +137,7 @@ pub fn rubber_custom_id(mut es: ::ElasticSearchWrapper) {
         name: "my admin".to_string(),
         label: "my admin (zip_code)".to_string(),
         zip_codes: vec!["zip_code".to_string()],
-        weight: Cell::new(42),
+        weight: Cell::new(0.42),
         coord: Coord::new(48.5110722f64, 2.68326290f64),
         boundary: None,
     };
@@ -188,7 +188,7 @@ pub fn rubber_ghost_index_cleanup(mut es: ::ElasticSearchWrapper) {
         name: "my admin".to_string(),
         label: "my admin (zip_code)".to_string(),
         zip_codes: vec!["zip_code".to_string()],
-        weight: Cell::new(42),
+        weight: Cell::new(0.42),
         coord: Coord::new(48.5110722f64, 2.68326290f64),
         boundary: None,
     };

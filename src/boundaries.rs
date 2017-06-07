@@ -131,7 +131,7 @@ fn test_get_nodes() {
 pub fn build_boundary(relation: &osmpbfreader::Relation,
                       objects: &BTreeMap<osmpbfreader::OsmId, osmpbfreader::OsmObj>)
                       -> Option<MultiPolygon<f64>> {
-    let roles = ["outer", "enclave"];
+    let roles = ["outer", "enclave", ""];
     let mut boundary_parts: Vec<BoundaryPart> = relation.refs
         .iter()
         .filter(|r| roles.contains(&r.role.as_str()))
@@ -157,12 +157,8 @@ pub fn build_boundary(relation: &osmpbfreader::Relation,
         let mut current = first_part.last();
         let mut outer = first_part.nodes;
 
-        // we try to close the polygon, if we can't we want to at least have tried one time per
-        // way. We could improve that latter by trying to attach the way to both side of the
-        // polygon
-        let mut nb_try = 0;
-        let max_try = boundary_parts.len() + 1;
-        while nb_try < max_try {
+        loop {
+            let mut added_part = false;
             let mut i = 0;
             while i < boundary_parts.len() && current != first {
                 if current == boundary_parts[i].first() {
@@ -171,12 +167,14 @@ pub fn build_boundary(relation: &osmpbfreader::Relation,
                     current = boundary_parts[i].last();
                     outer.append(&mut boundary_parts[i].nodes);
                     boundary_parts.remove(i);
+                    added_part = true;
                 } else if current == boundary_parts[i].last() {
                     // the end of the current way touch the polygon, we reverse the way and add it
                     current = boundary_parts[i].first();
                     boundary_parts[i].nodes.reverse();
                     outer.append(&mut boundary_parts[i].nodes);
                     boundary_parts.remove(i);
+                    added_part = true;
                 } else {
                     i += 1;
                     // didnt do anything, we want to explore the next way, if we had do something we
@@ -196,7 +194,26 @@ pub fn build_boundary(relation: &osmpbfreader::Relation,
                 multipoly.0.push(Polygon::new(LineString(outer), vec![]));
                 break;
             }
-            nb_try += 1;
+            if !added_part {
+                use geo::haversine_distance::HaversineDistance;
+                let p = |n: &osmpbfreader::Node| {
+                    Point(Coordinate {
+                        x: n.lat(),
+                        y: n.lon(),
+                    })
+                };
+                let distance = p(outer.first().unwrap())
+                    .haversine_distance(&p(outer.last().unwrap()));
+                if distance < 10. {
+                    warn!("boundary: relation/{} ({}): unclosed polygon, dist({:?}, {:?}) = {}",
+                          relation.id.0,
+                          relation.tags.get("name").map_or("", String::as_str),
+                          outer.first().unwrap().id,
+                          outer.last().unwrap().id,
+                          distance);
+                }
+                break;
+            }
         }
     }
     if multipoly.0.is_empty() {
@@ -207,9 +224,14 @@ pub fn build_boundary(relation: &osmpbfreader::Relation,
 }
 
 pub fn make_centroid(boundary: &Option<MultiPolygon<f64>>) -> mimir::Coord {
-    boundary.as_ref()
+    let coord = boundary.as_ref()
         .and_then(|b| b.centroid().map(|c| mimir::Coord::new(c.x(), c.y())))
-        .unwrap_or_else(|| mimir::Coord::new(0., 0.))
+        .unwrap_or_else(|| mimir::Coord::default());
+    if coord.is_valid() {
+        coord
+    } else {
+        mimir::Coord::default()
+    }
 }
 
 #[test]

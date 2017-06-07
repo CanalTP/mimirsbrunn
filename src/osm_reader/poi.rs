@@ -228,7 +228,7 @@ fn parse_poi(osmobj: &osmpbfreader::OsmObj,
         coord: coord,
         zip_codes: zip_codes,
         administrative_regions: adms,
-        weight: 1,
+        weight: 0.,
         poi_type: poi_type.clone(),
     })
 }

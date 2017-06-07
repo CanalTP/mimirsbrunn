@@ -30,13 +30,13 @@
 use super::model;
 use rs_es;
 use rs_es::error::EsError;
-use rs_es::query::Query as rs_q;
+use rs_es::query::Query;
 use rs_es::operations::search::SearchResult;
 use rs_es::units as rs_u;
 use mimir;
 use serde_json;
 use serde;
-use mimir::objects::{MimirObject, Admin, Addr, Stop};
+use mimir::objects::{MimirObject, Admin, Addr, Stop, Street, Poi};
 
 /// takes a ES json blob and build a Place from it
 /// it uses the _type field of ES to know which type of the Place enum to fill
@@ -72,10 +72,9 @@ enum MatchType {
 
 /// Create a `rs_es::Query` that boosts results according to the
 /// distance to `coord`.
-fn build_proximity(coord: &model::Coord) -> rs_q {
-    rs_q::build_function_score()
-        .with_boost_mode(rs_es::query::compound::BoostMode::Multiply)
-        .with_boost(100000)
+fn build_proximity_with_boost(coord: &model::Coord, boost: f64) -> Query {
+    Query::build_function_score()
+        .with_boost(boost)
         .with_function(
             rs_es::query::functions::Function::build_decay(
                 "coord",
@@ -89,84 +88,57 @@ fn build_query(q: &str,
                match_type: MatchType,
                coord: &Option<model::Coord>,
                shape: Option<Vec<rs_es::units::Location>>)
-               -> rs_es::query::Query {
-
+               -> Query {
     use rs_es::query::functions::Function;
-    let boost_admin_label = 100;
-    // we order the type of object we want
-    // Note: the addresses are boosted more because even if we don't want them first
-    // because they are more severely filtered
-    let boost_addr = rs_q::build_term("_type", Addr::doc_type()).with_boost(5000).build();
-    let boost_admin = rs_q::build_term("_type", Admin::doc_type()).with_boost(3000).build();
-    let boost_stop = rs_q::build_term("_type", Stop::doc_type()).with_boost(2000).build();
 
-    let main_match_type = match match_type {
-        MatchType::Prefix => "label.prefix",
-        MatchType::Fuzzy => "label.ngram",
+    // Priorization by type
+    fn match_type_with_boost<T: MimirObject>(boost: f64) -> Query {
+        Query::build_term("_type", T::doc_type()).with_boost(boost).build()
+    }
+    let type_query = Query::build_bool()
+        .with_should(vec![match_type_with_boost::<Addr>(3.),
+                          match_type_with_boost::<Admin>(11.),
+                          match_type_with_boost::<Stop>(10.),
+                          match_type_with_boost::<Poi>(1.),
+                          match_type_with_boost::<Street>(2.)])
+        .with_boost(50.)
+        .build();
+
+    // Priorization by query string
+    let mut string_should =
+        vec![Query::build_match("label", q).with_boost(1.).build(),
+             Query::build_match("label.prefix", q).with_boost(1.).build(),
+             Query::build_match("zip_codes", q).with_boost(1.).build(),
+             Query::build_multi_match(vec!["administrative_regions.name".to_string(),
+                                           "administrative_regions.street.name".to_string()],
+                                      q)
+                 .with_boost(1.)
+                 .build()];
+    if let MatchType::Fuzzy = match_type {
+        string_should.push(Query::build_match("label.ngram", q).with_boost(1.).build());
+    }
+    let string_query = Query::build_bool().with_should(string_should).with_boost(1.).build();
+
+    // Priorization by importance
+    let importance_query = match coord {
+        &Some(ref c) => build_proximity_with_boost(c, 100.),
+        &None => {
+            Query::build_function_score()
+                .with_function(Function::build_field_value_factor("weight").build())
+                .with_boost(50.)
+                .build()
+        }
     };
-
-    let boost_main_match_query = rs_q::build_match(main_match_type.to_string(), q.to_string())
-        .with_boost(500)
-        .build();
-
-    let boost_zipcode_match_query = rs_q::build_match("zip_codes.prefix".to_string(),
-                                                      q.to_string())
-        .with_boost(100)
-        .build();
-
-    let mut should_query = vec![boost_addr,
-                                boost_admin,
-                                boost_stop,
-                                boost_main_match_query,
-                                boost_zipcode_match_query];
-    // for fuzzy search we also search by the prefix index (with a greater boost than ngram)
-    // to have better results
-    if match_type == MatchType::Fuzzy {
-        should_query.push(rs_q::build_match("label.prefix", q.to_string())
-            .with_boost(1000)
-            .build());
-    }
-
-    if let &Some(ref c) = coord {
-        // if we have coordinate, we boost we result near this coordinate
-        should_query.push(build_proximity(c));
-    } else {
-        // if we don't have coords, we take the field `weight` into account
-        let boost_on_weight = rs_q::build_function_score()
-            .with_boost_mode(rs_es::query::compound::BoostMode::Multiply)
-            .with_boost(500)
-            .with_query(rs_q::build_match_all().build())
-            .with_function(Function::build_field_value_factor("weight")
-                .with_factor(1)
-                .with_modifier(rs_es::query::functions::Modifier::Log1p)
-                .build())
-            .build();
-        should_query.push(boost_on_weight);
-
-        should_query.push(
-            rs_q::build_match("administrative_regions.label".to_string(), q.to_string())
-            .with_boost(boost_admin_label)
-            .build()
-        );
-        should_query.push(rs_q::build_match("street.administrative_regions.label".to_string(),
-                                            q.to_string())
-            .with_boost(boost_admin_label)
-            .build())
-    }
-
-    let sub_query = rs_q::build_bool()
-        .with_should(should_query)
-        .build();
 
     // filter to handle house number
     // we either want:
     // * to exactly match the document house_number
     // * or that the document has no house_number
-    let first_condition = rs_q::build_bool()
-        .with_should(vec![rs_q::build_bool()
-                              .with_must_not(rs_q::build_exists("house_number").build())
+    let first_condition = Query::build_bool()
+        .with_should(vec![Query::build_bool()
+                              .with_must_not(Query::build_exists("house_number").build())
                               .build(),
-                          rs_q::build_match("house_number", q.to_string()).build()])
+                          Query::build_match("house_number", q.to_string()).build()])
         .build();
 
     use rs_es::query::MinimumShouldMatch;
@@ -183,9 +155,8 @@ fn build_query(q: &str,
         // WITH the cross_fields match type, the request will be spilted into terms to match
         // "label" and "zip_codes"
         MatchType::Prefix => {
-            rs_q::build_multi_match(vec!["label.prefix".to_string(),
-                                         "zip_codes.prefix".to_string()],
-                                    q.to_string())
+            Query::build_multi_match(vec!["label.prefix".to_string(), "zip_codes".to_string()],
+                                     q.to_string())
                 .with_type(rs_es::query::full_text::MatchQueryType::CrossFields)
                 .with_operator("and")
                 .build()
@@ -198,25 +169,22 @@ fn build_query(q: &str,
         // Very long requests:
         //     Caisse Primaire d'Assurance Maladie de Haute Garonne, 33 Rue du Lot, 31100 Toulouse
         MatchType::Fuzzy => {
-            rs_q::build_multi_match(vec!["label.ngram".to_string(), "zip_codes.prefix".to_string()],
-                                    q.to_string())
+            Query::build_multi_match(vec!["label.ngram".to_string(), "zip_codes".to_string()],
+                                     q.to_string())
                 .with_minimum_should_match(MinimumShouldMatch::from(40f64))
                 .build()
         }
     };
 
-    let mut must = vec![first_condition, second_condition];
+    let mut filter = vec![first_condition, second_condition];
 
     if let Some(s) = shape {
-        must.push(rs_q::build_geo_polygon("coord", s).build());
+        filter.push(Query::build_geo_polygon("coord", s).build());
     }
-    let filter = rs_q::build_bool()
-        .with_must(must)
-        .build();
 
-    rs_q::build_bool()
-        .with_must(vec![sub_query])
-        .with_filter(filter)
+    Query::build_bool()
+        .with_must(vec![type_query, string_query, importance_query])
+        .with_filter(Query::build_bool().with_must(filter).build())
         .build()
 }
 
@@ -345,12 +313,12 @@ pub fn features(pt_dataset: &Option<&str>,
                 -> Result<Vec<mimir::Place>, EsError> {
 
     let val = rs_es::units::JsonVal::String(id.into());
-    let build_ids = rs_q::build_ids(vec![val]).build();
+    let build_ids = Query::build_ids(vec![val]).build();
 
-    let filter = rs_q::build_bool()
+    let filter = Query::build_bool()
         .with_must(vec![build_ids])
         .build();
-    let query = rs_q::build_bool().with_filter(filter).build();
+    let query = Query::build_bool().with_filter(filter).build();
 
     let mut client = rs_es::Client::new(cnx).unwrap();
 
@@ -384,9 +352,9 @@ pub fn reverse(coord: &model::Coord, cnx: &str) -> Result<Vec<mimir::Place>, EsE
     let types = vec!["house".into(), "street".into()];
     let indexes = make_indexes(false, &None, &Some(types), &mut client)?;
     let distance = rs_u::Distance::new(500., rs_u::DistanceUnit::Meter);
-    let geo_distance = rs_q::build_geo_distance("coord", (coord.lat, coord.lon), distance).build();
-    let query = rs_q::build_bool()
-        .with_should(build_proximity(coord))
+    let geo_distance = Query::build_geo_distance("coord", (coord.lat, coord.lon), distance).build();
+    let query = Query::build_bool()
+        .with_should(build_proximity_with_boost(coord, 1.))
         .with_must(geo_distance)
         .build();
     let result: SearchResult<serde_json::Value> = client.search_query()

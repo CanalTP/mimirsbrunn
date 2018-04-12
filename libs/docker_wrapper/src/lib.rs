@@ -30,9 +30,7 @@
 extern crate hyper;
 extern crate retry;
 #[macro_use]
-extern crate slog;
-#[macro_use]
-extern crate slog_scope;
+extern crate log;
 
 use std::error::Error;
 use std::process::Command;

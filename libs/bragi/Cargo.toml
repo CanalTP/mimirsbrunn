@@ -20,9 +20,7 @@ geo = "0.6"
 lazy_static = "1"
 prometheus = {version= "0.3", features = ["process"]}
 hyper = "0.10"
-
-[dependencies.logger]
-git = "https://github.com/iron/logger.git"
+logger = "0.2"
 
 [build-dependencies]
 git-version = "0.2"

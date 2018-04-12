@@ -5,8 +5,7 @@ authors = ["dt.ro <dt.ro@canaltp.fr>"]
 
 [dependencies]
 hyper = "0.10"
-slog = { version = "2.1", features = ["max_level_trace", "release_max_level_info"]}
-slog-scope = "4.0"
+log = "0.4"
 retry = "*"
 
 [dependencies.mimir]

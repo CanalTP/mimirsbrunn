@@ -143,17 +143,18 @@ fn build_query(
     }
     let type_query = Query::build_bool()
         .with_should(vec![
-            match_type_with_boost::<Addr>(12.),
-            match_type_with_boost::<Admin>(11.),
-            match_type_with_boost::<Stop>(10.),
-            match_type_with_boost::<Poi>(2.),
+            match_type_with_boost::<Addr>(20.),
+            match_type_with_boost::<Admin>(19.),
+            match_type_with_boost::<Stop>(18.),
+            match_type_with_boost::<Poi>(1.5),
             match_type_with_boost::<Street>(1.),
         ])
-        .with_boost(20.)
+        .with_boost(30.)
         .build();
 
     // Priorization by query string
     let mut string_should = vec![
+        Query::build_match("name", q).with_boost(1.).build(),
         Query::build_match("label", q).with_boost(1.).build(),
         Query::build_match("label.prefix", q).with_boost(1.).build(),
         Query::build_match("zip_codes", q).with_boost(1.).build(),

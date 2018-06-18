@@ -115,7 +115,7 @@
                 "street": {
                     "properties": {
                         "id": { "type": "string", "index": "no" },
-                        "street_name": { "type": "string" },
+                        "name": { "type": "string" },
                         "administrative_regions": {
                             "properties": {
                                 "id": { "type": "string", "index": "no" },

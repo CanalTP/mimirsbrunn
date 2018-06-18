@@ -51,7 +51,7 @@
         "street": {
             "properties": {
                 "id": { "type": "string", "index": "no" },
-                "street_name": { "type": "string" },
+                "name": { "type": "string" },
                 "zip_codes": {
                     "type": "string",
                     "index_options": "docs",

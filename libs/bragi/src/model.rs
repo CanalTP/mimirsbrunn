@@ -205,7 +205,7 @@ fn get_citycode(admins: &Vec<Rc<mimir::Admin>>) -> Option<String> {
 impl From<mimir::Street> for GeocodingResponse {
     fn from(other: mimir::Street) -> GeocodingResponse {
         let type_ = "street".to_string();
-        let name = Some(other.street_name);
+        let name = Some(other.name);
         let label = Some(other.label);
         let admins = other.administrative_regions;
         let city = get_city_name(&admins);
@@ -236,11 +236,8 @@ impl From<mimir::Addr> for GeocodingResponse {
         let type_ = "house".to_string();
         let label = Some(other.label);
         let housenumber = Some(other.house_number.to_string());
-        let street_name = Some(other.street.street_name.to_string());
-        let name = Some(format!(
-            "{} {}",
-            other.house_number, other.street.street_name
-        ));
+        let street_name = Some(other.street.name.to_string());
+        let name = Some(format!("{} {}", other.house_number, other.street.name));
         let admins = other.street.administrative_regions;
         let city = get_city_name(&admins);
         let postcode = if other.zip_codes.is_empty() {

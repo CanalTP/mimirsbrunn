@@ -81,7 +81,8 @@ impl OpenAddresse {
 
         let street = mimir::Street {
             id: street_id,
-            street_name: self.street,
+            street_name: self.street.clone(),
+            name: self.street,
             label: street_name.to_string(),
             administrative_regions: admins,
             weight: weight,

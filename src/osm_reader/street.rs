@@ -101,6 +101,7 @@ pub fn streets(
                 ret ret(street_list.push(mimir::Street {
                     id: way.id.0.to_string(),
                     street_name: way_name.to_string(),
+                    name: way_name.to_string(),
                     label: format_label(&admin, way_name),
                     weight: 0.,
                     zip_codes: get_zip_codes_from_admins(&admin),
@@ -161,6 +162,7 @@ pub fn streets(
             ret ret(street_list.push(mimir::Street {
                 id: way.id.0.to_string(),
                 street_name: way_name.to_string(),
+                name: way_name.to_string(),
                 label: format_label(&admins, way_name),
                 weight: 0.,
                 zip_codes: get_zip_codes_from_admins(&admins),

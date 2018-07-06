@@ -4,10 +4,11 @@ services:
   - docker:dind
 
 variables:
-  DOCKER_DRIVER: overlay2
   SHARED_PATH: /builds/$CI_PROJECT_PATH/shared
 
 geocoder-tester-cosmogony:
+  variables:
+    DOCKER_DRIVER: overlay2
   before_script:
     - export OSM_DIR=$SHARED_PATH/data/osm ADDR_DIR=$SHARED_PATH/data/addresses
     - apk add --no-cache python3 py3-pip git bash

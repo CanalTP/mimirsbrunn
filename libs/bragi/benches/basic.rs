@@ -11,7 +11,7 @@ fn bench_new(b: &mut test::Bencher) {
     let es_wrapper = ElasticSearchWrapper::new(&docker_wrapper);
     let mut bragi = BragiHandler::new(format!("{}/munin", es_wrapper.host()));
     b.iter(|| {
-        let _response =
-            bragi.get("/autocomplete?q=Parking vélo Saint-Martin&pt_dataset[]=dataset1&type[]=poi");
+        let _response = bragi
+            .get("/autocomplete?q=Parking vélo Saint-Martin&pt_dataset[]=dataset1&type[]=poi");
     });
 }

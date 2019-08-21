@@ -110,7 +110,10 @@ pub fn cosmogony2mimir_test(es_wrapper: crate::ElasticSearchWrapper<'_>) {
             assert!(sem.coord.is_valid());
             assert_eq!(sem.zone_type, Some(ZoneType::StateDistrict));
             assert_eq!(sem.administrative_regions.len(), 1);
-            assert_eq!(sem.administrative_regions[0].id, "admin:osm:relation:424256272");
+            assert_eq!(
+                sem.administrative_regions[0].id,
+                "admin:osm:relation:424256272"
+            );
             assert_eq!(sem.administrative_regions[0].name, "France hexagonale");
         }
         _ => panic!("should be an admin"),

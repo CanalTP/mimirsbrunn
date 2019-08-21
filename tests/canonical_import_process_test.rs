@@ -118,6 +118,10 @@ fn melun_test(bragi: &mut BragiHandler) {
         melun["bbox"],
         json!(vec![2.6284669, 48.5235259, 2.6820184, 48.5607616])
     );
+    let admins = melun["administrative_regions"]
+        .as_array()
+        .expect("admins must be array");
+    assert_eq!(admins.len(), 2);
 
     // we should also find other object that are in the city
     // (in the data there is at least one poi, and one street that matches)

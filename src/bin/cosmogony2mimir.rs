@@ -177,29 +177,30 @@ fn index_cosmogony(args: Args) -> Result<(), Error> {
     use cosmogony::ZoneType::City;
 
     let mut cosmogony_id_to_osm_id = BTreeMap::new();
-    for z in read_zones(&args.input)? {
+    let max_weight = utils::ADMIN_MAX_WEIGHT;
+    let mut zones = Vec::new();
+    for mut z in read_zones(&args.input)? {
         let insee = match z.zone_type {
             Some(City) => admin::read_insee(&z.tags).map(|s| s.to_owned()),
             _ => None,
         };
         cosmogony_id_to_osm_id.insert(z.id.clone(), (z.osm_id.clone(), insee));
+        z.boundary = None; // to prevent too much memory consumption
+        zones.push(z);
     }
-    let cosmogony_id_to_osm_id = cosmogony_id_to_osm_id;
-    let max_weight = utils::ADMIN_MAX_WEIGHT;
+
+    let admins_without_boundaries = zones.into_iter().map(|z| {
+        let admin = z.into_admin(
+            &cosmogony_id_to_osm_id,
+            &args.langs,
+            args.french_id_retrocompatibility,
+            max_weight,
+            None,
+        );
+        (admin.id.clone(), Arc::new(admin))
+    }).collect::<HashMap<_, _>>();
 
     info!("importing cosmogony into Mimir");
-    let admins_without_boundaries = read_zones(&args.input)?
-        .map(|z| {
-            let admin = z.into_admin(
-                &cosmogony_id_to_osm_id,
-                &args.langs,
-                args.french_id_retrocompatibility,
-                max_weight,
-                None,
-            );
-            (admin.id.clone(), Arc::new(admin))
-        })
-        .collect::<HashMap<_, _>>();
 
     let admins = read_zones(&args.input)?.map(|z| {
         z.into_admin(

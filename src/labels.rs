@@ -203,19 +203,13 @@ mod test {
                 id: "admin:amsterdam".to_string(),
                 level: 10,
                 name: "Amsterdam".to_string(),
-                names: make_i18_prop(&[
-                    ("ja", "アムステルダム"),
-                    ("ru", "Амстердам"),
-                ]),
+                names: make_i18_prop(&[("ja", "アムステルダム"), ("ru", "Амстердам")]),
                 label: "Amsterdam, Noord-Hollad, Nederland".to_string(),
                 labels: make_i18_prop(&[
                     ("ja", "アムステルダム, Noord-Holland, オランダ"),
                     ("it", "Amsterdam, Noord-Holland, Paesi Bassi"),
                     ("fr", "Amsterdam, Hollande-Septentrionale, Pays-Bas"),
-                    (
-                        "ru",
-                        "Амстердам, Северная Голландия, Нидерланды",
-                    ),
+                    ("ru", "Амстердам, Северная Голландия, Нидерланды"),
                 ]),
                 zone_type: Some(ZoneType::City),
                 ..Default::default()
@@ -338,10 +332,7 @@ mod test {
         );
         assert_eq!(
             label,
-            make_i18_prop(&[(
-                "ru",
-                "Дом-музей Рембрандта (Амстердам)",
-            ),])
+            make_i18_prop(&[("ru", "Дом-музей Рембрандта (Амстердам)",),])
         );
     }
 

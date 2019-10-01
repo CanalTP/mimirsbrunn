@@ -144,35 +144,35 @@ fn build_with_weight<A: Into<Option<f64>>>(factor: A) -> Query {
             FilteredFunction::build_filtered_function(
                 Query::build_term("_type", Stop::doc_type()).build(),
                 Function::build_field_value_factor("weight")
-                    .with_factor(factor.unwrap_or_else(|| 0.15) * 10.0)
+                    .with_factor(factor.unwrap_or(0.15) * 10.0)
                     .with_missing(0.0)
                     .build(),
             ),
             FilteredFunction::build_filtered_function(
                 Query::build_term("_type", Addr::doc_type()).build(),
                 Function::build_field_value_factor("weight")
-                    .with_factor(factor.unwrap_or_else(|| 0.15) * 1.0)
+                    .with_factor(factor.unwrap_or(0.15) * 1.0)
                     .with_missing(0.0)
                     .build(),
             ),
             FilteredFunction::build_filtered_function(
                 Query::build_term("_type", Admin::doc_type()).build(),
                 Function::build_field_value_factor("weight")
-                    .with_factor(factor.unwrap_or_else(|| 0.15) * 1.0)
+                    .with_factor(factor.unwrap_or(0.15) * 1.0)
                     .with_missing(0.0)
                     .build(),
             ),
             FilteredFunction::build_filtered_function(
                 Query::build_term("_type", Poi::doc_type()).build(),
                 Function::build_field_value_factor("weight")
-                    .with_factor(factor.unwrap_or_else(|| 0.15) * 1.0)
+                    .with_factor(factor.unwrap_or(0.15) * 1.0)
                     .with_missing(0.0)
                     .build(),
             ),
             FilteredFunction::build_filtered_function(
                 Query::build_term("_type", Street::doc_type()).build(),
                 Function::build_field_value_factor("weight")
-                    .with_factor(factor.unwrap_or_else(|| 0.15) * 1.0)
+                    .with_factor(factor.unwrap_or(0.15) * 1.0)
                     .with_missing(0.0)
                     .build(),
             ),

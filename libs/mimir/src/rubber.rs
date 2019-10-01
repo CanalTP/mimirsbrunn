@@ -36,6 +36,7 @@ use reqwest::StatusCode;
 use rs_es::error::EsError;
 use rs_es::operations::search::ScanResult;
 use rs_es::operations::search::SearchResult;
+use rs_es::query::functions::{FilteredFunction, Function};
 use rs_es::query::Query;
 use rs_es::units as rs_u;
 use rs_es::units::Duration;
@@ -234,14 +235,15 @@ pub fn make_place(
 pub fn build_proximity_with_boost(coord: &Coord, boost: f64) -> Query {
     Query::build_function_score()
         .with_boost(boost)
-        .with_function(
-            rs_es::query::functions::Function::build_decay(
+        .with_function(FilteredFunction::build_filtered_function(
+            None,
+            Function::build_decay(
                 "coord",
                 rs_u::Location::LatLon(coord.lat(), coord.lon()),
                 rs_u::Distance::new(50f64, rs_u::DistanceUnit::Kilometer),
             )
             .build_exp(),
-        )
+        ))
         .build()
 }
 

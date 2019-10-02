@@ -139,43 +139,24 @@ fn build_proximity_with_boost(coord: &Coord, weight: f64) -> Query {
 
 fn build_with_weight<A: Into<Option<f64>>>(factor: A) -> Query {
     let factor = factor.into();
+    let weighted = |doc_type, weight| {
+        FilteredFunction::build_filtered_function(
+            Query::build_term("_type", doc_type).build(),
+            Function::build_field_value_factor("weight")
+                .with_factor(factor.unwrap_or(0.15) * weight)
+                .with_missing(0.0)
+                .build(),
+        )
+    };
+
     Query::build_function_score()
         .with_functions(vec![
-            FilteredFunction::build_filtered_function(
-                Query::build_term("_type", Stop::doc_type()).build(),
-                Function::build_field_value_factor("weight")
-                    .with_factor(factor.unwrap_or(0.15) * 10.0)
-                    .with_missing(0.0)
-                    .build(),
-            ),
-            FilteredFunction::build_filtered_function(
-                Query::build_term("_type", Addr::doc_type()).build(),
-                Function::build_field_value_factor("weight")
-                    .with_factor(factor.unwrap_or(0.15) * 1.0)
-                    .with_missing(0.0)
-                    .build(),
-            ),
-            FilteredFunction::build_filtered_function(
-                Query::build_term("_type", Admin::doc_type()).build(),
-                Function::build_field_value_factor("weight")
-                    .with_factor(factor.unwrap_or(0.15) * 1.0)
-                    .with_missing(0.0)
-                    .build(),
-            ),
-            FilteredFunction::build_filtered_function(
-                Query::build_term("_type", Poi::doc_type()).build(),
-                Function::build_field_value_factor("weight")
-                    .with_factor(factor.unwrap_or(0.15) * 1.0)
-                    .with_missing(0.0)
-                    .build(),
-            ),
-            FilteredFunction::build_filtered_function(
-                Query::build_term("_type", Street::doc_type()).build(),
-                Function::build_field_value_factor("weight")
-                    .with_factor(factor.unwrap_or(0.15) * 1.0)
-                    .with_missing(0.0)
-                    .build(),
-            ),
+            weighted(Stop::doc_type(), 10.0),
+            weighted(Addr::doc_type(), 1.0),
+            weighted(Admin::doc_type(), 1.0),
+            weighted(Poi::doc_type(), 1.0),
+            weighted(Street::doc_type(), 1.0),
+            weighted(Stop::doc_type(), 1.0),
         ])
         .with_boost_mode(BoostMode::Replace)
         .build()

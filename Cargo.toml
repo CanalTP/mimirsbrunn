@@ -16,7 +16,7 @@ slog-envlogger = "2.1"
 slog-async = "2.3"
 structopt = "0.2"
 csv = "1"
-rs-es = { git = "https://github.com/canaltp/rs-es", features = ["geo"]}
+rs-es = { path = "../rs-es", features = ["geo"]}
 regex = "1"
 osmpbfreader = "0.13.2"
 chrono = "0.4"

@@ -236,13 +236,14 @@ pub fn build_proximity_with_boost(coord: &Coord, boost: f64) -> Query {
     Query::build_function_score()
         .with_boost(boost)
         .with_function(FilteredFunction::build_filtered_function(
-            None,
+            None, /* no filter */
             Function::build_decay(
                 "coord",
                 rs_u::Location::LatLon(coord.lat(), coord.lon()),
                 rs_u::Distance::new(50f64, rs_u::DistanceUnit::Kilometer),
             )
             .build_exp(),
+            None, /* no weight */
         ))
         .build()
 }

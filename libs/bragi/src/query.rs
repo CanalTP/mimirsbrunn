@@ -130,8 +130,13 @@ fn build_proximity_with_boost(coord: &Coord, weight: f64) -> Query {
                 .with_decay(0.4f64)
                 .build("coord")
                 .build_exp(),
+                None,
             ),
-            FilteredFunction::build_filtered_function(None, Function::build_weight(weight).build()),
+            FilteredFunction::build_filtered_function(
+                None,
+                Function::build_weight(weight).build(),
+                None,
+            ),
         ])
         .with_boost_mode(BoostMode::Replace)
         .build()
@@ -146,6 +151,7 @@ fn build_with_weight<A: Into<Option<f64>>>(factor: A) -> Query {
                 .with_factor(factor.unwrap_or(0.15) * weight)
                 .with_missing(0.0)
                 .build(),
+            None,
         )
     };
 
@@ -268,10 +274,12 @@ fn build_query<'a>(
                             .with_modifier(Modifier::Log1p)
                             .with_missing(0.)
                             .build(),
+                        None,
                     ),
                     FilteredFunction::build_filtered_function(
                         None,
                         Function::build_weight(admin_weight).build(),
+                        None,
                     ),
                 ])
                 .with_boost_mode(BoostMode::Replace)

@@ -12,7 +12,7 @@ slog-scope = "4"
 slog-envlogger = "2.1.0"
 slog-stdlog = "3.0.2"
 slog-async = "2.3"
-rs-es = { path = "../../../rs-es", features = ["geo"]}
+rs-es = { git = "https://github.com/canaltp/rs-es", features = ["geo"]}
 serde = { version = "1", features = ["rc"]}
 serde_json = "1"
 chrono = "0.4"

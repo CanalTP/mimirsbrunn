@@ -65,7 +65,10 @@ fn launch_and_assert(
     args: &[std::string::String],
     es_wrapper: &ElasticSearchWrapper<'_>,
 ) {
-    let status = Command::new(cmd).args(args).status().unwrap();
+    let status = Command::new(cmd)
+        .args(args)
+        .status()
+        .expect(&format!("`{}` failed to start", cmd));
     assert!(status.success(), "`{}` failed {}", cmd, &status);
     es_wrapper.refresh();
 }

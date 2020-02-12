@@ -46,7 +46,66 @@ use std::collections::BTreeMap;
 use std::marker::PhantomData;
 use std::time;
 
-const SYNONYMS: [&'static str; 17] = [
+const ENGLISH: &[&str] = &[
+    "twenty",
+    "nineteen",
+    "eighteen",
+    "seventeen",
+    "sixteen",
+    "fifteen",
+    "fourteen",
+    "thirteen",
+    "twelve",
+    "eleven",
+    "ten",
+    "nine",
+    "eight",
+    "seven",
+    "six",
+    "five",
+    "four",
+    "three",
+    "two",
+    "one",
+];
+const FRENCH: &[&str] = &[
+    "vingt", "dix-neuf", "dix-huit", "dix-sept", "seize", "quinze", "quatorze", "treize", "douze",
+    "onze", "dix", "neuf", "huit", "sept", "six", "cinq", "quatre", "trois", "deux", "un",
+];
+const GERMAN: &[&str] = &[
+    "zwanzig", "neunzehn", "achtzehn", "siebzehn", "sechzehn", "funfzehn", "vierzehn", "dreizehn",
+    "zwolf", "elf", "zehn", "neun", "acht", "sieben", "sechs", "funf", "vier", "drei", "zwei",
+    "eins",
+];
+const ROMAN: &[&str] = &[
+    "xx", "xix", "xviii", "xvii", "xvi", "xv", "xiv", "xiii", "xii", "xi", "x", "ix", "viii",
+    "vii", "vi", "v", "iv", "iii", "ii", "i",
+];
+const SPANISH: &[&str] = &[
+    "veinte",
+    "diecinueve",
+    "dieciocho",
+    "diecisiete",
+    "dieciseis",
+    "quince",
+    "catorce",
+    "trece",
+    "doce",
+    "once",
+    "diez",
+    "nueve",
+    "ocho",
+    "siete",
+    "seis",
+    "cinco",
+    "cuatro",
+    "tres",
+    "dos",
+    "uno",
+];
+const NUMBER_LANGUAGES: &[&[&str]] = &[ENGLISH, FRENCH, GERMAN, ROMAN, SPANISH];
+
+const SYNONYMS: &[&str] = &[
     "cc,centre commercial",
     "hotel de ville,mairie",
     "gare sncf,gare",
@@ -70,9 +129,9 @@ lazy_static::lazy_static! {
     static ref ES_REQ_HISTOGRAM: Histogram = register_histogram!(
         "bragi_elasticsearch_reverse_duration_seconds",
         "The elasticsearch reverse request latencies in seconds.",
-        exponential_buckets(0.001, 1.5, 25).unwrap()
+        exponential_buckets(0.001, 1.5, 25).expect("exponential_buckets failed")
     )
-    .unwrap();
+    .expect("register_histogram failed");
 }
 
 fn check_response(resp: reqwest::Response) -> Result<reqwest::Response, EsError> {
@@ -296,13 +355,23 @@ pub fn get_indexes(
     result
 }
 
+fn update_json_path(
+    settings_json_value: &mut serde_json::Value,
+    path: &str,
+    value: serde_json::Value,
+) {
+    *settings_json_value
+        .pointer_mut(path)
+        .expect(&format!("'{}': JSON path not found", path)) = value;
+}
+
 impl Rubber {
     // build a rubber with a connection string (http://host:port/)
     pub fn new(cnx: &str) -> Rubber {
         info!("elastic search host {} ", cnx);
 
         Rubber {
-            es_client: rs_es::Client::init(&cnx).unwrap(),
+            es_client: rs_es::Client::init(&cnx).expect("rs_es::Client::init failed"),
             http_client: reqwest::Client::new(),
             timeout: None,
             cnx_string: cnx.to_owned(),
@@ -315,8 +384,12 @@ impl Rubber {
     {
         let timeout = timeout.into();
         Rubber {
-            es_client: rs_es::Client::init_with_timeout(&cnx, timeout).unwrap(),
-            http_client: reqwest::Client::builder().timeout(timeout).build().unwrap(),
+            es_client: rs_es::Client::init_with_timeout(&cnx, timeout)
+                .expect("rs_es::Client::init_with_timeout failed"),
+            http_client: reqwest::Client::builder()
+                .timeout(timeout)
+                .build()
+                .expect("reqwest::Client::builder.build failed"),
             cnx_string: cnx.to_owned(),
             timeout,
         }
@@ -366,21 +439,48 @@ impl Rubber {
                 format_err!("Error occurred when creating index: {} err: {}", name, err)
             })?;
 
-        let synonyms: Vec<_> = SYNONYMS
-            .iter()
-            .map(|s| serde_json::Value::String(s.to_string()))
-            .collect();
+        let mut synonyms = Vec::new();
+        let max = NUMBER_LANGUAGES[0].len();
+        for pos in 0..max {
+            synonyms.push(serde_json::Value::String(format!(
+                "{} => {}",
+                NUMBER_LANGUAGES
+                    .iter()
+                    .map(|l| l[pos])
+                    .collect::<Vec<_>>()
+                    .join(","),
+                max - pos,
+            )));
+        }
+        update_json_path(
+            &mut settings_json_value,
+            "/settings/analysis/filter/number_synonyms/synonyms",
+            serde_json::Value::Array(synonyms.clone()),
+        );
 
-        *settings_json_value
-            .pointer_mut("/settings/analysis/filter/synonym_filter/synonyms")
-            .unwrap() = serde_json::Value::Array(synonyms);
+        synonyms.extend_from_slice(
+            &SYNONYMS
+                .iter()
+                .map(|s| serde_json::Value::String(s.to_string()))
+                .collect::<Vec<_>>(),
+        );
 
-        *settings_json_value
-            .pointer_mut("/settings/number_of_shards")
-            .unwrap() = serde_json::Value::from(index_settings.nb_shards);
-        *settings_json_value
-            .pointer_mut("/settings/number_of_replicas")
-            .unwrap() = serde_json::Value::from(index_settings.nb_replicas);
+        update_json_path(
+            &mut settings_json_value,
+            "/settings/analysis/filter/synonym_filter/synonyms",
+            serde_json::Value::Array(synonyms),
+        );
+
+        update_json_path(
+            &mut settings_json_value,
+            "/settings/number_of_shards",
+            serde_json::Value::from(index_settings.nb_shards),
+        );
+        update_json_path(
+            &mut settings_json_value,
+            "/settings/number_of_replicas",
+            serde_json::Value::from(index_settings.nb_replicas),
+        );
 
         self.put(name, &settings_json_value.to_string())
             .map_err(|e| {

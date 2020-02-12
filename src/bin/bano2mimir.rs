@@ -267,7 +267,7 @@ fn run(args: Args) -> Result<(), mimirsbrunn::Error> {
         index_bano(
             &args.connection_string,
             &args.dataset,
-            paths.map(|p| p.unwrap().path()),
+            paths.map(|p| p.expect("failed to unwrap path").path()),
             args.nb_threads,
             args.nb_shards,
             args.nb_replicas,

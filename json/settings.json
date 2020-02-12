@@ -5,6 +5,10 @@
                 "synonym_filter": {
                     "type": "synonym",
                     "synonyms": []
+                },
+                "number_synonyms": {
+                    "type": "synonym",
+                    "synonyms": []
                 }
             }
         },

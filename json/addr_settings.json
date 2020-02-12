@@ -16,13 +16,17 @@
                 "synonym_filter": {
                     "type": "synonym",
                     "synonyms": ["hackwillbereplacedatindexcreation,hackwillbereplacedatindexcreation"]
+                },
+                "number_synonyms": {
+                    "type": "synonym",
+                    "synonyms": ["hackwillbereplacedatindexcreation,hackwillbereplacedatindexcreation"]
                 }
             },
             "analyzer": {
                 "word": {
                     "type": "custom",
                     "tokenizer": "standard",
-                    "filter": [ "lowercase", "asciifolding" ],
+                    "filter": [ "lowercase", "asciifolding", "number_synonyms" ],
                     "char_filter" : [ ]
                 },
                 "prefix": {

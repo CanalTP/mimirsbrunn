@@ -58,6 +58,7 @@ pub fn bragi_bano_test(es_wrapper: crate::ElasticSearchWrapper<'_>) {
     simple_bano_lon_lat_test(&mut bragi);
     long_bano_address_test(&mut bragi);
     reverse_bano_test(&mut bragi);
+    number_synonyms_test(&mut bragi);
 }
 
 fn status_test(bragi: &mut BragiHandler) {
@@ -244,4 +245,79 @@ fn reverse_bano_test(bragi: &mut BragiHandler) {
         get_values(&res, "label"),
         vec!["2 Rue des Pins (Beauzelle)"]
     );
+}
+
+fn number_synonyms_test(bragi: &mut BragiHandler) {
+    type Map = serde_json::map::Map<std::string::String, serde_json::value::Value>;
+    let gen = |bragi: &mut BragiHandler, req: &str, comp: &str| -> Vec<Map> {
+        let x = bragi.get(req);
+        assert_eq!(x.len(), 1, "{}", req);
+        assert_eq!(get_values(&x, "label"), vec![comp], "{}", req);
+        x
+    };
+    let mut compare = |bragi: &mut BragiHandler, req: &str, compare: &[Map]| {
+        let x = bragi.get(req);
+        assert_eq!(x.len(), 1, "{}", req);
+        assert_eq!(
+            get_values(&x, "label"),
+            get_values(compare, "label"),
+            "{}",
+            req
+        );
+    };
+
+    let all_20 = gen(
+        bragi,
+        "/autocomplete?q=2 rue Hariette un",
+        "2 Rue Hariette un (Loliland)",
+    );
+    compare(bragi, "/autocomplete?q=2 rue Hariette 1", &all_20);
+    compare(bragi, "/autocomplete?q=2 rue Hariette eins", &all_20);
+    compare(bragi, "/autocomplete?q=2 rue Hariette one", &all_20);
+    compare(bragi, "/autocomplete?q=2 rue Hariette uno", &all_20);
+    compare(bragi, "/autocomplete?q=2 rue Hariette I", &all_20);
+
+    let all_20 = gen(
+        bragi,
+        "/autocomplete?q=2 rue Hariette drei",
+        "2 Rue Hariette drei (Loliland)",
+    );
+    compare(bragi, "/autocomplete?q=2 rue Hariette 3", &all_20);
+    compare(bragi, "/autocomplete?q=2 rue Hariette tres", &all_20);
+    compare(bragi, "/autocomplete?q=2 rue Hariette three", &all_20);
+    compare(bragi, "/autocomplete?q=2 rue Hariette trois", &all_20);
+    compare(bragi, "/autocomplete?q=2 rue Hariette III", &all_20);
+
+    let all_20 = gen(
+        bragi,
+        "/autocomplete?q=2 rue Hariette four",
+        "2 Rue Hariette four (Loliland)",
+    );
+    compare(bragi, "/autocomplete?q=2 rue Hariette 4", &all_20);
+    compare(bragi, "/autocomplete?q=2 rue Hariette vier", &all_20);
+    compare(bragi, "/autocomplete?q=2 rue Hariette cuatro", &all_20);
+    compare(bragi, "/autocomplete?q=2 rue Hariette quatre", &all_20);
+    compare(bragi, "/autocomplete?q=2 rue Hariette IV", &all_20);
+
+    let all_20 = gen(
+        bragi,
+        "/autocomplete?q=2 rue Hariette 5",
+        "2 Rue Hariette 5 (Loliland)",
+    );
+    compare(bragi, "/autocomplete?q=2 rue Hariette five", &all_20);
+    compare(bragi, "/autocomplete?q=2 rue Hariette fünf", &all_20);
+    compare(bragi, "/autocomplete?q=2 rue Hariette cinco", &all_20);
+    compare(bragi, "/autocomplete?q=2 rue Hariette cinq", &all_20);
+    compare(bragi, "/autocomplete?q=2 rue Hariette V", &all_20);
+
+    let all_20 = gen(
+        bragi,
+        "/autocomplete?q=2 Rue Hariette dos",
+        "2 Rue Hariette dos (Loliland)",
+    );
+    compare(bragi, "/autocomplete?q=2 rue Hariette 2", &all_20);
+    compare(bragi, "/autocomplete?q=2 rue Hariette zwei", &all_20);
+    compare(bragi, "/autocomplete?q=2 rue Hariette two", &all_20);
+    compare(bragi, "/autocomplete?q=2 rue Hariette deux", &all_20);
+    compare(bragi, "/autocomplete?q=2 rue Hariette II", &all_20);
 }

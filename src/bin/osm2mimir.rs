@@ -47,7 +47,7 @@ struct Args {
     /// Admin levels to keep.
     #[structopt(short = "l", long = "level")]
     level: Vec<u32>,
-    /// City level to  calculate weight.
+    /// City level to calculate weight.
     #[structopt(short = "C", long = "city-level", default_value = "8")]
     city_level: u32,
     /// Elasticsearch parameters.

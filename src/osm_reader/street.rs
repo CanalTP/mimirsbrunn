@@ -215,8 +215,18 @@ impl<'a> DB<'a> {
         tx.set_drop_behavior(DropBehavior::Ignore);
 
         {
+            let mut buf = Vec::with_capacity(10);
+            let mut req10 = "INSERT OR IGNORE INTO ids(id, obj, kind) VALUES (?1,?2,?3)".to_owned();
+            for i in 1..10 {
+                req10.push_str(&format!(",(?{},?{},?{})", i * 3 + 1, i * 3 + 2, i * 3 + 3));
+            }
+            let mut stmt10 = err_logger!(
+                tx.prepare(&req10),
+                "DB::flush_buffer: prepare failed",
+                ()
+            );
             let mut stmt = err_logger!(
-                tx.prepare("INSERT OR IGNORE INTO ids(id, obj, kind) VALUES (?1, ?2, ?3)"),
+                tx.prepare("INSERT OR IGNORE INTO ids(id, obj, kind) VALUES (?1,?2,?3)"),
                 "DB::flush_buffer: prepare failed",
                 ()
             );
@@ -224,12 +234,28 @@ impl<'a> DB<'a> {
                 let ser_obj = match bincode::serialize(&obj) {
                     Ok(s) => s,
                     Err(e) => {
-                        error!("DB::flush_buffer: failed to convert to json: {}", e);
+                        error!("DB::flush_buffer: failed to convert to bincode: {}", e);
                         continue;
                     }
                 };
-                let kind = get_kind!(obj);
-                if let Err(e) = stmt.execute(&[&id.inner_id() as &dyn ToSql, &ser_obj, kind]) {
+                buf.push((id.inner_id(), get_kind!(obj), ser_obj));
+                if buf.len() > 9 {
+                    {
+                        let mut objs = Vec::with_capacity(30);
+                        for (id, kind, ser_obj) in buf.iter() {
+                            objs.push(id as &dyn ToSql);
+                            objs.push(ser_obj as &dyn ToSql);
+                            objs.push(kind as &dyn ToSql);
+                        }
+                        if let Err(e) = stmt10.execute(&objs) {
+                            error!("DB::flush_buffer: insert failed: {}", e);
+                        }
+                    }
+                    buf.clear();
+                }
+            }
+            for (id, kind, ser_obj) in buf.drain(..) {
+                if let Err(e) = stmt.execute(&[&id as &dyn ToSql, &ser_obj, &kind]) {
                     error!("DB::flush_buffer: insert failed: {}", e);
                 }
             }

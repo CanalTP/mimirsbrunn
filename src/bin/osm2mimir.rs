@@ -179,7 +179,7 @@ fn run(args: Args) -> Result<(), mimirsbrunn::Error> {
         info!("computing poi weight");
         compute_poi_weight(&mut pois);
 
-        info!("Adding addresss in poi");
+        info!("Adding addresses in poi");
         add_address(&mut pois, &mut rubber);
 
         let poi_index_settings = IndexSettings {

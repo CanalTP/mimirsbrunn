@@ -507,6 +507,24 @@ fn query(
     read_places(result, coord.as_ref())
 }
 
+pub fn reverse(coord: Coord, mut rubber: Rubber) -> Result<Vec<mimir::Place>, EsError> {
+    let timer = ES_REQ_HISTOGRAM
+        .get_metric_with_label_values(&["reverse"])
+        .map(|h| h.start_timer())
+        .map_err(
+            |err| error!("impossible to get ES_REQ_HISTOGRAM metrics"; "err" => err.to_string()),
+        )
+        .ok();
+
+    let result = rubber.get_address(&coord);
+
+    if let Some(t) = timer {
+        t.observe_duration()
+    }
+
+    result
+}
+
 pub fn features(
     pt_datasets: &[&str],
     poi_datasets: &[&str],

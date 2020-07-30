@@ -31,7 +31,6 @@
 use super::objects::{Admin, Context, Explanation, MimirObject};
 use super::objects::{AliasOperation, AliasOperations, AliasParameter, Coord, Place};
 use failure::{bail, format_err, Error, ResultExt};
-use prometheus::{exponential_buckets, histogram_opts, register_histogram, Histogram};
 use reqwest::StatusCode;
 use rs_es::error::EsError;
 use rs_es::operations::search::ScanResult;
@@ -65,15 +64,6 @@ const SYNONYMS: [&str; 17] = [
     "cpam,securite sociale",
     "anpe,pole emploi",
 ];
-
-lazy_static::lazy_static! {
-    static ref ES_REQ_HISTOGRAM: Histogram = register_histogram!(
-        "bragi_elasticsearch_reverse_duration_seconds",
-        "The elasticsearch reverse request latencies in seconds.",
-        exponential_buckets(0.001, 1.5, 25).unwrap()
-    )
-    .unwrap();
-}
 
 fn check_response(resp: reqwest::Response) -> Result<reqwest::Response, EsError> {
     let mut resp = resp;
@@ -515,8 +505,6 @@ impl Rubber {
             .with_must(geo_distance)
             .build();
 
-        let timer = ES_REQ_HISTOGRAM.start_timer();
-
         let timeout = self.timeout.map(|t| format!("{:?}", t));
         let mut search_query = self.es_client.search_query();
 
@@ -531,7 +519,6 @@ impl Rubber {
         }
         let result = search_query.send()?;
 
-        timer.observe_duration();
         read_places(result, Some(coord))
     }
 

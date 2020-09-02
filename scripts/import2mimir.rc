@@ -26,5 +26,8 @@ NTFS_REGION="fr-idf"
 # OSM Region
 OSM_REGION="ile-de-france"
 
+# OSM POI config
+OSM_POI_CONFIG="./poi_config.json"
+
 # Base directory for cosmogony
 COSMO_DIR=""

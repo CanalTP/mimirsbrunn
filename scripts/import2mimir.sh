@@ -227,7 +227,13 @@ import_osm() {
   local INPUT="${DATA_DIR}/osm/${OSM_REGION}-latest.osm.pbf"
   [[ -f "${INPUT}" ]] || { log_error "osm2mimir cannot run: Missing input ${INPUT}"; return 1; }
 
-  "${OSM2MIMIR}" --import-way --import-poi --input "${DATA_DIR}/osm/${OSM_REGION}-latest.osm.pbf" -c "http://localhost:${ES_PORT}/${ES_INDEX}" > /dev/null 2> /dev/null
+  if [[ -f "${OSM_POI_CONFIG}" ]]; then
+    local OSM_POI_CONFIG_OPT="--poi-config ${OSM_POI_CONFIG}"
+  else
+    local OSM_POI_CONFIG_OPT=""
+  fi
+
+  "${OSM2MIMIR}" ${OSM_POI_CONFIG_OPT} --import-way --import-poi --input "${DATA_DIR}/osm/${OSM_REGION}-latest.osm.pbf" -c "http://localhost:${ES_PORT}/${ES_INDEX}" > /dev/null 2> /dev/null
   [[ $? != 0 ]] && { log_error "Could not import OSM PBF data for ${OSM_REGION} into mimir. Aborting"; return 1; }
   return 0
 }

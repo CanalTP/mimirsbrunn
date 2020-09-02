@@ -82,9 +82,10 @@ impl PoiConfig {
         self.rules
             .iter()
             .find(|rule| {
-                rule.osm_tags_filters
-                    .iter()
-                    .all(|f| tags.get(&f.key).map_or(false, |v| v == &f.value))
+                rule.osm_tags_filters.iter().all(|f| {
+                    tags.get(&f.key)
+                        .map_or(false, |v| &f.value == "*" || v == &f.value)
+                })
             })
             .and_then(|rule| {
                 self.poi_types
@@ -132,6 +133,8 @@ const DEFAULT_JSON_POI_TYPES: &str = r#"
     {"id": "amenity:parking", "name": "Parking"},
     {"id": "amenity:police", "name": "Police, gendarmerie"},
     {"id": "amenity:townhall", "name": "Mairie"},
+    {"id": "bakery", "name": "Boulangerie"},
+    {"id": "shop_general", "name": "Magasin"},
     {"id": "leisure:garden", "name": "Jardin"},
     {"id": "leisure:park", "name": "Parc, espace vert"}
   ],
@@ -175,6 +178,14 @@ const DEFAULT_JSON_POI_TYPES: &str = r#"
     {
       "osm_tags_filters": [{"key": "amenity", "value": "townhall"}],
       "poi_type_id": "amenity:townhall"
+    },
+    {
+      "osm_tags_filters": [{"key": "shop", "value": "bakery"}],
+      "poi_type_id": "bakery"
+    },
+    {
+      "osm_tags_filters": [{"key": "shop", "value": "*"}],
+      "poi_type_id": "shop_general"
     },
     {
       "osm_tags_filters": [{"key": "leisure", "value": "garden"}],
@@ -379,6 +390,39 @@ mod tests {
         }"#,
         )
         .unwrap_err();
+    }
+    #[test]
+    fn check_with_wildcard() {
+        let json = r#"{
+            "poi_types": [
+                {"id": "shop_any", "name": "Any Shop"},
+                {"id": "bakery", "name": "Bakery"}
+            ],
+            "rules": [
+                {
+                    "osm_tags_filters": [{"key": "shop", "value": "bakery"}],
+                    "poi_type_id": "bakery"
+                },
+                {
+                    "osm_tags_filters": [{"key": "shop", "value": "*"}],
+                    "poi_type_id": "shop_any"
+                }
+            ]
+        }"#;
+        let c = from_str(json).unwrap();
+        assert_eq!(
+            Some("poi_type:shop_any"),
+            c.get_poi_id(&tags(&[("shop", "car")]))
+        );
+        assert_eq!(
+            Some("poi_type:shop_any"),
+            c.get_poi_id(&tags(&[("shop", "butcher")]))
+        );
+        // But it prefers the most specific first match
+        assert_eq!(
+            Some("poi_type:bakery"),
+            c.get_poi_id(&tags(&[("shop", "bakery")]))
+        );
     }
     #[test]
     fn check_with_colon() {

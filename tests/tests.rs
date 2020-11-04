@@ -66,7 +66,15 @@ fn launch_and_assert(
     es_wrapper: &ElasticSearchWrapper<'_>,
 ) {
     let status = Command::new(cmd).args(args).status().unwrap();
-    assert!(status.success(), "`{}` failed {}", cmd, &status);
+    let wale_instructions =
+        "Run with DONT_KILL_THE_WHALE=true to keep elastic docker running for debugging";
+    assert!(
+        status.success(),
+        "`{}` failed {}\n{}",
+        cmd,
+        &status,
+        wale_instructions
+    );
     es_wrapper.refresh();
 }
 

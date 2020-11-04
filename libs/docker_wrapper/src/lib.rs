@@ -46,9 +46,13 @@ impl DockerWrapper {
 
     fn setup(&mut self) -> Result<(), Box<dyn Error>> {
         info!("Launching ES docker");
-        let status = Command::new("docker")
-            .args(&["run", "-d", "--name=mimirsbrunn_tests", "elasticsearch:2"])
-            .status()?;
+        let mut args = vec!["run", "--detach", "--name=mimirsbrunn_tests"];
+        if dont_kill_the_wale() {
+            args.push("-p=9242:9200");
+        }
+        args.push("elasticsearch:2");
+        let status = Command::new("docker").args(args).status()?;
+
         if !status.success() {
             return Err(format!("`docker run` failed {}", &status).into());
         }
@@ -107,17 +111,21 @@ fn docker_command(args: &[&'static str]) {
     }
 }
 
+fn dont_kill_the_wale() -> bool {
+    std::env::var("DONT_KILL_THE_WHALE") == Ok("1".to_string())
+}
+
 impl Drop for DockerWrapper {
     fn drop(&mut self) {
-        if std::env::var("DONT_KILL_THE_WHALE") == Ok("1".to_string()) {
+        if dont_kill_the_wale() {
             warn!(
                 "the docker won't be stoped at the end, you can debug it.
             Note: ES has been mapped to the port 9242 in you localhost
             manually stop and rm the container mimirsbrunn_tests after debug"
             );
-            return;
+        } else {
+            docker_command(&["stop", "mimirsbrunn_tests"]);
+            docker_command(&["rm", "mimirsbrunn_tests"]);
         }
-        docker_command(&["stop", "mimirsbrunn_tests"]);
-        docker_command(&["rm", "mimirsbrunn_tests"]);
     }
 }

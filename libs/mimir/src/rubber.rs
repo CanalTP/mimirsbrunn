@@ -409,6 +409,29 @@ impl Rubber {
             })
     }
 
+    pub fn build_template_settings(template: &str) -> String {
+        #[derive(serde::Deserialize, serde::Serialize)]
+        struct BaseTemplate<'a> {
+            template: &'a str,
+            settings: Option<serde_json::Value>,
+            mappings: serde_json::Value,
+        }
+
+        let mut template: BaseTemplate =
+            serde_json::from_str(template).expect("could not load settings template");
+
+        if template.settings.is_none() {
+            template.settings = Some(
+                serde_json::from_str(include_str!(
+                    "../../../config/index_templates/default_settings.json"
+                ))
+                .expect("templates: could not serialize default settings"),
+            );
+        }
+
+        serde_json::to_string(&template).expect("settings: could not serialize base template")
+    }
+
     pub fn create_template(&self, name: &str, settings: &str) -> Result<(), Error> {
         debug!("creating template");
         self.put(&format!("_template/{}", name), settings)
@@ -426,26 +449,27 @@ impl Rubber {
     }
 
     pub fn initialize_templates(&self) -> Result<(), Error> {
-        self.create_template(
-            &"template_addr",
-            include_str!("../../../config/addr_settings.json"),
-        )?;
-        self.create_template(
-            &"template_stop",
-            include_str!("../../../config/stop_settings.json"),
-        )?;
-        self.create_template(
-            &"template_admin",
-            include_str!("../../../config/admin_settings.json"),
-        )?;
-        self.create_template(
-            &"template_street",
-            include_str!("../../../config/street_settings.json"),
-        )?;
-        self.create_template(
-            &"template_poi",
-            include_str!("../../../config/poi_settings.json"),
-        )?;
+        macro_rules! include_templates {
+            ( $($name:literal),* ) => {
+                [
+                    $({
+                        let name = concat!("template_", $name);
+                        let template = include_str!(concat!(
+                            "../../../config/index_templates/",
+                            $name,
+                            "_template.json"
+                        ));
+                        (name, template)
+                    }),*
+                ]
+            };
+        };
+
+        for (name, template) in &include_templates!["addr", "stop", "admin", "street", "poi"] {
+            let settings = Self::build_template_settings(template);
+            self.create_template(name, &settings)?;
+        }
+
         Ok(())
     }
 

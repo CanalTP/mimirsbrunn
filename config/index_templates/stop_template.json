@@ -1,74 +1,16 @@
 {
-    "template": "munin_street_*",
-    "settings": {
-        "analysis": {
-            "filter": {
-                "prefix_filter": {
-                    "type":     "edge_ngram",
-                    "min_gram": 1,
-                    "max_gram": 20
-                },
-                "ngram_filter": {
-                    "type": "nGram",
-                    "min_gram": "3",
-                    "max_gram": "3"
-                },
-                "synonym_filter": {
-                    "type": "synonym",
-                    "synonyms": ["hackwillbereplacedatindexcreation,hackwillbereplacedatindexcreation"]
-                }
-            },
-            "analyzer": {
-                "word": {
-                    "type": "custom",
-                    "tokenizer": "standard",
-                    "filter": [ "lowercase", "asciifolding" ],
-                    "char_filter" : [ ]
-                },
-                "prefix": {
-                    "type": "custom",
-                    "tokenizer": "standard",
-                    "filter": [ "lowercase", "asciifolding", "synonym_filter", "prefix_filter" ],
-                    "char_filter" : [ ]
-                },
-                "ngram_with_synonyms": {
-                    "type": "custom",
-                    "tokenizer": "standard",
-                    "filter": [ "lowercase", "asciifolding", "synonym_filter", "ngram_filter" ],
-                    "char_filter" : [ ]
-                },
-                "ngram": {
-                    "tokenizer": "my_ngram_tokenizer",
-                    "filter": [ "lowercase", "asciifolding" ]
-                }
-            },
-            "tokenizer": {
-                "my_ngram_tokenizer": {
-                    "type": "nGram",
-                    "min_gram": "3",
-                    "max_gram": "3",
-                    "token_chars": [ "letter", "digit" ]
-                }
-            }
-        }
-    },
+    "template": "munin_*stop*",
+    "settings": null,
     "mappings": {
-        "street": {
+        "stop": {
             "dynamic": "false",
             "properties": {
-                "id": { "type": "string", "index": "not_analyzed" },
-                "name": {
+                "id": {
                     "type": "string",
-                    "index_options": "docs",
-                    "analyzer": "word",
-                    "fields": {
-                        "prefix": {
-                            "type": "string",
-                            "index_options": "docs",
-                            "analyzer": "prefix",
-                            "search_analyzer": "word"
-                        }
-                    }
+                    "index": "not_analyzed"
+                },
+                "name": {
+                    "type": "string"
                 },
                 "zip_codes": {
                     "type": "string",
@@ -151,7 +93,13 @@
                         "enabled": false
                     }
                 },
-                "weight": { "type": "double" }
+                "weight": {
+                    "type": "double"
+                },
+                "coverages": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                }
             }
         }
     }

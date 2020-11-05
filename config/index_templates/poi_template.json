@@ -1,58 +1,6 @@
 {
     "template": "munin_poi_*",
-    "settings": {
-        "refresh_interval" : "60s",
-        "analysis": {
-            "filter": {
-                "prefix_filter": {
-                    "type":     "edge_ngram",
-                    "min_gram": 1,
-                    "max_gram": 20
-                },
-                "ngram_filter": {
-                    "type": "nGram",
-                    "min_gram": "3",
-                    "max_gram": "3"
-                },
-                "synonym_filter": {
-                    "type": "synonym",
-                    "synonyms": ["hackwillbereplacedatindexcreation,hackwillbereplacedatindexcreation"]
-                }
-            },
-            "analyzer": {
-                "word": {
-                    "type": "custom",
-                    "tokenizer": "standard",
-                    "filter": [ "lowercase", "asciifolding" ],
-                    "char_filter" : [ ]
-                },
-                "prefix": {
-                    "type": "custom",
-                    "tokenizer": "standard",
-                    "filter": [ "lowercase", "asciifolding", "synonym_filter", "prefix_filter" ],
-                    "char_filter" : [ ]
-                },
-                "ngram_with_synonyms": {
-                    "type": "custom",
-                    "tokenizer": "standard",
-                    "filter": [ "lowercase", "asciifolding", "synonym_filter", "ngram_filter" ],
-                    "char_filter" : [ ]
-                },
-                "ngram": {
-                    "tokenizer": "my_ngram_tokenizer",
-                    "filter": [ "lowercase", "asciifolding" ]
-                }
-            },
-            "tokenizer": {
-                "my_ngram_tokenizer": {
-                    "type": "nGram",
-                    "min_gram": "3",
-                    "max_gram": "3",
-                    "token_chars": [ "letter", "digit" ]
-                }
-            }
-        }
-    },
+    "settings": null,
     "mappings": {
         "poi": {
             "_all": {

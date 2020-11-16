@@ -1,10 +1,10 @@
-FROM rust:1.44.1-stretch as builder
+FROM rust:1.47-buster as builder
 
 WORKDIR /srv/mimirsbrunn
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update \
-    && apt-get install -y make libssl1.0-dev git \
+    && apt-get install -y make libssl-dev git \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -12,13 +12,13 @@ COPY . ./
 
 RUN cargo build --release --features db-storage
 
-FROM debian:stretch-slim
+FROM debian:buster-slim
 
 WORKDIR /srv
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update \
-    && apt-get install -y libcurl3 sqlite3 \
+    && apt-get install -y libcurl4 sqlite3 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 

@@ -1,7 +1,7 @@
 use config::{Config, File, FileFormat};
 use failure::ResultExt;
 use serde::Deserialize;
-use slog_scope::warn;
+use slog_scope::{info, warn};
 use std::path::PathBuf;
 
 use crate::Error;
@@ -39,6 +39,7 @@ impl Settings {
                 // Start off by merging in the "default" configuration file
 
                 if let Some(path) = dir.to_str() {
+                    info!("using configuration from {}", path);
                     config.merge(File::with_name(path)).with_context(|e| {
                         format!(
                             "Could not merge default configuration from file {}: {}",
@@ -52,12 +53,13 @@ impl Settings {
                     )));
                 }
 
-                // If we provided a special configuration, merge it.
+                dir.pop(); // remove the default
+                           // If we provided a special configuration, merge it.
                 if let Some(name) = name {
-                    dir.pop(); // remove the default
-                    let name_path = dir.join(name);
+                    dir.push(name);
 
-                    if let Some(path) = name_path.to_str() {
+                    if let Some(path) = dir.to_str() {
+                        info!("using configuration from {}", path);
                         config
                             .merge(File::with_name(path).required(true))
                             .with_context(|e| {
@@ -68,11 +70,11 @@ impl Settings {
                             })?;
                     } else {
                         return Err(failure::err_msg(format!(
-                            "Could not read {} settings in '{}'",
+                            "Could not read configuration for '{}'",
                             name,
-                            name_path.display()
                         )));
                     }
+                    dir.pop();
                 }
             }
             None => {

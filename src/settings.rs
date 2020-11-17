@@ -4,6 +4,7 @@ use serde::Deserialize;
 use slog_scope::{info, warn};
 use std::path::PathBuf;
 
+use crate::osm_reader::poi;
 use crate::Error;
 
 #[derive(Debug, Clone, Deserialize)]
@@ -17,15 +18,12 @@ pub struct Street {
 }
 
 #[derive(Debug, Clone, Deserialize)]
-pub struct Poi {}
-
-#[derive(Debug, Clone, Deserialize)]
 pub struct Admin {}
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct Settings {
     pub street: Option<Street>,
-    pub poi: Option<Poi>,
+    pub poi: Option<poi::PoiConfig>,
     pub admin: Option<Admin>,
 }
 

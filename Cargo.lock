@@ -1973,6 +1973,7 @@ dependencies = [
  "slog-envlogger",
  "slog-scope",
  "structopt",
+ "toml",
  "tools",
  "transit_model",
  "typed_index_collection",

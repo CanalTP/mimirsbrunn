@@ -70,9 +70,6 @@ struct Args {
     /// Name of the dataset.
     #[structopt(short = "d", long = "dataset", default_value = "fr")]
     dataset: String,
-    /// POI configuration.
-    #[structopt(short = "j", long = "poi-config", parse(from_os_str))]
-    poi_config: Option<PathBuf>,
     /// Number of shards for the admin es index
     #[structopt(long = "nb-admin-shards", default_value = "1")]
     nb_admin_shards: usize,
@@ -190,21 +187,10 @@ fn run(args: Args) -> Result<(), mimirsbrunn::Error> {
     }
 
     if args.import_poi {
-        let matcher = match args.poi_config {
-            None => PoiConfig::default(),
-            Some(path) => {
-                let r = std::fs::File::open(&path).with_context(|err| {
-                    format!(
-                        "Error while opening configuration file {}: {}",
-                        path.display(),
-                        err
-                    )
-                })?;
-                PoiConfig::from_reader(r).unwrap()
-            }
-        };
+        let poi_config = settings.poi.unwrap_or_else(|| PoiConfig::default());
+
         info!("Extracting pois from osm");
-        let mut pois = pois(&mut osm_reader, &matcher, &admins_geofinder);
+        let mut pois = pois(&mut osm_reader, &poi_config, &admins_geofinder);
 
         info!("computing poi weight");
         compute_poi_weight(&mut pois);

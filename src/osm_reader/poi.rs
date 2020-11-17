@@ -36,30 +36,38 @@ use crate::{labels, utils};
 use mimir::{rubber, Poi, PoiType};
 use osm_boundaries_utils::build_boundary;
 use serde::{Deserialize, Serialize};
+use serde_json;
 use slog_scope::{info, warn};
 use std::collections::BTreeMap;
 use std::error::Error;
 use std::io;
 use std::ops::Deref;
 
-#[derive(Serialize, Deserialize, Debug)]
-struct OsmTagsFilter {
-    key: String,
-    value: String,
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct OsmTagsFilter {
+    pub key: String,
+    pub value: String,
 }
-#[derive(Serialize, Deserialize, Debug)]
-struct Rule {
-    osm_tags_filters: Vec<OsmTagsFilter>,
-    poi_type_id: String,
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct Rule {
+    pub osm_tags_filters: Vec<OsmTagsFilter>,
+    #[serde(rename = "type")]
+    pub poi_type_id: String,
 }
-#[derive(Serialize, Deserialize, Debug)]
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct PoiConfig {
-    poi_types: Vec<PoiType>,
-    rules: Vec<Rule>,
+    #[serde(rename = "types")]
+    pub poi_types: Vec<PoiType>,
+    pub rules: Vec<Rule>,
 }
+
 impl Default for PoiConfig {
     fn default() -> Self {
-        let mut res: PoiConfig = serde_json::from_str(DEFAULT_JSON_POI_TYPES).unwrap();
+        let mut res: PoiConfig =
+            toml::from_str(include_str!("../../config/default-poi-types.toml"))
+                .expect("Could not deserialize default poi");
         res.check().unwrap();
         res.convert_id();
         res
@@ -118,75 +126,6 @@ impl PoiConfig {
         }
     }
 }
-
-const DEFAULT_JSON_POI_TYPES: &str = r#"
-{
-  "poi_types": [
-    {"id": "amenity:college", "name": "École"},
-    {"id": "amenity:university", "name": "Université"},
-    {"id": "amenity:theatre", "name": "Théâtre"},
-    {"id": "amenity:hospital", "name": "Hôpital"},
-    {"id": "amenity:post_office", "name": "Bureau de poste"},
-    {"id": "amenity:bicycle_rental", "name": "Station VLS"},
-    {"id": "amenity:bicycle_parking", "name": "Parking vélo"},
-    {"id": "amenity:parking", "name": "Parking"},
-    {"id": "amenity:police", "name": "Police, gendarmerie"},
-    {"id": "amenity:townhall", "name": "Mairie"},
-    {"id": "leisure:garden", "name": "Jardin"},
-    {"id": "leisure:park", "name": "Parc, espace vert"}
-  ],
-  "rules": [
-    {
-      "osm_tags_filters": [{"key": "amenity", "value": "college"}],
-      "poi_type_id": "amenity:college"
-    },
-    {
-      "osm_tags_filters": [{"key": "amenity", "value": "university"}],
-      "poi_type_id": "amenity:university"
-    },
-    {
-      "osm_tags_filters": [{"key": "amenity", "value": "theatre"}],
-      "poi_type_id": "amenity:theatre"
-    },
-    {
-      "osm_tags_filters": [{"key": "amenity", "value": "hospital"}],
-      "poi_type_id": "amenity:hospital"
-    },
-   {
-      "osm_tags_filters": [{"key": "amenity", "value": "post_office"}],
-      "poi_type_id": "amenity:post_office"
-    },
-    {
-      "osm_tags_filters": [{"key": "amenity", "value": "bicycle_rental"}],
-      "poi_type_id": "amenity:bicycle_rental"
-    },
-    {
-      "osm_tags_filters": [{"key": "amenity", "value": "bicycle_parking"}],
-      "poi_type_id": "amenity:bicycle_parking"
-    },
-    {
-      "osm_tags_filters": [{"key": "amenity", "value": "parking"}],
-      "poi_type_id": "amenity:parking"
-    },
-    {
-      "osm_tags_filters": [{"key": "amenity", "value": "police"}],
-      "poi_type_id": "amenity:police"
-    },
-    {
-      "osm_tags_filters": [{"key": "amenity", "value": "townhall"}],
-      "poi_type_id": "amenity:townhall"
-    },
-    {
-      "osm_tags_filters": [{"key": "leisure", "value": "garden"}],
-      "poi_type_id": "leisure:garden"
-    },
-    {
-      "osm_tags_filters": [{"key": "leisure", "value": "park"}],
-      "poi_type_id": "leisure:park"
-    }
-  ]
-}
-"#;
 
 fn make_properties(tags: &osmpbfreader::Tags) -> Vec<mimir::Property> {
     tags.iter()
@@ -348,18 +287,18 @@ mod tests {
         from_str("{}").unwrap_err();
         from_str("42").unwrap_err();
         from_str("{").unwrap_err();
-        from_str(r#"{"poi_types": []}"#).unwrap_err();
+        from_str(r#"{"types": []}"#).unwrap_err();
         from_str(r#"{"rules": []}"#).unwrap_err();
-        from_str(r#"{"poi_types": [], "rules": []}"#).unwrap();
-        from_str(r#"{"poi_types": [{"id": "foo"}], "rules": []}"#).unwrap_err();
-        from_str(r#"{"poi_types": [{"name": "bar"}], "rules": []}"#).unwrap_err();
-        from_str(r#"{"poi_types": [{"id": "foo", "name": "bar"}], "rules": []}"#).unwrap();
+        from_str(r#"{"types": [], "rules": []}"#).unwrap();
+        from_str(r#"{"types": [{"id": "foo"}], "rules": []}"#).unwrap_err();
+        from_str(r#"{"types": [{"name": "bar"}], "rules": []}"#).unwrap_err();
+        from_str(r#"{"types": [{"id": "foo", "name": "bar"}], "rules": []}"#).unwrap();
     }
     #[test]
     fn check_tests() {
         from_str(
             r#"{
-            "poi_types": [
+            "types": [
                 {"id": "bob", "name": "Bob"},
                 {"id": "bob", "name": "Bobitto"}
             ],
@@ -369,11 +308,11 @@ mod tests {
         .unwrap_err();
         from_str(
             r#"{
-            "poi_types": [{"id": "bob", "name": "Bob"}],
+            "types": [{"id": "bob", "name": "Bob"}],
             "rules": [
                 {
                     "osm_tags_filters": [{"key": "foo", "value": "bar"}],
-                    "poi_type_id": "bobette"
+                    "type": "bobette"
                 }
             ]
         }"#,
@@ -383,7 +322,7 @@ mod tests {
     #[test]
     fn check_with_colon() {
         let json = r#"{
-            "poi_types": [
+            "types": [
                 {"id": "amenity:bicycle_rental", "name": "Station VLS"},
                 {"id": "amenity:parking", "name": "Parking"}
             ],
@@ -392,13 +331,13 @@ mod tests {
                     "osm_tags_filters": [
                         {"key": "amenity:bicycle_rental", "value": "true"}
                     ],
-                    "poi_type_id": "amenity:bicycle_rental"
+                    "type": "amenity:bicycle_rental"
                 },
                 {
                     "osm_tags_filters": [
                         {"key": "amenity", "value": "parking:effia"}
                     ],
-                    "poi_type_id": "amenity:parking"
+                    "type": "amenity:parking"
                 }
             ]
         }"#;
@@ -415,7 +354,7 @@ mod tests {
     #[test]
     fn check_all_tags_first_match() {
         let json = r#"{
-            "poi_types": [
+            "types": [
                 {"id": "bob_titi", "name": "Bob is Bobette and Titi is Toto"},
                 {"id": "bob", "name": "Bob is Bobette"},
                 {"id": "titi", "name": "Titi is Toto"},
@@ -427,25 +366,25 @@ mod tests {
                         {"key": "bob", "value": "bobette"},
                         {"key": "titi", "value": "toto"}
                     ],
-                    "poi_type_id": "bob_titi"
+                    "type": "bob_titi"
                 },
                 {
                     "osm_tags_filters": [
                         {"key": "bob", "value": "bobette"}
                     ],
-                    "poi_type_id": "bob"
+                    "type": "bob"
                 },
                 {
                     "osm_tags_filters": [
                         {"key": "titi", "value": "toto"}
                     ],
-                    "poi_type_id": "titi"
+                    "type": "titi"
                 },
                 {
                     "osm_tags_filters": [
                         {"key": "foo", "value": "bar"}
                     ],
-                    "poi_type_id": "foo"
+                    "type": "foo"
                 }
             ]
         }"#;

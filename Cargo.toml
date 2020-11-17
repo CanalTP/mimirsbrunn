@@ -47,6 +47,7 @@ navitia-poi-model = "0.3"
 walkdir = "2.3"
 rusqlite = { version = "0.23", optional = true }
 flate2 = "1.0"
+toml = "0.5"
 
 mimir = { path = "libs/mimir" }
 bragi = { path = "libs/bragi" }

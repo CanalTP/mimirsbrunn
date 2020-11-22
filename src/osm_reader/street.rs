@@ -43,7 +43,6 @@ use osmpbfreader::{OsmId, StoreObjs};
 use slog_scope::info;
 use std::collections::{BTreeMap, HashMap, HashSet};
 use std::ops::Deref;
-use std::path::PathBuf;
 use std::sync::Arc;
 
 use super::osm_store::{Getter, ObjWrapper};
@@ -59,12 +58,10 @@ pub enum Kind {
 pub fn streets(
     pbf: &mut OsmPbfReader,
     admins_geofinder: &AdminGeoFinder,
-    db_file: &Option<PathBuf>,
-    db_buffer_size: usize,
-    settings: &settings::Settings,
+    settings: &settings::osm2mimir::Settings,
 ) -> Result<Vec<mimir::Street>, Error> {
     let invalid_highways = settings
-        .street
+        .way
         .as_ref()
         .and_then(|street| street.exclusion.highways.as_deref())
         .unwrap_or(&[]);
@@ -90,7 +87,7 @@ pub fn streets(
     };
 
     info!("reading pbf...");
-    let mut objs_map = ObjWrapper::new(db_file, db_buffer_size)?;
+    let mut objs_map = ObjWrapper::new(&settings.database)?;
     pbf.get_objs_and_deps_store(is_valid_obj, &mut objs_map)
         .context("Error occurred when reading pbf")?;
     info!("reading pbf done.");
@@ -150,6 +147,7 @@ pub fn streets(
 
         // Add osmid of all the relation members in the set.
         // Then, we won't create any street for the ways that belong to this relation.
+
         street_in_relation.extend(
             rel.refs
                 .iter()

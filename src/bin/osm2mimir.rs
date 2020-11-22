@@ -35,176 +35,127 @@ use mimirsbrunn::osm_reader::admin::read_administrative_regions;
 use mimirsbrunn::osm_reader::make_osm_reader;
 use mimirsbrunn::osm_reader::poi::{add_address, compute_poi_weight, pois, PoiConfig};
 use mimirsbrunn::osm_reader::street::{compute_street_weight, streets};
-use mimirsbrunn::settings::Settings;
+use mimirsbrunn::settings::osm2mimir::{Args, Settings};
 use slog_scope::{debug, info};
-use std::path::PathBuf;
-use structopt::StructOpt;
-
-#[derive(StructOpt, Debug)]
-struct Args {
-    /// OSM PBF file.
-    #[structopt(short = "i", long = "input", parse(from_os_str))]
-    input: PathBuf,
-    /// Admin levels to keep.
-    #[structopt(short = "l", long = "level")]
-    level: Vec<u32>,
-    /// City level to  calculate weight.
-    #[structopt(short = "C", long = "city-level", default_value = "8")]
-    city_level: u32,
-    /// Elasticsearch parameters.
-    #[structopt(
-        short = "c",
-        long = "connection-string",
-        default_value = "http://localhost:9200/munin"
-    )]
-    connection_string: String,
-    /// Import ways.
-    #[structopt(short = "w", long = "import-way")]
-    import_way: bool,
-    /// Import admins.
-    #[structopt(short = "a", long = "import-admin")]
-    import_admin: bool,
-    /// Import POIs.
-    #[structopt(short = "p", long = "import-poi")]
-    import_poi: bool,
-    /// Name of the dataset.
-    #[structopt(short = "d", long = "dataset", default_value = "fr")]
-    dataset: String,
-    /// Number of shards for the admin es index
-    #[structopt(long = "nb-admin-shards", default_value = "1")]
-    nb_admin_shards: usize,
-    /// Number of replicas for the es index
-    #[structopt(long = "nb-admin-replicas", default_value = "1")]
-    nb_admin_replicas: usize,
-    /// Number of shards for the street es index
-    #[structopt(long = "nb-street-shards", default_value = "2")]
-    nb_street_shards: usize,
-    /// Number of replicas for the street es index
-    #[structopt(long = "nb-street-replicas", default_value = "1")]
-    nb_street_replicas: usize,
-    /// Number of shards for the es index
-    #[structopt(long = "nb-poi-shards", default_value = "1")]
-    nb_poi_shards: usize,
-    /// Number of replicas for the es index
-    #[structopt(long = "nb-poi-replicas", default_value = "1")]
-    nb_poi_replicas: usize,
-    /// If you use this option by providing a filename, then we
-    /// will use a SQlite database that will be persisted. You
-    /// can only do that if osm2mimir was compiled with the
-    /// 'db-storage' feature. If you don't provide a value, then
-    /// we will use in memory storage.
-    #[structopt(long = "db-file", parse(from_os_str))]
-    db_file: Option<PathBuf>,
-    /// DB buffer size.
-    #[structopt(long = "db-buffer-size", default_value = "50000")]
-    db_buffer_size: usize,
-    /// Number of threads to use to insert into Elasticsearch. Note that Elasticsearch is not able
-    /// to handle values that are too high.
-    #[structopt(short = "T", long = "nb-insert-threads", default_value = "1")]
-    nb_insert_threads: usize,
-
-    /// Path to the config directory
-    /// osm2mimir will read the default configuration in there, and maybe
-    /// more depending on the settings option.
-    /// If no option is given, we'll just read the ./config/default.toml
-    /// at compile time.
-    #[structopt(short = "D", long = "config-dir")]
-    config_dir: Option<PathBuf>,
-
-    /// Specific configuration, on top of the default ones.
-    /// You should provide the basename of the file, eg acme, so that
-    /// osm2mimir will use {config-dir}/acme.toml. (Requires config_dir to
-    /// be set)
-    #[structopt(short = "s", long = "settings")]
-    settings: Option<String>,
-}
 
 fn run(args: Args) -> Result<(), mimirsbrunn::Error> {
-    let settings = Settings::new(&args.config_dir, &args.settings)?;
+    let settings = Settings::new(&args)?;
 
-    let levels = args.level.iter().cloned().collect();
-    let city_level = args.city_level;
+    // println!("Settings: {:#?}", settings);
+    // return Ok(());
 
     let mut osm_reader = make_osm_reader(&args.input)?;
     debug!("creation of indexes");
-    let mut rubber =
-        Rubber::new(&args.connection_string).with_nb_insert_threads(args.nb_insert_threads);
+    let mut rubber = Rubber::new(&settings.elasticsearch.connection_string)
+        .with_nb_insert_threads(settings.elasticsearch.insert_thread_count);
     rubber.initialize_templates()?;
 
-    info!("creating adminstrative regions");
-    let admins = if args.import_admin {
+    let settings = &settings;
+    info!("creating administrative regions");
+    let admins = if settings
+        .admin
+        .as_ref()
+        .map(|admin| admin.import.clone())
+        .unwrap_or_else(|| false)
+    {
+        // If we want to import admins, then the admin section should be present
+        if settings.admin.is_none() {
+            return Err(failure::format_err!("You need to specify admin settings, either through configuration file or command line arguments."));
+        }
+        let admins = settings.admin.as_ref().unwrap();
+        let levels = admins.levels.iter().cloned().collect();
+        let city_level = admins.city_level;
         read_administrative_regions(&mut osm_reader, levels, city_level)
     } else {
         rubber.get_all_admins()?
     };
+
     let admins_geofinder = admins.into_iter().collect::<AdminGeoFinder>();
-    if args.import_way {
+
+    if settings
+        .way
+        .as_ref()
+        .map(|way| way.import)
+        .unwrap_or_else(|| false)
+    {
         info!("Extracting streets from osm");
-        let mut streets = streets(
-            &mut osm_reader,
-            &admins_geofinder,
-            &args.db_file,
-            args.db_buffer_size,
-            &settings,
-        )?;
+        let mut streets = streets(&mut osm_reader, &admins_geofinder, &settings)?;
 
         info!("computing street weight");
         compute_street_weight(&mut streets);
 
         let street_index_settings = IndexSettings {
-            nb_shards: args.nb_street_shards,
-            nb_replicas: args.nb_street_replicas,
+            nb_shards: settings.elasticsearch.streets_shards,
+            nb_replicas: settings.elasticsearch.streets_replicas,
         };
         info!("importing streets into Mimir");
         let nb_streets = rubber
-            .public_index(&args.dataset, &street_index_settings, streets.into_iter())
+            .public_index(
+                &settings.dataset,
+                &street_index_settings,
+                streets.into_iter(),
+            )
             .with_context(|err| {
                 format!(
                     "Error occurred when requesting street number in {}: {}",
-                    args.dataset, err
+                    settings.dataset, err
                 )
             })?;
         info!("Nb of indexed street: {}", nb_streets);
     }
-    if args.import_admin {
+    if settings
+        .admin
+        .as_ref()
+        .map(|admin| admin.import)
+        .unwrap_or_else(|| false)
+    {
         let admin_index_settings = IndexSettings {
-            nb_shards: args.nb_admin_shards,
-            nb_replicas: args.nb_admin_replicas,
+            nb_shards: settings.elasticsearch.admins_shards,
+            nb_replicas: settings.elasticsearch.admins_replicas,
         };
         let nb_admins = rubber
             .public_index(
-                &args.dataset,
+                &settings.dataset,
                 &admin_index_settings,
                 admins_geofinder.admins(),
             )
             .with_context(|err| {
                 format!(
                     "Error occurred when requesting admin number in {}: {}",
-                    args.dataset, err
+                    settings.dataset, err
                 )
             })?;
         info!("Nb of indexed admin: {}", nb_admins);
     }
 
-    if args.import_poi {
-        let poi_config = settings.poi.unwrap_or_else(|| PoiConfig::default());
+    if settings
+        .poi
+        .as_ref()
+        .map(|poi| poi.import)
+        .unwrap_or_else(|| false)
+    {
+        let config = settings
+            .poi
+            .as_ref()
+            .and_then(|poi| poi.config.clone())
+            .unwrap_or_else(|| PoiConfig::default());
 
         info!("Extracting pois from osm");
-        let mut pois = pois(&mut osm_reader, &poi_config, &admins_geofinder);
+        let mut pois = pois(&mut osm_reader, &config, &admins_geofinder);
 
         info!("computing poi weight");
         compute_poi_weight(&mut pois);
 
-        info!("Adding addresss in poi");
+        info!("Adding address in poi");
         add_address(&mut pois, &mut rubber);
 
         let poi_index_settings = IndexSettings {
-            nb_shards: args.nb_poi_shards,
-            nb_replicas: args.nb_poi_replicas,
+            nb_shards: settings.elasticsearch.pois_shards,
+            nb_replicas: settings.elasticsearch.pois_replicas,
         };
         info!("Importing pois into Mimir");
         let nb_pois = rubber
-            .public_index(&args.dataset, &poi_index_settings, pois.into_iter())
+            .public_index(&settings.dataset, &poi_index_settings, pois.into_iter())
             .context("Importing pois into Mimir")?;
 
         info!("Nb of indexed pois: {}", nb_pois);

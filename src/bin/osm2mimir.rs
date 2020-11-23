@@ -41,9 +41,6 @@ use slog_scope::{debug, info};
 fn run(args: Args) -> Result<(), mimirsbrunn::Error> {
     let settings = Settings::new(&args)?;
 
-    // println!("Settings: {:#?}", settings);
-    // return Ok(());
-
     let mut osm_reader = make_osm_reader(&args.input)?;
     debug!("creation of indexes");
     let mut rubber = Rubber::new(&settings.elasticsearch.connection_string)
@@ -55,7 +52,7 @@ fn run(args: Args) -> Result<(), mimirsbrunn::Error> {
     let admins = if settings
         .admin
         .as_ref()
-        .map(|admin| admin.import.clone())
+        .map(|admin| admin.import)
         .unwrap_or_else(|| false)
     {
         // If we want to import admins, then the admin section should be present
@@ -138,7 +135,7 @@ fn run(args: Args) -> Result<(), mimirsbrunn::Error> {
             .poi
             .as_ref()
             .and_then(|poi| poi.config.clone())
-            .unwrap_or_else(|| PoiConfig::default());
+            .unwrap_or_else(PoiConfig::default);
 
         info!("Extracting pois from osm");
         let mut pois = pois(&mut osm_reader, &config, &admins_geofinder);

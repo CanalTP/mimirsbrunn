@@ -178,9 +178,17 @@ impl Settings {
                 .with_context(|e| format!("Could not set city level: {}", e))?;
         }
 
-        // /// City level to  calculate weight.
-        // #[structopt(short = "C", long = "city-level")]
-        // city_level: u32,
+        if let Some(level) = args.level.clone() {
+            config
+                .set(
+                    "admin.levels",
+                    level
+                        .into_iter()
+                        .filter_map(|l| i64::try_from(l).ok())
+                        .collect::<Vec<_>>(),
+                )
+                .with_context(|e| format!("Could not set city level: {}", e))?;
+        }
 
         //// WAY
 

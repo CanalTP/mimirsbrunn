@@ -33,7 +33,7 @@
     clippy::never_loop,
     clippy::option_map_unit_fn
 )]
-use crate::settings;
+use crate::settings::osm2mimir::Database;
 use crate::Error;
 use osmpbfreader::{OsmId, OsmObj, StoreObjs};
 use slog_scope::info;
@@ -46,6 +46,9 @@ use slog_scope::error;
 
 #[cfg(feature = "db-storage")]
 use std::fs;
+
+#[cfg(feature = "db-storage")]
+use std::path::PathBuf;
 
 #[cfg(feature = "db-storage")]
 use std::collections::HashMap;
@@ -306,10 +309,10 @@ pub enum ObjWrapper {
 
 #[cfg(feature = "db-storage")]
 impl<'a> ObjWrapper<'a> {
-    pub fn new(database: &'a Option<Database>) -> Result<ObjWrapper<'a>, Error> {
+    pub fn new(db: &'a Option<Database>) -> Result<ObjWrapper<'a>, Error> {
         Ok(if let Some(ref db) = db {
             info!("Running with DB storage");
-            ObjWrapper::DB(DB::new(db.file, db.buffer_size).map_err(failure::err_msg)?)
+            ObjWrapper::DB(DB::new(&db.file, db.buffer_size).map_err(failure::err_msg)?)
         } else {
             info!("Running with BTreeMap (RAM) storage");
             ObjWrapper::Map(BTreeMap::new())
@@ -371,7 +374,7 @@ impl<'a> StoreObjs for ObjWrapper<'a> {
 
 #[cfg(not(feature = "db-storage"))]
 impl ObjWrapper {
-    pub fn new(database: &Option<settings::osm2mimir::Database>) -> Result<ObjWrapper, Error> {
+    pub fn new(database: &Option<Database>) -> Result<ObjWrapper, Error> {
         if database.is_some() {
             warn!("You are trying to use DB storage but the program wasn't compiled with the feature 'db-storage'.");
             warn!("You should either recompile with that feature, or use in memory storage.");

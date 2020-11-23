@@ -66,7 +66,13 @@ fn launch_and_assert(
     es_wrapper: &ElasticSearchWrapper<'_>,
 ) {
     let status = Command::new(cmd).args(args).status().unwrap();
-    assert!(status.success(), "`{}` failed {}", cmd, &status);
+    assert!(
+        status.success(),
+        "`{}` with args {:?} failed with status {}",
+        cmd,
+        args,
+        &status
+    );
     es_wrapper.refresh();
 }
 

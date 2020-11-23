@@ -87,7 +87,11 @@ pub fn streets(
     };
 
     info!("reading pbf...");
+    #[cfg(feature = "db-storage")]
     let mut objs_map = ObjWrapper::new(&settings.database)?;
+    #[cfg(not(feature = "db-storage"))]
+    let mut objs_map = ObjWrapper::new()?;
+
     pbf.get_objs_and_deps_store(is_valid_obj, &mut objs_map)
         .context("Error occurred when reading pbf")?;
     info!("reading pbf done.");

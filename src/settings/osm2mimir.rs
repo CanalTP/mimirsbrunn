@@ -43,6 +43,7 @@ pub struct Poi {
     pub config: Option<poi::PoiConfig>,
 }
 
+#[cfg(feature = "db-storage")]
 #[derive(Debug, Clone, Deserialize)]
 pub struct Database {
     pub file: PathBuf,
@@ -64,6 +65,7 @@ pub struct Elasticsearch {
 #[derive(Debug, Clone, Deserialize)]
 pub struct Settings {
     pub dataset: String,
+    #[cfg(feature = "db-storage")]
     pub database: Option<Database>,
     pub elasticsearch: Elasticsearch,
     pub way: Option<Way>,
@@ -287,6 +289,7 @@ impl Settings {
         // /// DB buffer size.
         // #[structopt(long = "db-buffer-size", default_value = "50000")]
         // db_buffer_size: usize,
+        #[cfg(feature = "db-storage")]
         if let Some(db_file) = args.db_file.clone() {
             config
                 .set(
@@ -296,6 +299,7 @@ impl Settings {
                 .with_context(|e| format!("Could not set database file: {}", e))?;
         }
 
+        #[cfg(feature = "db-storage")]
         if let Some(db_buffer_size) = args.db_buffer_size {
             config
                 .set("database.buffer_size", i64::try_from(db_buffer_size)?)
@@ -361,9 +365,12 @@ pub struct Args {
     /// can only do that if osm2mimir was compiled with the
     /// 'db-storage' feature. If you don't provide a value, then
     /// we will use in memory storage.
+    #[cfg(feature = "db-storage")]
     #[structopt(long = "db-file", parse(from_os_str))]
     db_file: Option<PathBuf>,
+
     /// DB buffer size.
+    #[cfg(feature = "db-storage")]
     #[structopt(long = "db-buffer-size")]
     db_buffer_size: Option<usize>,
     /// Number of threads to use to insert into Elasticsearch. Note that Elasticsearch is not able

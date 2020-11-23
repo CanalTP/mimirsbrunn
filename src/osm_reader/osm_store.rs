@@ -33,10 +33,13 @@
     clippy::never_loop,
     clippy::option_map_unit_fn
 )]
-use crate::settings::osm2mimir::Database;
+
 use crate::Error;
 use osmpbfreader::{OsmId, OsmObj, StoreObjs};
 use slog_scope::info;
+
+#[cfg(feature = "db-storage")]
+use crate::settings::osm2mimir::Database;
 
 #[cfg(not(feature = "db-storage"))]
 use slog_scope::warn;
@@ -374,17 +377,9 @@ impl<'a> StoreObjs for ObjWrapper<'a> {
 
 #[cfg(not(feature = "db-storage"))]
 impl ObjWrapper {
-    pub fn new(database: &Option<Database>) -> Result<ObjWrapper, Error> {
-        if database.is_some() {
-            warn!("You are trying to use DB storage but the program wasn't compiled with the feature 'db-storage'.");
-            warn!("You should either recompile with that feature, or use in memory storage.");
-            Err(failure::format_err!(
-                "Unable to use DB Storage for OSM Store without feature turned on"
-            ))
-        } else {
-            info!("Running with BTreeMap (RAM) storage");
-            Ok(ObjWrapper::Map(BTreeMap::new()))
-        }
+    pub fn new() -> Result<ObjWrapper, Error> {
+        info!("Running with BTreeMap (RAM) storage");
+        Ok(ObjWrapper::Map(BTreeMap::new()))
     }
 
     #[allow(dead_code)]

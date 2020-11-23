@@ -1,17 +1,8 @@
-// use failure::ResultExt;
-// use mimir::rubber::{IndexSettings, Rubber};
-// use mimirsbrunn::admin_geofinder::AdminGeoFinder;
-// use mimirsbrunn::osm_reader::admin::read_administrative_regions;
-// use mimirsbrunn::osm_reader::make_osm_reader;
-// use mimirsbrunn::osm_reader::poi::{add_address, compute_poi_weight, pois, PoiConfig};
-// use mimirsbrunn::osm_reader::street::{compute_street_weight, streets};
-// use mimirsbrunn::settings::Settings;
-// use slog_scope::{debug, info};
-// use std::path::PathBuf;
-use config::{Config, File, FileFormat};
+use config::{Config, ConfigError, File, FileFormat, Source, Value};
 use failure::ResultExt;
 use serde::Deserialize;
 use slog_scope::{info, warn};
+use std::collections::HashMap;
 use std::convert::TryFrom;
 use std::path::PathBuf;
 use structopt::StructOpt;
@@ -76,7 +67,7 @@ pub struct Settings {
 impl Settings {
     // To create settings, we first retrieve default settings, merge in specific settings if
     // needed, and finally override them with command line arguments.
-    pub fn new(args: &Args) -> Result<Self, Error> {
+    pub fn new(args: Args) -> Result<Self, Error> {
         let config_dir = args.config_dir.clone();
         let settings = args.settings.clone();
 
@@ -152,159 +143,9 @@ impl Settings {
         }
 
         // Now override with command line values
-        // For the flags (eg import_admin), we can't just test if a flag has been used at the
-        // command line, because we can't use Option<bool>. We can, however, test if the value in
-        // the args is different from the one set by default. If it is different, we use the value
-        // from the command line.
-
-        if let Some(dataset) = args.dataset.clone() {
-            config
-                .set("dataset", dataset)
-                .with_context(|e| format!("Could not set dataset: {}", e))?;
-        }
-
-        //// ADMIN
-
-        let settings_import_admin = config
-            .get_bool("admin.import")
-            .with_context(|e| format!("could not read flag admin.import from settings: {}", e))?;
-        if args.import_admin != settings_import_admin {
-            config
-                .set("admin.import", args.import_admin)
-                .with_context(|e| format!("Could not set import_admin: {}", e))?;
-        }
-
-        if let Some(city_level) = args.city_level {
-            config
-                .set("admin.city_level", i64::try_from(city_level)?)
-                .with_context(|e| format!("Could not set city level: {}", e))?;
-        }
-
-        if let Some(level) = args.level.clone() {
-            config
-                .set(
-                    "admin.levels",
-                    level
-                        .into_iter()
-                        .filter_map(|l| i64::try_from(l).ok())
-                        .collect::<Vec<_>>(),
-                )
-                .with_context(|e| format!("Could not set city level: {}", e))?;
-        }
-
-        //// WAY
-
-        let settings_import_way = config
-            .get_bool("way.import")
-            .with_context(|e| format!("could not read flag way.import from settings: {}", e))?;
-        if args.import_way != settings_import_way {
-            config
-                .set("way.import", args.import_way)
-                .with_context(|e| format!("Could not set import_way: {}", e))?;
-        }
-
-        //// POI
-
-        let settings_import_poi = config
-            .get_bool("poi.import")
-            .with_context(|e| format!("could not read flag poi.import from settings: {}", e))?;
-        if args.import_poi != settings_import_poi {
-            config
-                .set("poi.import", args.import_poi)
-                .with_context(|e| format!("Could not set import_poi: {}", e))?;
-        }
-
-        //// ELASTICSEARCH SETTINGS
-
-        if let Some(connection_string) = args.connection_string.clone() {
-            config
-                .set("elasticsearch.connection_string", connection_string)
-                .with_context(|e| {
-                    format!("Could not set elasticsearch connection string: {}", e)
-                })?;
-        }
-
-        if let Some(nb_way_shards) = args.nb_street_shards {
-            config
-                .set("elasticsearch.way_shards", i64::try_from(nb_way_shards)?)
-                .with_context(|e| format!("Could not set way shards count: {}", e))?;
-        }
-        if let Some(nb_way_replicas) = args.nb_street_replicas {
-            config
-                .set(
-                    "elasticsearch.way_replicas",
-                    i64::try_from(nb_way_replicas)?,
-                )
-                .with_context(|e| format!("Could not set way replicas count: {}", e))?;
-        }
-        if let Some(nb_poi_shards) = args.nb_poi_shards {
-            config
-                .set("elasticsearch.poi_shards", i64::try_from(nb_poi_shards)?)
-                .with_context(|e| format!("Could not set poi shards count: {}", e))?;
-        }
-        if let Some(nb_poi_replicas) = args.nb_poi_replicas {
-            config
-                .set(
-                    "elasticsearch.poi_replicas",
-                    i64::try_from(nb_poi_replicas)?,
-                )
-                .with_context(|e| format!("Could not set poi replicas count: {}", e))?;
-        }
-        if let Some(nb_admin_shards) = args.nb_admin_shards {
-            config
-                .set(
-                    "elasticsearch.admin_shards",
-                    i64::try_from(nb_admin_shards)?,
-                )
-                .with_context(|e| format!("Could not set admin shards count: {}", e))?;
-        }
-        if let Some(nb_admin_replicas) = args.nb_admin_replicas {
-            config
-                .set(
-                    "elasticsearch.admin_replicas",
-                    i64::try_from(nb_admin_replicas)?,
-                )
-                .with_context(|e| format!("Could not set admin replicas count: {}", e))?;
-        }
-        if let Some(nb_insert_threads) = args.nb_insert_threads {
-            config
-                .set(
-                    "elasticsearch.insert_thread_count",
-                    i64::try_from(nb_insert_threads)?,
-                )
-                .with_context(|e| {
-                    format!("Could not set elasticsearch insert thread count: {}", e)
-                })?;
-        }
-
-        //// DATABASE
-
-        // /// If you use this option by providing a filename, then we
-        // /// will use a SQlite database that will be persisted. You
-        // /// can only do that if osm2mimir was compiled with the
-        // /// 'db-storage' feature. If you don't provide a value, then
-        // /// we will use in memory storage.
-        // #[structopt(long = "db-file", parse(from_os_str))]
-        // db_file: Option<PathBuf>,
-        // /// DB buffer size.
-        // #[structopt(long = "db-buffer-size", default_value = "50000")]
-        // db_buffer_size: usize,
-        #[cfg(feature = "db-storage")]
-        if let Some(db_file) = args.db_file.clone() {
-            config
-                .set(
-                    "database.file",
-                    db_file.to_str().expect("valid utf-8 filename"),
-                )
-                .with_context(|e| format!("Could not set database file: {}", e))?;
-        }
-
-        #[cfg(feature = "db-storage")]
-        if let Some(db_buffer_size) = args.db_buffer_size {
-            config
-                .set("database.buffer_size", i64::try_from(db_buffer_size)?)
-                .with_context(|e| format!("Could not set database buffer size: {}", e))?;
-        }
+        config
+            .merge(args)
+            .with_context(|e| format!("Could not merge arguments into configuration: {}", e))?;
 
         // You can deserialize (and thus freeze) the entire configuration as
         config.try_into().map_err(|e| {
@@ -316,7 +157,7 @@ impl Settings {
     }
 }
 
-#[derive(StructOpt, Debug)]
+#[derive(StructOpt, Clone, Debug)]
 pub struct Args {
     /// OSM PBF file.
     #[structopt(short = "i", long = "input", parse(from_os_str))]
@@ -392,4 +233,210 @@ pub struct Args {
     /// be set)
     #[structopt(short = "s", long = "settings")]
     settings: Option<String>,
+}
+
+impl Source for Args {
+    fn clone_into_box(&self) -> Box<dyn Source + Send + Sync> {
+        Box::new((*self).clone())
+    }
+
+    fn collect(&self) -> Result<HashMap<String, Value>, ConfigError> {
+        let mut m = HashMap::new();
+
+        // DATASET
+        if let Some(dataset) = self.dataset.clone() {
+            m.insert(String::from("dataset"), Value::new(None, dataset));
+        }
+
+        // ADMIN
+        m.insert(
+            String::from("admin.import"),
+            Value::new(None, self.import_admin),
+        );
+        if let Some(city_level) = self.city_level {
+            m.insert(
+                String::from("admin.city_level"),
+                Value::new(
+                    None,
+                    i64::try_from(city_level).map_err(|e| {
+                        ConfigError::Message(format!(
+                            "Could not convert admin city_level to integer: {}",
+                            e
+                        ))
+                    })?,
+                ),
+            );
+        }
+        if let Some(level) = self.level.clone() {
+            m.insert(
+                String::from("admin.levels"),
+                Value::new(
+                    None,
+                    level.into_iter().try_fold(Vec::new(), |mut acc, l| {
+                        let i = i64::try_from(l).map_err(|e| {
+                            ConfigError::Message(format!(
+                                "Could not convert admin city_level to integer: {}",
+                                e
+                            ))
+                        })?;
+                        acc.push(i);
+                        Ok(acc)
+                    })?,
+                ),
+            );
+        }
+
+        // WAY
+        m.insert(
+            String::from("way.import"),
+            Value::new(None, self.import_way),
+        );
+
+        // POI
+        m.insert(
+            String::from("poi.import"),
+            Value::new(None, self.import_poi),
+        );
+
+        // ELASTICSEARCH SETTINGS
+
+        if let Some(connection_string) = self.connection_string.clone() {
+            m.insert(
+                String::from("elasticsearch.connection_string"),
+                Value::new(None, connection_string),
+            );
+        }
+
+        if let Some(nb_way_shards) = self.nb_street_shards {
+            m.insert(
+                String::from("elasticsearch.way_shards"),
+                Value::new(
+                    None,
+                    i64::try_from(nb_way_shards).map_err(|e| {
+                        ConfigError::Message(format!(
+                            "Could not convert count of way shards to integer: {}",
+                            e
+                        ))
+                    })?,
+                ),
+            );
+        }
+
+        if let Some(nb_way_replicas) = self.nb_street_replicas {
+            m.insert(
+                String::from("elasticsearch.way_replicas"),
+                Value::new(
+                    None,
+                    i64::try_from(nb_way_replicas).map_err(|e| {
+                        ConfigError::Message(format!(
+                            "Could not convert count of way replicas to integer: {}",
+                            e
+                        ))
+                    })?,
+                ),
+            );
+        }
+
+        if let Some(nb_poi_shards) = self.nb_poi_shards {
+            m.insert(
+                String::from("elasticsearch.poi_shards"),
+                Value::new(
+                    None,
+                    i64::try_from(nb_poi_shards).map_err(|e| {
+                        ConfigError::Message(format!(
+                            "Could not convert count of poi shards to integer: {}",
+                            e
+                        ))
+                    })?,
+                ),
+            );
+        }
+
+        if let Some(nb_poi_replicas) = self.nb_poi_replicas {
+            m.insert(
+                String::from("elasticsearch.poi_replicas"),
+                Value::new(
+                    None,
+                    i64::try_from(nb_poi_replicas).map_err(|e| {
+                        ConfigError::Message(format!(
+                            "Could not convert count of poi replicas to integer: {}",
+                            e
+                        ))
+                    })?,
+                ),
+            );
+        }
+
+        if let Some(nb_admin_shards) = self.nb_admin_shards {
+            m.insert(
+                String::from("elasticsearch.admin_shards"),
+                Value::new(
+                    None,
+                    i64::try_from(nb_admin_shards).map_err(|e| {
+                        ConfigError::Message(format!(
+                            "Could not convert count of admin shards to integer: {}",
+                            e
+                        ))
+                    })?,
+                ),
+            );
+        }
+
+        if let Some(nb_admin_replicas) = self.nb_admin_replicas {
+            m.insert(
+                String::from("elasticsearch.admin_replicas"),
+                Value::new(
+                    None,
+                    i64::try_from(nb_admin_replicas).map_err(|e| {
+                        ConfigError::Message(format!(
+                            "Could not convert count of admin replicas to integer: {}",
+                            e
+                        ))
+                    })?,
+                ),
+            );
+        }
+
+        if let Some(nb_insert_threads) = self.nb_insert_threads {
+            m.insert(
+                String::from("elasticsearch.insert_thread_count"),
+                Value::new(
+                    None,
+                    i64::try_from(nb_insert_threads).map_err(|e| {
+                        ConfigError::Message(format!(
+                            "Could not convert elasticsearch insert thread count to integer: {}",
+                            e
+                        ))
+                    })?,
+                ),
+            );
+        }
+
+        // DATABASE
+        #[cfg(feature = "db-storage")]
+        if let Some(db_file) = self.db_file.clone() {
+            m.insert(
+                String::from("database.file"),
+                Value::new(None, db_file.to_str().expect("valid utf-8 filename")),
+            );
+        }
+
+        #[cfg(feature = "db-storage")]
+        if let Some(db_buffer_size) = self.db_buffer_size {
+            m.insert(
+                String::from("database.buffer_size"),
+                Value::new(
+                    None,
+                    i64::try_from(db_buffer_size).map_err(|e| {
+                        ConfigError::Message(format!(
+                            "Could not convert database buffer size to integer: {}",
+                            e
+                        ))
+                    })?,
+                ),
+            );
+        }
+
+        Ok(m)
+    }
 }

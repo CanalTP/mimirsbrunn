@@ -39,10 +39,14 @@ use mimirsbrunn::settings::osm2mimir::{Args, Settings};
 use slog_scope::{debug, info};
 
 fn run(args: Args) -> Result<(), mimirsbrunn::Error> {
+    let input = args.input.clone();
     validate_args(&args)?;
-    let settings = Settings::new(&args)?;
+    let settings = Settings::new(args)?;
 
-    let mut osm_reader = make_osm_reader(&args.input)?;
+    // println!("{:#?}", settings);
+    // return Ok(());
+
+    let mut osm_reader = make_osm_reader(&input)?;
     debug!("creation of indexes");
     let mut rubber = Rubber::new(&settings.elasticsearch.connection_string)
         .with_nb_insert_threads(settings.elasticsearch.insert_thread_count);

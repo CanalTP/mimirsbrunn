@@ -367,12 +367,12 @@ pub struct Args {
     /// we will use in memory storage.
     #[cfg(feature = "db-storage")]
     #[structopt(long = "db-file", parse(from_os_str))]
-    db_file: Option<PathBuf>,
+    pub db_file: Option<PathBuf>,
 
     /// DB buffer size.
     #[cfg(feature = "db-storage")]
     #[structopt(long = "db-buffer-size")]
-    db_buffer_size: Option<usize>,
+    pub db_buffer_size: Option<usize>,
     /// Number of threads to use to insert into Elasticsearch. Note that Elasticsearch is not able
     /// to handle values that are too high.
     #[structopt(short = "T", long = "nb-insert-threads")]

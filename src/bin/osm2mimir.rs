@@ -39,6 +39,7 @@ use mimirsbrunn::settings::osm2mimir::{Args, Settings};
 use slog_scope::{debug, info};
 
 fn run(args: Args) -> Result<(), mimirsbrunn::Error> {
+    validate_args(&args)?;
     let settings = Settings::new(&args)?;
 
     let mut osm_reader = make_osm_reader(&args.input)?;
@@ -156,6 +157,28 @@ fn run(args: Args) -> Result<(), mimirsbrunn::Error> {
             .context("Importing pois into Mimir")?;
 
         info!("Nb of indexed pois: {}", nb_pois);
+    }
+    Ok(())
+}
+
+// We need to allow for unused variables, because currently all the checks on
+// args require the db-storage feature. If this feature is not used, then there
+// is a warning
+#[allow(unused_variables)]
+fn validate_args(args: &Args) -> Result<(), mimirsbrunn::Error> {
+    #[cfg(feature = "db-storage")]
+    if args.db_file.is_some() {
+        // If the user specified db_file, he must also specify db_buffer_size, or else!
+        if args.db_buffer_size.is_none() {
+            return Err(failure::format_err!("You need to specify database buffer size if you want to use database storage. Use --db-buffer-size"));
+        }
+    }
+    #[cfg(feature = "db-storage")]
+    if args.db_buffer_size.is_some() {
+        // If the user specified db_buffer_size, he must also specify db_file, or else!
+        if args.db_file.is_none() {
+            return Err(failure::format_err!("You need to specify database file if you want to use database storage. Use --db-file"));
+        }
     }
     Ok(())
 }

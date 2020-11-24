@@ -66,21 +66,19 @@ impl Default for PoiConfig {
     fn default() -> Self {
         let default_settings: Settings = toml::from_str(include_str!("../../config/osm2mimir-default.toml"))
             .expect("Could not read default osm2mimir settings for default poi types from osm2mimir-default.toml");
-        let mut config = default_settings
+        let config = default_settings
             .poi
             .and_then(|poi| poi.config)
             .expect("osm2mimir-default.toml does not contain default poi types");
         config.check().unwrap();
-        config.convert_id();
         config
     }
 }
 impl PoiConfig {
     pub fn from_reader<R: io::Read>(r: R) -> Result<PoiConfig, Box<dyn Error>> {
-        let mut res: PoiConfig = serde_json::from_reader(r)?;
-        res.check()?;
-        res.convert_id();
-        Ok(res)
+        let config: PoiConfig = serde_json::from_reader(r)?;
+        config.check()?;
+        Ok(config)
     }
     pub fn is_poi(&self, tags: &osmpbfreader::Tags) -> bool {
         self.get_poi_type(tags).is_some()
@@ -292,17 +290,17 @@ mod tests {
         from_str(r#"{"types": []}"#).unwrap_err();
         from_str(r#"{"rules": []}"#).unwrap_err();
         from_str(r#"{"types": [], "rules": []}"#).unwrap();
-        from_str(r#"{"types": [{"id": "foo"}], "rules": []}"#).unwrap_err();
+        from_str(r#"{"types": [{"id": "poi_type:foo"}], "rules": []}"#).unwrap_err();
         from_str(r#"{"types": [{"name": "bar"}], "rules": []}"#).unwrap_err();
-        from_str(r#"{"types": [{"id": "foo", "name": "bar"}], "rules": []}"#).unwrap();
+        from_str(r#"{"types": [{"id": "poi_type:foo", "name": "bar"}], "rules": []}"#).unwrap();
     }
     #[test]
     fn check_tests() {
         from_str(
             r#"{
             "types": [
-                {"id": "bob", "name": "Bob"},
-                {"id": "bob", "name": "Bobitto"}
+                {"id": "poi_type:bob", "name": "Bob"},
+                {"id": "poi_type:bob", "name": "Bobitto"}
             ],
             "rules": []
         }"#,
@@ -310,7 +308,7 @@ mod tests {
         .unwrap_err();
         from_str(
             r#"{
-            "types": [{"id": "bob", "name": "Bob"}],
+            "types": [{"id": "poi_type:bob", "name": "Bob"}],
             "rules": [
                 {
                     "osm_tags_filters": [{"key": "foo", "value": "bar"}],
@@ -325,28 +323,28 @@ mod tests {
     fn check_with_colon() {
         let json = r#"{
             "types": [
-                {"id": "amenity:bicycle_rental", "name": "Station VLS"},
-                {"id": "amenity:parking", "name": "Parking"}
+                {"id": "poi_type:amenity:bicycle_rental", "name": "Station VLS"},
+                {"id": "poi_type:amenity:parking", "name": "Parking"}
             ],
             "rules": [
                 {
                     "osm_tags_filters": [
-                        {"key": "amenity:bicycle_rental", "value": "true"}
+                        {"key": "bicycle_rental", "value": "true"}
                     ],
-                    "type": "amenity:bicycle_rental"
+                    "type": "poi_type:amenity:bicycle_rental"
                 },
                 {
                     "osm_tags_filters": [
                         {"key": "amenity", "value": "parking:effia"}
                     ],
-                    "type": "amenity:parking"
+                    "type": "poi_type:amenity:parking"
                 }
             ]
         }"#;
         let c = from_str(json).unwrap();
         assert_eq!(
             Some("poi_type:amenity:bicycle_rental"),
-            c.get_poi_id(&tags(&[("amenity:bicycle_rental", "true")]))
+            c.get_poi_id(&tags(&[("bicycle_rental", "true")]))
         );
         assert_eq!(
             Some("poi_type:amenity:parking"),
@@ -357,10 +355,10 @@ mod tests {
     fn check_all_tags_first_match() {
         let json = r#"{
             "types": [
-                {"id": "bob_titi", "name": "Bob is Bobette and Titi is Toto"},
-                {"id": "bob", "name": "Bob is Bobette"},
-                {"id": "titi", "name": "Titi is Toto"},
-                {"id": "foo", "name": "Foo is Bar"}
+                {"id": "poi_type:bob_titi", "name": "Bob is Bobette and Titi is Toto"},
+                {"id": "poi_type:bob", "name": "Bob is Bobette"},
+                {"id": "poi_type:titi", "name": "Titi is Toto"},
+                {"id": "poi_type:foo", "name": "Foo is Bar"}
             ],
             "rules": [
                 {
@@ -368,25 +366,25 @@ mod tests {
                         {"key": "bob", "value": "bobette"},
                         {"key": "titi", "value": "toto"}
                     ],
-                    "type": "bob_titi"
+                    "type": "poi_type:bob_titi"
                 },
                 {
                     "osm_tags_filters": [
                         {"key": "bob", "value": "bobette"}
                     ],
-                    "type": "bob"
+                    "type": "poi_type:bob"
                 },
                 {
                     "osm_tags_filters": [
                         {"key": "titi", "value": "toto"}
                     ],
-                    "type": "titi"
+                    "type": "poi_type:titi"
                 },
                 {
                     "osm_tags_filters": [
                         {"key": "foo", "value": "bar"}
                     ],
-                    "type": "foo"
+                    "type": "poi_type:foo"
                 }
             ]
         }"#;

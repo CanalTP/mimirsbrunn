@@ -35,99 +35,99 @@ dataset = "fr"
   import = false
   [poi.config]
     [[poi.config.types]]
-      id = "amenity:college"
+      id = "poi_type:amenity:college"
       name = "École"
     [[poi.config.types]]
-      id = "amenity:university"
+      id = "poi_type:amenity:university"
       name = "Université"
     [[poi.config.types]]
-      id = "amenity:theatre"
+      id = "poi_type:amenity:theatre"
       name = "Théâtre"
     [[poi.config.types]]
-      id = "amenity:hospital"
+      id = "poi_type:amenity:hospital"
       name = "Hôpital"
     [[poi.config.types]]
-      id = "amenity:post_office"
+      id = "poi_type:amenity:post_office"
       name = "Bureau de poste"
     [[poi.config.types]]
-      id = "amenity:bicycle_rental"
+      id = "poi_type:amenity:bicycle_rental"
       name = "Station VLS"
     [[poi.config.types]]
-      id = "amenity:bicycle_parking"
+      id = "poi_type:amenity:bicycle_parking"
       name = "Parking vélo"
     [[poi.config.types]]
-      id = "amenity:parking"
+      id = "poi_type:amenity:parking"
       name = "Parking"
     [[poi.config.types]]
-      id = "amenity:police"
+      id = "poi_type:amenity:police"
       name = "Police, gendarmerie"
     [[poi.config.types]]
-      id = "amenity:townhall"
+      id = "poi_type:amenity:townhall"
       name = "Mairie"
     [[poi.config.types]]
-      id = "leisure:garden"
+      id = "poi_type:leisure:garden"
       name = "Jardin"
     [[poi.config.types]]
-      id = "leisure:park"
+      id = "poi_type:leisure:park"
       name = "Parc, espace vert"
 
     [[poi.config.rules]]
-      type = "amenity:college"
+      type = "poi_type:amenity:college"
       [[poi.config.rules.osm_tags_filters]]
         key = "amenity"
         value = "college"
     [[poi.config.rules]]
-      type = "amenity:university"
+      type = "poi_type:amenity:university"
       [[poi.config.rules.osm_tags_filters]]
         key = "amenity"
         value = "university"
     [[poi.config.rules]]
-      type = "amenity:theatre"
+      type = "poi_type:amenity:theatre"
       [[poi.config.rules.osm_tags_filters]]
         key = "amenity"
         value = "theatre"
     [[poi.config.rules]]
-      type = "amenity:hospital"
+      type = "poi_type:amenity:hospital"
       [[poi.config.rules.osm_tags_filters]]
         key = "amenity"
         value = "hospital"
     [[poi.config.rules]]
-      type = "amenity:post_office"
+      type = "poi_type:amenity:post_office"
       [[poi.config.rules.osm_tags_filters]]
         key = "amenity"
         value = "post_office"
     [[poi.config.rules]]
-      type = "amenity:bicycle_rental"
+      type = "poi_type:amenity:bicycle_rental"
       [[poi.config.rules.osm_tags_filters]]
         key = "amenity"
         value = "bicycle_rental"
     [[poi.config.rules]]
-      type = "amenity:bicycle_parking"
+      type = "poi_type:amenity:bicycle_parking"
       [[poi.config.rules.osm_tags_filters]]
         key = "amenity"
         value = "bicycle_parking"
     [[poi.config.rules]]
-      type = "amenity:parking"
+      type = "poi_type:amenity:parking"
       [[poi.config.rules.osm_tags_filters]]
         key = "amenity"
         value = "parking"
     [[poi.config.rules]]
-      type = "amenity:police"
+      type = "poi_type:amenity:police"
       [[poi.config.rules.osm_tags_filters]]
         key = "amenity"
         value = "police"
     [[poi.config.rules]]
-      type = "amenity:townhall"
+      type = "poi_type:amenity:townhall"
       [[poi.config.rules.osm_tags_filters]]
         key = "amenity"
         value = "townhall"
     [[poi.config.rules]]
-      type = "leisure:garden"
+      type = "poi_type:leisure:garden"
       [[poi.config.rules.osm_tags_filters]]
         key = "leisure"
         value = "garden"
     [[poi.config.rules]]
-      type = "leisure:park"
+      type = "poi_type:leisure:park"
       [[poi.config.rules.osm_tags_filters]]
         key = "leisure"
         value = "park"

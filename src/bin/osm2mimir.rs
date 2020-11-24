@@ -39,12 +39,9 @@ use mimirsbrunn::settings::osm2mimir::{Args, Settings};
 use slog_scope::{debug, info};
 
 fn run(args: Args) -> Result<(), mimirsbrunn::Error> {
-    let input = args.input.clone();
+    let input = args.input.clone(); // we save the input, because args will be consumed by settings.
     validate_args(&args)?;
     let settings = Settings::new(args)?;
-
-    println!("{:#?}", settings);
-    // return Ok(());
 
     let mut osm_reader = make_osm_reader(&input)?;
     debug!("creation of indexes");

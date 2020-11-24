@@ -1,0 +1,134 @@
+# Configuration for osm2mimir
+# Since this is the default configuration, which is embedded in the code,
+# you should rebuild mimirsbrunn if you change a value in this file.
+
+dataset = "fr"
+
+[elasticsearch]
+  connection_string = "http://localhost:9200/munin"
+  insert_thread_count = 1
+  streets_shards = 2
+  streets_replicas = 1
+  admins_shards = 1
+  admins_replicas = 1
+  pois_shards = 1
+  pois_replicas = 1
+
+[admin]
+  import = false
+  city_level = 8
+  levels = []
+
+[way]
+  import = false
+  [way.exclusion]
+    # See [OSM Key Highway](https://wiki.openstreetmap.org/wiki/Key:highway) for background.
+    highways = [
+      "bus_guideway",
+      "bus_stop",
+      "elevator",
+      "escape",
+      "platform"
+    ]
+
+[poi]
+  import = false
+  [poi.config]
+    [[poi.config.types]]
+      id = "amenity:college"
+      name = "École"
+    [[poi.config.types]]
+      id = "amenity:university"
+      name = "Université"
+    [[poi.config.types]]
+      id = "amenity:theatre"
+      name = "Théâtre"
+    [[poi.config.types]]
+      id = "amenity:hospital"
+      name = "Hôpital"
+    [[poi.config.types]]
+      id = "amenity:post_office"
+      name = "Bureau de poste"
+    [[poi.config.types]]
+      id = "amenity:bicycle_rental"
+      name = "Station VLS"
+    [[poi.config.types]]
+      id = "amenity:bicycle_parking"
+      name = "Parking vélo"
+    [[poi.config.types]]
+      id = "amenity:parking"
+      name = "Parking"
+    [[poi.config.types]]
+      id = "amenity:police"
+      name = "Police, gendarmerie"
+    [[poi.config.types]]
+      id = "amenity:townhall"
+      name = "Mairie"
+    [[poi.config.types]]
+      id = "leisure:garden"
+      name = "Jardin"
+    [[poi.config.types]]
+      id = "leisure:park"
+      name = "Parc, espace vert"
+
+    [[poi.config.rules]]
+      type = "amenity:college"
+      [[poi.config.rules.osm_tags_filters]]
+        key = "amenity"
+        value = "college"
+    [[poi.config.rules]]
+      type = "amenity:university"
+      [[poi.config.rules.osm_tags_filters]]
+        key = "amenity"
+        value = "university"
+    [[poi.config.rules]]
+      type = "amenity:theatre"
+      [[poi.config.rules.osm_tags_filters]]
+        key = "amenity"
+        value = "theatre"
+    [[poi.config.rules]]
+      type = "amenity:hospital"
+      [[poi.config.rules.osm_tags_filters]]
+        key = "amenity"
+        value = "hospital"
+    [[poi.config.rules]]
+      type = "amenity:post_office"
+      [[poi.config.rules.osm_tags_filters]]
+        key = "amenity"
+        value = "post_office"
+    [[poi.config.rules]]
+      type = "amenity:bicycle_rental"
+      [[poi.config.rules.osm_tags_filters]]
+        key = "amenity"
+        value = "bicycle_rental"
+    [[poi.config.rules]]
+      type = "amenity:bicycle_parking"
+      [[poi.config.rules.osm_tags_filters]]
+        key = "amenity"
+        value = "bicycle_parking"
+    [[poi.config.rules]]
+      type = "amenity:parking"
+      [[poi.config.rules.osm_tags_filters]]
+        key = "amenity"
+        value = "parking"
+    [[poi.config.rules]]
+      type = "amenity:police"
+      [[poi.config.rules.osm_tags_filters]]
+        key = "amenity"
+        value = "police"
+    [[poi.config.rules]]
+      type = "amenity:townhall"
+      [[poi.config.rules.osm_tags_filters]]
+        key = "amenity"
+        value = "townhall"
+    [[poi.config.rules]]
+      type = "leisure:garden"
+      [[poi.config.rules.osm_tags_filters]]
+        key = "leisure"
+        value = "garden"
+    [[poi.config.rules]]
+      type = "leisure:park"
+      [[poi.config.rules.osm_tags_filters]]
+        key = "leisure"
+        value = "park"
+

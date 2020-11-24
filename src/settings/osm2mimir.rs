@@ -75,7 +75,7 @@ impl Settings {
         // let config_dir = config_dir.clone();
         match config_dir {
             Some(mut dir) => {
-                dir.push("default");
+                dir.push("osm2mimir-default");
                 // Start off by merging in the "default" configuration file
 
                 if let Some(path) = dir.to_str() {
@@ -130,7 +130,7 @@ impl Settings {
                 }
                 config
                     .merge(File::from_str(
-                        include_str!("../../config/default.toml"),
+                        include_str!("../../config/osm2mimir-default.toml"),
                         FileFormat::Toml,
                     ))
                     .with_context(|e| {
@@ -222,7 +222,7 @@ pub struct Args {
     /// Path to the config directory
     /// osm2mimir will read the default configuration in there, and maybe
     /// more depending on the settings option.
-    /// If no option is given, we'll just read the ./config/default.toml
+    /// If no option is given, we'll just read the ./config/osm2mimir-default.toml
     /// at compile time.
     #[structopt(short = "D", long = "config-dir")]
     config_dir: Option<PathBuf>,

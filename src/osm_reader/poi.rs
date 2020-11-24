@@ -32,7 +32,7 @@ use super::osm_utils::get_way_coord;
 use super::osm_utils::make_centroid;
 use super::OsmPbfReader;
 use crate::admin_geofinder::AdminGeoFinder;
-use crate::{labels, utils};
+use crate::{labels, settings::osm2mimir::Settings, utils};
 use mimir::{rubber, Poi, PoiType};
 use osm_boundaries_utils::build_boundary;
 use serde::{Deserialize, Serialize};
@@ -64,12 +64,15 @@ pub struct PoiConfig {
 
 impl Default for PoiConfig {
     fn default() -> Self {
-        let mut res: PoiConfig =
-            toml::from_str(include_str!("../../config/default-poi-types.toml"))
-                .expect("Could not deserialize default poi");
-        res.check().unwrap();
-        res.convert_id();
-        res
+        let default_settings: Settings = toml::from_str(include_str!("../../config/osm2mimir-default.toml"))
+            .expect("Could not read default osm2mimir settings for default poi types from osm2mimir-default.toml");
+        let mut config = default_settings
+            .poi
+            .and_then(|poi| poi.config)
+            .expect("osm2mimir-default.toml does not contain default poi types");
+        config.check().unwrap();
+        config.convert_id();
+        config
     }
 }
 impl PoiConfig {

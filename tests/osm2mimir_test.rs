@@ -43,7 +43,6 @@ pub fn osm2mimir_sample_test(es_wrapper: crate::ElasticSearchWrapper<'_>) {
         &osm2mimir,
         &[
             "--input=./tests/fixtures/osm_fixture.osm.pbf".into(),
-            "--config-dir=./config".into(),
             "--import-way".into(),
             "--import-admin".into(),
             "--import-poi".into(),
@@ -59,6 +58,7 @@ pub fn osm2mimir_sample_test(es_wrapper: crate::ElasticSearchWrapper<'_>) {
 
 /// Simple call to a BANO load into ES base
 /// Checks that we are able to find one object (a specific address)
+#[cfg(feature = "db-storage")]
 pub fn osm2mimir_sample_test_sqlite(es_wrapper: crate::ElasticSearchWrapper<'_>) {
     let osm2mimir = Path::new(env!("OUT_DIR"))
         .join("../../../osm2mimir")
@@ -68,15 +68,12 @@ pub fn osm2mimir_sample_test_sqlite(es_wrapper: crate::ElasticSearchWrapper<'_>)
         &osm2mimir,
         &[
             "--input=./tests/fixtures/osm_fixture.osm.pbf".into(),
-            "--config-dir=./config".into(),
             "--import-way".into(),
             "--import-admin".into(),
             "--import-poi".into(),
             "--level=8".into(),
             "--level=7".into(),
-            #[cfg(feature = "db-storage")]
             "--db-file=test-db.sqlite3".into(),
-            #[cfg(feature = "db-storage")]
             "--db-buffer-size=1".into(),
             format!("--connection-string={}", es_wrapper.host()),
         ],
@@ -213,11 +210,16 @@ fn check_results(es_wrapper: crate::ElasticSearchWrapper<'_>, test_name: &str) {
         .collect();
     assert!(!res.is_empty(), "{}", test_name);
 
-    let poi_type_post_office = "poi_type:amenity:post_office";
+    let poi_type_post_office = "amenity:post_office";
+    // res.iter().filter_map(|r| r.poi()).for_each(|poi| {
+    //     println!("poi type: {}", poi.poi_type.id);
+    // });
+
     assert!(
-        res.iter().any(|r| r
-            .poi()
-            .map_or(false, |poi| poi.poi_type.id == poi_type_post_office)),
+        res.iter().any(|r| r.poi().map_or(false, |poi| {
+            println!("poi type: {}", poi.poi_type.id);
+            poi.poi_type.id == poi_type_post_office
+        })),
         "{}",
         test_name
     );

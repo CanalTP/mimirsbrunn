@@ -138,7 +138,7 @@ fn melun_test(bragi: &mut BragiHandler) {
     assert_eq!(cityhall["postcode"], "77000");
     assert_eq!(cityhall["citycode"], "77288");
     assert_eq!(get_value(cityhall, "type"), "poi");
-    assert_eq!(get_poi_type_ids(cityhall), &["poi_type:amenity:townhall"]);
+    assert_eq!(get_poi_type_ids(cityhall), &["amenity:townhall"]);
     assert_eq!(cityhall["city"], "Melun");
 
     let cityhall_admins = cityhall["administrative_regions"]

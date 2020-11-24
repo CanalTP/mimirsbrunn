@@ -43,7 +43,7 @@ fn run(args: Args) -> Result<(), mimirsbrunn::Error> {
     validate_args(&args)?;
     let settings = Settings::new(args)?;
 
-    // println!("{:#?}", settings);
+    println!("{:#?}", settings);
     // return Ok(());
 
     let mut osm_reader = make_osm_reader(&input)?;

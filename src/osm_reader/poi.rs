@@ -117,14 +117,6 @@ impl PoiConfig {
         }
         Ok(())
     }
-    fn convert_id(&mut self) {
-        for poi_type in &mut self.poi_types {
-            poi_type.id = format!("poi_type:{}", poi_type.id);
-        }
-        for rule in &mut self.rules {
-            rule.poi_type_id = format!("poi_type:{}", rule.poi_type_id);
-        }
-    }
 }
 
 fn make_properties(tags: &osmpbfreader::Tags) -> Vec<mimir::Property> {

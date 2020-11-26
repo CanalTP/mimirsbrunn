@@ -75,17 +75,33 @@ impl Settings {
         // let config_dir = config_dir.clone();
         match config_dir {
             Some(mut dir) => {
-                dir.push("osm2mimir-default");
                 // Start off by merging in the "default" configuration file
+                dir.push("osm2mimir-default");
 
                 if let Some(path) = dir.to_str() {
                     info!("using configuration from {}", path);
-                    config.merge(File::with_name(path)).with_context(|e| {
-                        format!(
-                            "Could not merge default configuration from file {}: {}",
-                            path, e
-                        )
-                    })?;
+                    // Now if the file exists, we read it, otherwise, we
+                    // read from the compiled version.
+                    if dir.exists() {
+                        config.merge(File::with_name(path)).with_context(|e| {
+                            format!(
+                                "Could not merge default configuration from file {}: {}",
+                                path, e
+                            )
+                        })?;
+                    } else {
+                        config
+                            .merge(File::from_str(
+                                include_str!("../../config/osm2mimir-default.toml"),
+                                FileFormat::Toml,
+                            ))
+                            .with_context(|e| {
+                                format!(
+                                    "Could not merge default configuration from file {}: {}",
+                                    path, e
+                                )
+                            })?;
+                    }
                 } else {
                     return Err(failure::err_msg(format!(
                         "Could not read default settings in '{}'",

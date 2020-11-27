@@ -39,13 +39,11 @@ use mimir::{MimirObject, Poi};
 use serde_json::json;
 use std::path::Path;
 
-pub fn bragi_poi_test(es_wrapper: crate::ElasticSearchWrapper<'_>) {
-    let mut bragi = BragiHandler::new(es_wrapper.host());
-
+fn load_with_addresses(es_wrapper: &mut crate::ElasticSearchWrapper<'_>, bano_src: &str) {
     // ******************************************
-    // We load three-cities bano dataset and then the OSM dataset (with the POIs)
+    // We load bano dataset and then the OSM dataset (with the POIs)
     // the current dataset are thus (load order matters):
-    // - bano-three_cities
+    // - `bano_src`
     // - osm_fixture.osm.pbf (including ways and pois)
     // ******************************************
     let bano2mimir = Path::new(env!("OUT_DIR"))
@@ -55,7 +53,7 @@ pub fn bragi_poi_test(es_wrapper: crate::ElasticSearchWrapper<'_>) {
     crate::launch_and_assert(
         &bano2mimir,
         &[
-            "--input=./tests/fixtures/bano-three_cities.csv".into(),
+            format!("--input={}", bano_src),
             format!("--connection-string={}", es_wrapper.host()),
         ],
         &es_wrapper,
@@ -78,7 +76,12 @@ pub fn bragi_poi_test(es_wrapper: crate::ElasticSearchWrapper<'_>) {
         ],
         &es_wrapper,
     );
+}
 
+pub fn bragi_poi_test(mut es_wrapper: crate::ElasticSearchWrapper<'_>) {
+    let mut bragi = BragiHandler::new(es_wrapper.host());
+
+    load_with_addresses(&mut es_wrapper, "./tests/fixtures/bano-three_cities.csv");
     poi_admin_address_test(&mut bragi);
     poi_admin_test(&mut bragi);
     poi_zip_code_test(&mut bragi);
@@ -87,6 +90,10 @@ pub fn bragi_poi_test(es_wrapper: crate::ElasticSearchWrapper<'_>) {
     poi_from_osm_with_address_addr_test(&mut bragi);
     poi_filter_poi_type_test(&mut bragi);
     poi_filter_error_message_test(&mut bragi);
+
+    // Tests using sample-bano.csv as address source
+    load_with_addresses(&mut es_wrapper, "./tests/fixtures/sample-bano.csv");
+    poi_address_test(&mut bragi);
 }
 
 pub fn bragi_private_poi_test(es_wrapper: crate::ElasticSearchWrapper<'_>) {
@@ -450,4 +457,14 @@ fn poi_filter_dataset_visibility_test(bragi: &mut BragiHandler) {
 
     let res = bragi.get("/autocomplete?q=Agence Keolis&type[]=poi&poi_dataset[]=effia");
     assert!(res.first().is_none());
+}
+
+fn poi_address_test(bragi: &mut BragiHandler) {
+    let res = bragi.get("/autocomplete?q=13 Place Saint-Jean, Melun&type[]=poi");
+    let poi = res.first().expect("Expected a POI in `Place Saint-Jean`");
+    assert_eq!(poi["name"], "Melun Rp");
+
+    let res = bragi.get("/autocomplete?q=14 Rue Paul Doumer, Melun&type[]=poi");
+    let poi = res.first().expect("Expected a POI in `Rue Paul Doumer`");
+    assert_eq!(poi["name"], "Hôtel de Ville");
 }

@@ -165,6 +165,14 @@
                     "type": "geo_shape",
                     "precision": "5m"
                 },
+                "address": {
+                    "properties": {
+                        "label": {
+                            "type": "string",
+                            "copy_to": "full_label"
+                        }
+                    }
+                },
                 "full_label": {
                     "type": "string",
                     "index": "no",

@@ -106,7 +106,7 @@ pub fn bano2mimir_sample_test(es_wrapper: crate::ElasticSearchWrapper<'_>) {
     // we should have imported 34 elements
     // (we shouldn't have the badly formated line)
     let total = get_nb_elements(&es_wrapper);
-    assert_eq!(total, 34);
+    assert_eq!(total, 36);
 
     // We look for 'Fake-City' which should have been filtered since the street name is empty
     let res: Vec<_> = es_wrapper

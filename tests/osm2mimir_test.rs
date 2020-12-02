@@ -242,11 +242,12 @@ fn check_results(es_wrapper: crate::ElasticSearchWrapper<'_>, test_name: &str) {
 
     // "Rue de Villiers" is at the exact neighborhood between two cities, a
     // document must be added for both.
-    assert!(["Neuilly-sur-Seine", "Levallois-Perret"]
-        .iter()
-        .all(|city| {
-            es_wrapper
-                .search_and_filter("Rue de Villiers", |_| true)
-                .any(|poi| poi.admins().iter().any(|admin| &admin.name == city))
-        }));
+    let res: Vec<_> = es_wrapper.search_and_filter("Villiers", |_| true).collect();
+    assert_eq!(2, res.len());
+
+    for city in &["Neuilly-sur-Seine", "Levallois-Perret"] {
+        assert!(res
+            .iter()
+            .any(|poi| poi.admins().iter().any(|admin| &admin.name == city)));
+    }
 }

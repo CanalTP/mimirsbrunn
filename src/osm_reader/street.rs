@@ -148,19 +148,12 @@ pub fn streets(
         let rel = obj.relation().expect("invalid relation filter");
         let rel_name = rel.tags.get("name");
 
-        // Add osmid of all the relation members in the set.
-        // Then, we won't create any street for the ways that belong to this relation.
-        street_in_relation.extend(
-            rel.refs
-                .iter()
-                .map(|ref_obj| ref_obj.member)
-                .filter(OsmId::is_way),
-        );
-
+        // Build a street from the first "valid" way of this relation
         let rel_street = rel
             .refs
             .iter()
             .filter(|ref_obj| ref_obj.member.is_way() && ref_obj.role == "street")
+            .filter(|ref_obj| !street_in_relation.contains(&ref_obj.member))
             .filter_map(|ref_obj| {
                 let obj = objs_map.get(&ref_obj.member)?;
                 let way = obj.way()?;
@@ -180,6 +173,15 @@ pub fn streets(
         if let Some(street) = rel_street {
             street_list.extend(street);
         }
+
+        // Add osmid of all the relation members in the set.
+        // Then, we won't create any street for the ways that belong to this relation.
+        street_in_relation.extend(
+            rel.refs
+                .iter()
+                .map(|ref_obj| ref_obj.member)
+                .filter(OsmId::is_way),
+        );
     });
 
     // We merge all the ways with same `way_name` and `admin list of level(=city_level)`

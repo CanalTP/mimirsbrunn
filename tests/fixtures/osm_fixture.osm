@@ -2871,7 +2871,24 @@
   </node>
   <node id='778387016' timestamp='2012-11-19T10:17:52Z' uid='13442' user='Damouns' visible='true' version='4' changeset='13929349' lat='45.1834809' lon='5.7476048' />
   <node id='793839812' timestamp='2010-10-12T10:42:00Z' uid='49047' user='vincent_95' visible='true' version='2' changeset='6019550' lat='48.8974695' lon='2.2719757' />
+  <node id='793840225' timestamp='2010-06-28T02:09:24Z' uid='210173' user='osmmaker' visible='true' version='1' changeset='5094467' lat='48.8921562' lon='2.2780444' />
+  <node id='793840471' timestamp='2010-06-28T02:09:31Z' uid='210173' user='osmmaker' visible='true' version='1' changeset='5094467' lat='48.8925636' lon='2.2774967' />
+  <node id='793840730' timestamp='2010-06-28T02:09:39Z' uid='210173' user='osmmaker' visible='true' version='1' changeset='5094467' lat='48.8926366' lon='2.2780109' />
+  <node id='793841516' timestamp='2010-06-28T02:10:02Z' uid='210173' user='osmmaker' visible='true' version='1' changeset='5094467' lat='48.8925304' lon='2.2778843' />
+  <node id='793842037' timestamp='2010-06-28T02:10:18Z' uid='210173' user='osmmaker' visible='true' version='1' changeset='5094467' lat='48.89256' lon='2.2780832' />
+  <node id='793843191' timestamp='2010-06-28T02:10:40Z' uid='210173' user='osmmaker' visible='true' version='1' changeset='5094467' lat='48.8924927' lon='2.2779201' />
+  <node id='793845558' timestamp='2010-06-28T02:12:04Z' uid='210173' user='osmmaker' visible='true' version='1' changeset='5094467' lat='48.892614' lon='2.2773925' />
+  <node id='793847268' timestamp='2010-06-28T02:13:06Z' uid='210173' user='osmmaker' visible='true' version='1' changeset='5094467' lat='48.8921466' lon='2.2779864' />
+  <node id='793847860' timestamp='2010-06-28T02:13:28Z' uid='210173' user='osmmaker' visible='true' version='1' changeset='5094467' lat='48.8921227' lon='2.2779228' />
+  <node id='793848564' timestamp='2010-06-28T02:13:57Z' uid='210173' user='osmmaker' visible='true' version='1' changeset='5094467' lat='48.8921311' lon='2.2779895' />
   <node id='793849370' timestamp='2010-06-28T02:14:24Z' uid='210173' user='osmmaker' visible='true' version='1' changeset='5094467' lat='48.8973805' lon='2.2720699' />
+  <node id='793850191' timestamp='2010-06-28T02:14:49Z' uid='210173' user='osmmaker' visible='true' version='1' changeset='5094467' lat='48.8925477' lon='2.2774549' />
+  <node id='793851473' timestamp='2010-06-28T02:15:47Z' uid='210173' user='osmmaker' visible='true' version='1' changeset='5094467' lat='48.8928227' lon='2.2774772' />
+  <node id='793854471' timestamp='2010-06-28T02:18:01Z' uid='210173' user='osmmaker' visible='true' version='1' changeset='5094467' lat='48.8921648' lon='2.2780308' />
+  <node id='793854925' timestamp='2010-06-28T02:18:21Z' uid='210173' user='osmmaker' visible='true' version='1' changeset='5094467' lat='48.8926978' lon='2.2781565' />
+  <node id='793856433' timestamp='2010-06-28T02:19:19Z' uid='210173' user='osmmaker' visible='true' version='1' changeset='5094467' lat='48.8921933' lon='2.2780825' />
+  <node id='793856492' timestamp='2010-06-28T02:19:23Z' uid='210173' user='osmmaker' visible='true' version='1' changeset='5094467' lat='48.8926968' lon='2.277597' />
+  <node id='793857231' timestamp='2010-06-28T02:20:01Z' uid='210173' user='osmmaker' visible='true' version='1' changeset='5094467' lat='48.8924933' lon='2.2777939' />
   <node id='815508512' timestamp='2010-07-13T18:06:56Z' uid='210173' user='osmmaker' visible='true' version='1' changeset='5210341' lat='48.8783012' lon='2.2786175' />
   <node id='815514004' timestamp='2010-07-13T18:10:09Z' uid='210173' user='osmmaker' visible='true' version='1' changeset='5210341' lat='48.8782982' lon='2.2786074' />
   <node id='945719990' timestamp='2010-10-12T10:35:55Z' uid='49047' user='vincent_95' visible='true' version='1' changeset='6019550' lat='48.8929299' lon='2.2767653' />
@@ -2886,6 +2903,112 @@
   <node id='945724266' timestamp='2010-10-12T10:38:55Z' uid='49047' user='vincent_95' visible='true' version='1' changeset='6019550' lat='48.8927028' lon='2.2771235' />
   <node id='946598613' timestamp='2010-10-13T12:40:02Z' uid='49047' user='vincent_95' visible='true' version='1' changeset='6028822' lat='48.8827946' lon='2.2808975' />
   <node id='946600290' timestamp='2015-05-21T05:31:26Z' uid='49047' user='vincent_95' visible='true' version='3' changeset='31333445' lat='48.8829464' lon='2.2809934' />
+  <node id='979132026' timestamp='2010-11-06T15:33:18Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8900556' lon='2.2801659' />
+  <node id='979132144' timestamp='2010-11-06T15:33:22Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8901875' lon='2.2801797' />
+  <node id='979132962' timestamp='2010-11-06T15:33:40Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8902582' lon='2.280244' />
+  <node id='979133150' timestamp='2010-11-06T15:33:44Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8899732' lon='2.2804767' />
+  <node id='979133210' timestamp='2010-11-06T15:33:45Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.890289' lon='2.2802242' />
+  <node id='979133415' timestamp='2010-11-06T15:33:49Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.890115' lon='2.2801197' />
+  <node id='979133454' timestamp='2010-11-06T15:33:50Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8900854' lon='2.2803993' />
+  <node id='979133653' timestamp='2010-11-06T15:33:54Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.890288' lon='2.280095' />
+  <node id='979133942' timestamp='2010-11-06T15:34:00Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.890332' lon='2.2801682' />
+  <node id='979134193' timestamp='2010-11-06T15:34:06Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8903409' lon='2.2801452' />
+  <node id='979134469' timestamp='2010-11-06T15:34:19Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8899312' lon='2.2804464' />
+  <node id='979134745' timestamp='2010-11-06T15:34:31Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8899476' lon='2.2803871' />
+  <node id='979134777' timestamp='2010-11-06T15:34:33Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8903225' lon='2.2801904' />
+  <node id='979134873' timestamp='2010-11-06T15:34:38Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8899615' lon='2.2804821' />
+  <node id='979134899' timestamp='2010-11-06T15:34:39Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8900128' lon='2.2804559' />
+  <node id='979134994' timestamp='2010-11-06T15:34:44Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8900497' lon='2.2801705' />
+  <node id='979135119' timestamp='2010-11-06T15:34:49Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8902218' lon='2.280146' />
+  <node id='979135239' timestamp='2010-11-06T15:34:55Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8903255' lon='2.2801751' />
+  <node id='979135462' timestamp='2010-11-06T15:35:04Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8899304' lon='2.2804372' />
+  <node id='979135842' timestamp='2010-11-06T15:35:31Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8902515' lon='2.2802502' />
+  <node id='979135942' timestamp='2010-11-06T15:35:41Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.889979' lon='2.2804923' />
+  <node id='979135967' timestamp='2010-11-06T15:35:42Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8902953' lon='2.2802191' />
+  <node id='979136123' timestamp='2010-11-06T15:35:48Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8901861' lon='2.2801755' />
+  <node id='979136141' timestamp='2010-11-06T15:35:49Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8902412' lon='2.2804365' />
+  <node id='979136236' timestamp='2010-11-06T15:35:51Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8902597' lon='2.2801187' />
+  <node id='979136332' timestamp='2010-11-06T15:35:54Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8902524' lon='2.2801249' />
+  <node id='979136412' timestamp='2010-11-06T15:35:57Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8903415' lon='2.2801349' />
+  <node id='979136515' timestamp='2010-11-06T15:36:01Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.889936' lon='2.2804644' />
+  <node id='979136770' timestamp='2010-11-06T15:36:14Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.889982' lon='2.2803511' />
+  <node id='979136797' timestamp='2010-11-06T15:36:15Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8902255' lon='2.2802796' />
+  <node id='979136867' timestamp='2010-11-06T15:36:20Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8899671' lon='2.2804805' />
+  <node id='979136893' timestamp='2010-11-06T15:36:21Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8900142' lon='2.28046' />
+  <node id='979137000' timestamp='2010-11-06T15:36:25Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8900493' lon='2.2802985' />
+  <node id='979137103' timestamp='2010-11-06T15:36:31Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8902148' lon='2.280152' />
+  <node id='979137320' timestamp='2010-11-06T15:36:46Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8899446' lon='2.2804767' />
+  <node id='979137587' timestamp='2010-11-06T15:37:01Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8902528' lon='2.2802546' />
+  <node id='979137666' timestamp='2010-11-06T15:37:06Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8900134' lon='2.2803299' />
+  <node id='979137683' timestamp='2010-11-06T15:37:07Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8902621' lon='2.2802403' />
+  <node id='979137759' timestamp='2010-11-06T15:37:12Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8901826' lon='2.2801784' />
+  <node id='979137776' timestamp='2010-11-06T15:37:13Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8902049' lon='2.2803402' />
+  <node id='979137852' timestamp='2010-11-06T15:37:17Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8902937' lon='2.2800842' />
+  <node id='979137935' timestamp='2010-11-06T15:37:22Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8902233' lon='2.2801493' />
+  <node id='979138020' timestamp='2010-11-06T15:37:29Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8903264' lon='2.2800979' />
+  <node id='979138330' timestamp='2010-11-06T15:37:48Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8899751' lon='2.2803575' />
+  <node id='979138348' timestamp='2010-11-06T15:37:49Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8902236' lon='2.2802737' />
+  <node id='979138443' timestamp='2010-11-06T15:37:54Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8899497' lon='2.2804801' />
+  <node id='979138466' timestamp='2010-11-06T15:37:55Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8900566' lon='2.2804237' />
+  <node id='979138558' timestamp='2010-11-06T15:37:58Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8900205' lon='2.2803237' />
+  <node id='979138577' timestamp='2010-11-06T15:37:58Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8899316' lon='2.2804285' />
+  <node id='979138698' timestamp='2010-11-06T15:38:01Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8903035' lon='2.2800954' />
+  <node id='979139145' timestamp='2010-11-06T15:38:14Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8899333' lon='2.2804206' />
+  <node id='979139237' timestamp='2010-11-06T15:38:16Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8899442' lon='2.2804017' />
+  <node id='979139614' timestamp='2010-11-06T15:38:23Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.889984' lon='2.2803554' />
+  <node id='979139643' timestamp='2010-11-06T15:38:24Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8902874' lon='2.2802203' />
+  <node id='979139782' timestamp='2010-11-06T15:38:28Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8901092' lon='2.2801241' />
+  <node id='979139799' timestamp='2010-11-06T15:38:28Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8901316' lon='2.2804038' />
+  <node id='979139907' timestamp='2010-11-06T15:38:32Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8902867' lon='2.2800911' />
+  <node id='979140015' timestamp='2010-11-06T15:38:37Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.890258' lon='2.2801146' />
+  <node id='979140139' timestamp='2010-11-06T15:38:41Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8903216' lon='2.2800947' />
+  <node id='979140536' timestamp='2010-11-06T15:38:55Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8902337' lon='2.280315' />
+  <node id='979140592' timestamp='2010-11-06T15:38:57Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8899331' lon='2.2804555' />
+  <node id='979140600' timestamp='2010-11-06T15:38:58Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8899455' lon='2.2803808' />
+  <node id='979140645' timestamp='2010-11-06T15:38:58Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8899554' lon='2.280482' />
+  <node id='979140676' timestamp='2010-11-06T15:38:59Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.890055' lon='2.2804182' />
+  <node id='979140799' timestamp='2010-11-06T15:39:02Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8900505' lon='2.2802921' />
+  <node id='979140814' timestamp='2010-11-06T15:39:03Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.890089' lon='2.280396' />
+  <node id='979140901' timestamp='2010-11-06T15:39:05Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8902984' lon='2.2800983' />
+  <node id='979141000' timestamp='2010-11-06T15:39:07Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8903355' lon='2.2801625' />
+  <node id='979141075' timestamp='2010-11-06T15:39:09Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8899386' lon='2.2803872' />
+  <node id='979141477' timestamp='2010-11-06T15:39:19Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8900188' lon='2.2803192' />
+  <node id='979141572' timestamp='2010-11-06T15:39:23Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8903243' lon='2.2801958' />
+  <node id='979141629' timestamp='2010-11-06T15:39:25Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8900567' lon='2.2801689' />
+  <node id='979141639' timestamp='2010-11-06T15:39:25Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8901683' lon='2.2805001' />
+  <node id='979141688' timestamp='2010-11-06T15:39:27Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8900507' lon='2.2801738' />
+  <node id='979141741' timestamp='2010-11-06T15:39:29Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8902512' lon='2.2801212' />
+  <node id='979141797' timestamp='2010-11-06T15:39:30Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.890336' lon='2.2801102' />
+  <node id='979142021' timestamp='2010-11-06T15:39:39Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8902215' lon='2.2802827' />
+  <node id='979142047' timestamp='2010-11-06T15:39:39Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8899363' lon='2.2804138' />
+  <node id='979142066' timestamp='2010-11-06T15:39:40Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8899854' lon='2.280487' />
+  <node id='979142076' timestamp='2010-11-06T15:39:40Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8900484' lon='2.2804255' />
+  <node id='979142124' timestamp='2010-11-06T15:39:42Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8900477' lon='2.2802941' />
+  <node id='979142132' timestamp='2010-11-06T15:39:42Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8901018' lon='2.2804287' />
+  <node id='979142175' timestamp='2010-11-06T15:39:44Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8903148' lon='2.280093' />
+  <node id='979142225' timestamp='2010-11-06T15:39:46Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8903387' lon='2.2801552' />
+  <node id='979142310' timestamp='2010-11-06T15:39:50Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8903409' lon='2.2801267' />
+  <node id='979142712' timestamp='2010-11-06T15:39:58Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.890012' lon='2.2803251' />
+  <node id='979142739' timestamp='2010-11-06T15:39:59Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.890331' lon='2.2801896' />
+  <node id='979142826' timestamp='2010-11-06T15:40:01Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8901134' lon='2.280116' />
+  <node id='979142847' timestamp='2010-11-06T15:40:02Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8900215' lon='2.2804542' />
+  <node id='979142926' timestamp='2010-11-06T15:40:04Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8900168' lon='2.2802037' />
+  <node id='979142995' timestamp='2010-11-06T15:40:10Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8899399' lon='2.2804718' />
+  <node id='979143025' timestamp='2010-11-06T15:40:10Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8902158' lon='2.2801557' />
+  <node id='979143090' timestamp='2010-11-06T15:40:13Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.890331' lon='2.2801026' />
+  <node id='979143303' timestamp='2010-11-06T15:40:23Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8902599' lon='2.280249' />
+  <node id='979143382' timestamp='2010-11-06T15:40:30Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8899833' lon='2.2804803' />
+  <node id='979143397' timestamp='2010-11-06T15:40:42Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.89005' lon='2.2804294' />
+  <node id='979143470' timestamp='2010-11-06T15:40:48Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.890149' lon='2.28009' />
+  <node id='979143486' timestamp='2010-11-06T15:40:48Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8900835' lon='2.2803941' />
+  <node id='979143570' timestamp='2010-11-06T15:40:50Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8903087' lon='2.2800931' />
+  <node id='979143641' timestamp='2010-11-06T15:40:52Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8903282' lon='2.2801726' />
+  <node id='979143711' timestamp='2010-11-06T15:40:54Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8903385' lon='2.2801171' />
+  <node id='979143790' timestamp='2010-11-06T15:40:56Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8899404' lon='2.2804068' />
+  <node id='979144040' timestamp='2010-11-06T15:41:01Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8899768' lon='2.2803618' />
+  <node id='979144058' timestamp='2010-11-06T15:41:02Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8902938' lon='2.2802143' />
+  <node id='979144145' timestamp='2010-11-06T15:41:03Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8901083' lon='2.2801209' />
+  <node id='979144171' timestamp='2010-11-06T15:41:04Z' uid='83557' user='Esperanza36' visible='true' version='1' changeset='6303374' lat='48.8900201' lon='2.2804497' />
   <node id='1003699267' timestamp='2010-11-25T12:48:13Z' uid='51308' user='Gall' visible='true' version='1' changeset='6454246' lat='45.162525' lon='5.7493019' />
   <node id='1042534350' timestamp='2014-07-19T19:04:48Z' uid='362997' user='Virgile1994' visible='true' version='5' changeset='24242905' lat='45.1618446' lon='5.7540652' />
   <node id='1163398691' timestamp='2011-02-20T14:24:27Z' uid='383401' user='akeran' visible='true' version='1' changeset='7343054' lat='45.1622074' lon='5.7517839' />
@@ -3230,6 +3353,9 @@
     <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2008' />
   </node>
   <node id='1763616301' timestamp='2012-05-23T21:04:47Z' uid='37548' user='Marcussacapuces91' visible='true' version='1' changeset='11684675' lat='48.8895821' lon='2.2567999' />
+  <node id='1765277743' timestamp='2012-06-30T10:09:23Z' uid='88164' user='Med' visible='true' version='2' changeset='12064231' lat='48.8900865' lon='2.2801435'>
+    <tag k='entrance' v='yes' />
+  </node>
   <node id='1765277750' timestamp='2016-12-07T18:37:20Z' uid='412560' user='Meersbrook' visible='true' version='2' changeset='44241913' lat='48.8896145' lon='2.2802435'>
     <tag k='crossing' v='uncontrolled' />
     <tag k='highway' v='crossing' />
@@ -3862,6 +3988,10 @@
     <tag k='source' v='v2 ; cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre ; mise à jour : 2009' />
   </node>
   <node id='3929742211' timestamp='2016-01-06T00:50:08Z' uid='90780' user='Verdy_p' visible='true' version='1' changeset='36393894' lat='48.8959595' lon='2.265205' />
+  <node id='3934483762' timestamp='2016-01-08T20:34:37Z' uid='11699' user='wagner51' visible='true' version='1' changeset='36452916' lat='48.8928049' lon='2.2774341' />
+  <node id='3934483763' timestamp='2016-01-08T20:34:37Z' uid='11699' user='wagner51' visible='true' version='1' changeset='36452916' lat='48.8928347' lon='2.277405' />
+  <node id='3934483764' timestamp='2016-01-08T20:34:37Z' uid='11699' user='wagner51' visible='true' version='1' changeset='36452916' lat='48.89291' lon='2.2774177' />
+  <node id='3934483765' timestamp='2016-01-08T20:34:37Z' uid='11699' user='wagner51' visible='true' version='1' changeset='36452916' lat='48.8930751' lon='2.2777977' />
   <node id='4001560704' timestamp='2016-02-11T22:27:49Z' uid='2772165' user='Grenoble38' visible='true' version='1' changeset='37157390' lat='45.17012' lon='5.7468447'>
     <tag k='source' v='v2 ; cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre ; mise à jour : 2009' />
   </node>
@@ -3955,6 +4085,158 @@
     <tag k='bus' v='yes' />
     <tag k='name' v='Louis Rouquier' />
     <tag k='public_transport' v='stop_position' />
+  </node>
+  <node id='5719922975' timestamp='2020-11-02T16:03:12Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8945798' lon='2.2751405'>
+    <tag k='addr:housenumber' v='104' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719922978' timestamp='2020-11-02T16:03:12Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8911884' lon='2.278729'>
+    <tag k='addr:housenumber' v='62' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719922987' timestamp='2020-11-02T16:03:12Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8913438' lon='2.2785456'>
+    <tag k='addr:housenumber' v='68' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719922998' timestamp='2020-11-02T16:03:12Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8944319' lon='2.2753033'>
+    <tag k='addr:housenumber' v='100' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719923004' timestamp='2020-11-02T16:03:12Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8945391' lon='2.2751902'>
+    <tag k='addr:housenumber' v='102' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719923006' timestamp='2020-11-02T16:03:12Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8958762' lon='2.2738483'>
+    <tag k='addr:housenumber' v='136' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719923007' timestamp='2020-11-02T16:03:12Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8892879' lon='2.2807058'>
+    <tag k='addr:housenumber' v='40' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719923012' timestamp='2020-11-02T16:03:12Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8937918' lon='2.2759758'>
+    <tag k='addr:housenumber' v='90' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719923016' timestamp='2020-11-02T16:03:12Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8880827' lon='2.2819824'>
+    <tag k='addr:housenumber' v='20' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719923017' timestamp='2020-11-02T16:03:12Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8915599' lon='2.2783509'>
+    <tag k='addr:housenumber' v='72' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719923723' timestamp='2020-11-02T16:03:12Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8895907' lon='2.2803894'>
+    <tag k='addr:housenumber' v='46' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719923726' timestamp='2020-11-02T16:03:12Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8871999' lon='2.2829792'>
+    <tag k='addr:housenumber' v='4' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719923732' timestamp='2020-11-02T16:03:12Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.894087' lon='2.2756654'>
+    <tag k='addr:housenumber' v='96' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719923738' timestamp='2020-11-02T16:03:12Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8924114' lon='2.2774982'>
+    <tag k='addr:housenumber' v='84' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719923741' timestamp='2020-11-02T16:03:13Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8950923' lon='2.2746028'>
+    <tag k='addr:housenumber' v='126' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719923747' timestamp='2020-11-02T16:03:13Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8893932' lon='2.2805953'>
+    <tag k='addr:housenumber' v='42' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719923749' timestamp='2020-11-02T16:03:13Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8936722' lon='2.2761012'>
+    <tag k='addr:housenumber' v='88' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719923754' timestamp='2020-11-02T16:03:13Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8889514' lon='2.281083'>
+    <tag k='addr:housenumber' v='36' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719923755' timestamp='2020-11-02T16:03:13Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8929129' lon='2.2769348'>
+    <tag k='addr:housenumber' v='86' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719923762' timestamp='2020-11-02T16:03:13Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8878685' lon='2.2822228'>
+    <tag k='addr:housenumber' v='18' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719923764' timestamp='2020-11-02T16:03:13Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8948968' lon='2.2748137'>
+    <tag k='addr:housenumber' v='106' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719923766' timestamp='2020-11-02T16:03:13Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8873489' lon='2.2836572'>
+    <tag k='addr:housenumber' v='2 bis' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719923768' timestamp='2020-11-02T16:03:13Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8888617' lon='2.2811535'>
+    <tag k='addr:housenumber' v='34' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719923773' timestamp='2020-11-02T16:03:13Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8881783' lon='2.2818756'>
+    <tag k='addr:housenumber' v='22' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719923781' timestamp='2020-11-02T16:03:13Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8947028' lon='2.2750111'>
+    <tag k='addr:housenumber' v='116' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719923784' timestamp='2020-11-02T16:03:13Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8894721' lon='2.2805128'>
+    <tag k='addr:housenumber' v='44' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719923790' timestamp='2020-11-02T16:03:13Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8947959' lon='2.2749116'>
+    <tag k='addr:housenumber' v='122' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719923792' timestamp='2020-11-02T16:03:13Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8890697' lon='2.280934'>
+    <tag k='addr:housenumber' v='38' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719923806' timestamp='2020-11-02T16:03:13Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.896228' lon='2.2735411'>
+    <tag k='addr:housenumber' v='138' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719923809' timestamp='2020-11-02T16:03:13Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8879241' lon='2.2821603'>
+    <tag k='addr:housenumber' v='18 bis' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719923812' timestamp='2020-11-02T16:03:13Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8951928' lon='2.2744958'>
+    <tag k='addr:housenumber' v='128' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719923816' timestamp='2020-11-02T16:03:13Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.893873' lon='2.27589'>
+    <tag k='addr:housenumber' v='92' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719923817' timestamp='2020-11-02T16:03:13Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8941858' lon='2.2755619'>
+    <tag k='addr:housenumber' v='98' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719923819' timestamp='2020-11-02T16:03:13Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8873097' lon='2.2828529'>
+    <tag k='addr:housenumber' v='6' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719924333' timestamp='2020-11-02T16:03:13Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8946748' lon='2.2750394'>
+    <tag k='addr:housenumber' v='114' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719924334' timestamp='2020-11-02T16:03:13Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8947536' lon='2.2749544'>
+    <tag k='addr:housenumber' v='120' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719924338' timestamp='2020-11-02T16:03:13Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8955792' lon='2.274172'>
+    <tag k='addr:housenumber' v='118' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
+  </node>
+  <node id='5719924340' timestamp='2020-11-02T16:03:13Z' uid='502891' user='chabe01' visible='true' version='2' changeset='93429609' lat='48.8869772' lon='2.2832272'>
+    <tag k='addr:housenumber' v='2' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2017' />
   </node>
   <node id='5922057438' timestamp='2019-08-20T15:43:36Z' uid='675449' user='jseigneuret' visible='true' version='2' changeset='73546543' lat='48.9028397' lon='2.2887822' />
   <node id='5922057453' timestamp='2018-09-22T07:47:21Z' uid='412560' user='Meersbrook' visible='true' version='1' changeset='62818028' lat='48.9027724' lon='2.2888982' />
@@ -4690,8 +4972,7 @@
     <tag k='boundary' v='administrative' />
     <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2008' />
   </way>
-  <way id='31716429' timestamp='2020-01-13T00:45:59Z' uid='49047' user='vincent_95' visible='true' version='23' changeset='79490923'>
-    <nd ref='354863927' />
+  <way id='31716429' timestamp='2020-10-29T00:42:33Z' uid='1256648' user='Zigeuner' visible='true' version='24' changeset='93205415'>
     <nd ref='4543588385' />
     <nd ref='4543589206' />
     <nd ref='249749946' />
@@ -5377,6 +5658,121 @@
     <tag k='highway' v='tertiary' />
     <tag k='name' v='Rue de Villiers' />
     <tag k='surface' v='asphalt' />
+  </way>
+  <way id='84171263' timestamp='2020-11-02T16:03:13Z' uid='502891' user='chabe01' visible='true' version='9' changeset='93429609'>
+    <nd ref='979135239' />
+    <nd ref='979143641' />
+    <nd ref='979133942' />
+    <nd ref='979141000' />
+    <nd ref='979142225' />
+    <nd ref='979134193' />
+    <nd ref='979136412' />
+    <nd ref='979142310' />
+    <nd ref='979143711' />
+    <nd ref='979141797' />
+    <nd ref='979143090' />
+    <nd ref='979138020' />
+    <nd ref='979140139' />
+    <nd ref='979142175' />
+    <nd ref='979143570' />
+    <nd ref='979138698' />
+    <nd ref='979140901' />
+    <nd ref='979137852' />
+    <nd ref='979139907' />
+    <nd ref='979133653' />
+    <nd ref='979136236' />
+    <nd ref='979140015' />
+    <nd ref='979141741' />
+    <nd ref='979136332' />
+    <nd ref='979137935' />
+    <nd ref='979135119' />
+    <nd ref='979137103' />
+    <nd ref='979143025' />
+    <nd ref='979132144' />
+    <nd ref='979136123' />
+    <nd ref='979137759' />
+    <nd ref='979143470' />
+    <nd ref='979133415' />
+    <nd ref='979142826' />
+    <nd ref='979144145' />
+    <nd ref='979139782' />
+    <nd ref='1765277743' />
+    <nd ref='979141629' />
+    <nd ref='979132026' />
+    <nd ref='979134994' />
+    <nd ref='979141688' />
+    <nd ref='979142926' />
+    <nd ref='979140799' />
+    <nd ref='979142124' />
+    <nd ref='979137000' />
+    <nd ref='979138558' />
+    <nd ref='979141477' />
+    <nd ref='979142712' />
+    <nd ref='979137666' />
+    <nd ref='979139614' />
+    <nd ref='979136770' />
+    <nd ref='979138330' />
+    <nd ref='979144040' />
+    <nd ref='979134745' />
+    <nd ref='979140600' />
+    <nd ref='979141075' />
+    <nd ref='979139237' />
+    <nd ref='979143790' />
+    <nd ref='979142047' />
+    <nd ref='979139145' />
+    <nd ref='979138577' />
+    <nd ref='979135462' />
+    <nd ref='979134469' />
+    <nd ref='979140592' />
+    <nd ref='979136515' />
+    <nd ref='979142995' />
+    <nd ref='979137320' />
+    <nd ref='979138443' />
+    <nd ref='979140645' />
+    <nd ref='979134873' />
+    <nd ref='979136867' />
+    <nd ref='979133150' />
+    <nd ref='979135942' />
+    <nd ref='979142066' />
+    <nd ref='979143382' />
+    <nd ref='979134899' />
+    <nd ref='979136893' />
+    <nd ref='979142847' />
+    <nd ref='979144171' />
+    <nd ref='979142076' />
+    <nd ref='979143397' />
+    <nd ref='979138466' />
+    <nd ref='979140676' />
+    <nd ref='979143486' />
+    <nd ref='979133454' />
+    <nd ref='979140814' />
+    <nd ref='979142132' />
+    <nd ref='979139799' />
+    <nd ref='979141639' />
+    <nd ref='979136141' />
+    <nd ref='979137776' />
+    <nd ref='979140536' />
+    <nd ref='979142021' />
+    <nd ref='979136797' />
+    <nd ref='979138348' />
+    <nd ref='979135842' />
+    <nd ref='979137587' />
+    <nd ref='979143303' />
+    <nd ref='979132962' />
+    <nd ref='979137683' />
+    <nd ref='979139643' />
+    <nd ref='979133210' />
+    <nd ref='979135967' />
+    <nd ref='979144058' />
+    <nd ref='979134777' />
+    <nd ref='979141572' />
+    <nd ref='979142739' />
+    <nd ref='979135239' />
+    <tag k='addr:housenumber' v='48' />
+    <tag k='building' v='hospital' />
+    <tag k='phone' v='+33 8 20 092 177' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010' />
+    <tag k='website' v='https://www.smile.fr/' />
   </way>
   <way id='93991397' timestamp='2014-04-27T08:56:23Z' uid='37548' user='Marcussacapuces91' visible='true' version='3' changeset='21972222'>
     <nd ref='348831534' />
@@ -6387,6 +6783,38 @@
     <tag k='boundary' v='administrative' />
     <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2008' />
   </way>
+  <way id='390293627' timestamp='2020-11-02T16:03:13Z' uid='502891' user='chabe01' visible='true' version='5' changeset='93429609'>
+    <nd ref='3934483762' />
+    <nd ref='793851473' />
+    <nd ref='793856492' />
+    <nd ref='793845558' />
+    <nd ref='793850191' />
+    <nd ref='793840471' />
+    <nd ref='793847860' />
+    <nd ref='793848564' />
+    <nd ref='793847268' />
+    <nd ref='793854471' />
+    <nd ref='793840225' />
+    <nd ref='793856433' />
+    <nd ref='793857231' />
+    <nd ref='793841516' />
+    <nd ref='793843191' />
+    <nd ref='793842037' />
+    <nd ref='793840730' />
+    <nd ref='793854925' />
+    <nd ref='3934483765' />
+    <nd ref='3934483764' />
+    <nd ref='3934483763' />
+    <nd ref='3934483762' />
+    <tag k='addr:housenumber' v='84' />
+    <tag k='building' v='public' />
+    <tag k='building:levels' v='6' />
+    <tag k='government' v='police' />
+    <tag k='name' v='Ministère de l&apos;Intérieur (DGSI, SDAT, UCLAT)' />
+    <tag k='office' v='government' />
+    <tag k='old_name' v='Direction de la Surveillance du Territoire' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010' />
+  </way>
   <way id='393137649' timestamp='2016-01-24T08:18:54Z' uid='2046205' user='Jean-Mi ToutTerrain' visible='true' version='1' changeset='36771067'>
     <nd ref='496123055' />
     <nd ref='2545777737' />
@@ -6483,6 +6911,13 @@
     <tag k='boundary' v='administrative' />
     <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2008' />
   </way>
+  <way id='864847276' timestamp='2020-10-29T00:42:33Z' uid='1256648' user='Zigeuner' visible='true' version='1' changeset='93205415'>
+    <nd ref='354863927' />
+    <nd ref='4543588385' />
+    <tag k='admin_level' v='6' />
+    <tag k='boundary' v='administrative' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2011' />
+  </way>
   <relation id='80071' timestamp='2014-07-25T07:12:07Z' uid='90780' user='Verdy_p' visible='true' version='11' changeset='24343086'>
     <member type='node' ref='26692092' role='admin_centre' />
     <member type='way' ref='31328855' role='outer' />
@@ -6576,11 +7011,12 @@
     <tag k='wikidata' v='Q48958' />
     <tag k='wikipedia' v='fr:Neuilly-sur-Seine' />
   </relation>
-  <relation id='86985' timestamp='2020-01-13T00:45:59Z' uid='49047' user='vincent_95' visible='true' version='24' changeset='79490923'>
+  <relation id='86985' timestamp='2020-10-29T00:42:33Z' uid='1256648' user='Zigeuner' visible='true' version='25' changeset='93205415'>
     <member type='node' ref='26692567' role='admin_centre' />
     <member type='way' ref='164280366' role='outer' />
     <member type='way' ref='164280400' role='outer' />
     <member type='way' ref='31716429' role='outer' />
+    <member type='way' ref='864847276' role='outer' />
     <member type='way' ref='31716427' role='outer' />
     <member type='way' ref='31716430' role='outer' />
     <member type='way' ref='32031732' role='outer' />
@@ -7597,13 +8033,9 @@
     <member type='node' ref='5873865356' role='platform' />
     <member type='node' ref='1363278370' role='stop' />
     <member type='node' ref='2700046054' role='platform' />
-    <member type='node' ref='4944459135' role='stop' />
     <member type='node' ref='2032373545' role='platform' />
-    <member type='node' ref='4944459137' role='stop' />
     <member type='node' ref='2032373546' role='platform' />
-    <member type='node' ref='4944459136' role='stop' />
     <member type='node' ref='2032373548' role='platform' />
-    <member type='node' ref='4943067542' role='stop' />
     <member type='node' ref='2032373549' role='platform' />
     <member type='node' ref='5562852700' role='stop' />
     <member type='node' ref='5562852701' role='platform' />
@@ -7703,12 +8135,6 @@
     <member type='way' ref='808481239' role='' />
     <member type='way' ref='29020649' role='' />
     <member type='way' ref='331135224' role='' />
-    <member type='way' ref='342590602' role='' />
-    <member type='way' ref='672280307' role='' />
-    <member type='way' ref='342590611' role='' />
-    <member type='way' ref='507983548' role='' />
-    <member type='way' ref='83724043' role='' />
-    <member type='way' ref='380740038' role='' />
     <member type='way' ref='83724107' role='' />
     <member type='way' ref='83724065' role='' />
     <member type='way' ref='196715303' role='' />
@@ -7850,11 +8276,8 @@
     <member type='node' ref='5562852699' role='platform' />
     <member type='node' ref='4943067547' role='stop' />
     <member type='node' ref='2032373550' role='platform' />
-    <member type='node' ref='4943067541' role='stop' />
     <member type='node' ref='4943067543' role='platform' />
-    <member type='node' ref='4943067546' role='stop' />
     <member type='node' ref='2032373547' role='platform' />
-    <member type='node' ref='4943067545' role='stop' />
     <member type='node' ref='4100186791' role='platform' />
     <member type='node' ref='4943067544' role='stop' />
     <member type='node' ref='2822741401' role='platform' />
@@ -7964,12 +8387,6 @@
     <member type='way' ref='196715303' role='' />
     <member type='way' ref='83724065' role='' />
     <member type='way' ref='83724107' role='' />
-    <member type='way' ref='380740038' role='' />
-    <member type='way' ref='83724043' role='' />
-    <member type='way' ref='507983548' role='' />
-    <member type='way' ref='342590611' role='' />
-    <member type='way' ref='672280307' role='' />
-    <member type='way' ref='342590602' role='' />
     <member type='way' ref='314175139' role='' />
     <member type='way' ref='314175145' role='' />
     <member type='way' ref='40363489' role='' />
@@ -8427,11 +8844,12 @@
     <tag k='start_date' v='2015-03' />
     <tag k='type' v='boundary' />
   </relation>
-  <relation id='4106493' timestamp='2019-11-25T15:24:17Z' uid='1443767' user='Olyon' visible='true' version='6' changeset='77532087'>
+  <relation id='4106493' timestamp='2020-10-29T00:42:33Z' uid='1256648' user='Zigeuner' visible='true' version='7' changeset='93205415'>
     <member type='node' ref='26692567' role='admin_centre' />
     <member type='way' ref='164280366' role='outer' />
     <member type='way' ref='164280400' role='outer' />
     <member type='way' ref='31716429' role='outer' />
+    <member type='way' ref='864847276' role='outer' />
     <member type='way' ref='31716427' role='outer' />
     <member type='way' ref='31716430' role='outer' />
     <member type='way' ref='32031732' role='outer' />
@@ -8479,7 +8897,7 @@
     <tag k='wikidata' v='Q19945186' />
     <tag k='wikipedia' v='fr:Canton de Neuilly-sur-Seine' />
   </relation>
-  <relation id='4251394' timestamp='2019-02-22T11:30:48Z' uid='2126146' user='johnparis' visible='true' version='5' changeset='67462653'>
+  <relation id='4251394' timestamp='2020-11-02T21:45:37Z' uid='502891' user='chabe01' visible='true' version='7' changeset='93442091'>
     <member type='node' ref='3220815516' role='house' />
     <member type='node' ref='3220815521' role='house' />
     <member type='node' ref='3220815522' role='house' />
@@ -8534,12 +8952,14 @@
     <member type='way' ref='40362328' role='street' />
     <member type='way' ref='380740038' role='street' />
     <member type='way' ref='83724043' role='street' />
+    <member type='way' ref='507983548' role='street' />
     <member type='way' ref='342590611' role='street' />
     <member type='way' ref='672280307' role='street' />
     <member type='way' ref='342590602' role='street' />
     <tag k='name' v='Rue de Villiers' />
     <tag k='ref:FR:FANTOIR' v='920519650V' />
     <tag k='type' v='associatedStreet' />
+    <tag k='wikidata' v='Q65123617' />
   </relation>
   <relation id='5222455' timestamp='2015-05-30T16:43:07Z' uid='1238664' user='zerpou' visible='true' version='1' changeset='31588203'>
     <member type='way' ref='112365201' role='outer' />
@@ -8549,7 +8969,7 @@
     <tag k='source' v='Service-Public.fr - 06/2013' />
     <tag k='type' v='multipolygon' />
   </relation>
-  <relation id='5815397' timestamp='2020-04-10T21:30:29Z' uid='709289' user='Super-Map' visible='true' version='16' changeset='83383078'>
+  <relation id='5815397' timestamp='2020-10-29T00:42:33Z' uid='1256648' user='Zigeuner' visible='true' version='17' changeset='93205415'>
     <member type='node' ref='26691586' role='admin_centre' />
     <member type='way' ref='31564541' role='outer' />
     <member type='way' ref='428640787' role='outer' />
@@ -8588,6 +9008,7 @@
     <member type='way' ref='164280366' role='outer' />
     <member type='way' ref='164280400' role='outer' />
     <member type='way' ref='31716429' role='outer' />
+    <member type='way' ref='864847276' role='outer' />
     <member type='way' ref='31716427' role='outer' />
     <member type='way' ref='31716430' role='outer' />
     <member type='way' ref='591749237' role='outer' />
@@ -8806,7 +9227,6 @@
     <member type='way' ref='507983550' role='' />
     <member type='way' ref='531645380' role='' />
     <member type='way' ref='22716808' role='' />
-    <member type='way' ref='507983548' role='' />
     <member type='way' ref='24669370' role='' />
     <member type='way' ref='380740036' role='' />
     <member type='way' ref='380768610' role='' />
@@ -8851,11 +9271,6 @@
     <member type='way' ref='380768600' role='' />
     <member type='way' ref='190909084' role='' />
     <member type='way' ref='538087090' role='' />
-    <member type='way' ref='672280307' role='' />
-    <member type='way' ref='342590611' role='' />
-    <member type='way' ref='507983548' role='' />
-    <member type='way' ref='83724043' role='' />
-    <member type='way' ref='380740038' role='' />
     <member type='way' ref='83724107' role='' />
     <member type='way' ref='37120886' role='' />
     <member type='way' ref='342609411' role='' />
@@ -9014,7 +9429,6 @@
     <member type='way' ref='507983550' role='' />
     <member type='way' ref='531645380' role='' />
     <member type='way' ref='22716808' role='' />
-    <member type='way' ref='507983548' role='' />
     <member type='way' ref='24669370' role='' />
     <member type='way' ref='380740036' role='' />
     <member type='way' ref='380768610' role='' />
@@ -9153,11 +9567,6 @@
     <member type='way' ref='380768600' role='' />
     <member type='way' ref='190909084' role='' />
     <member type='way' ref='538087090' role='' />
-    <member type='way' ref='672280307' role='' />
-    <member type='way' ref='342590611' role='' />
-    <member type='way' ref='507983548' role='' />
-    <member type='way' ref='83724043' role='' />
-    <member type='way' ref='380740038' role='' />
     <member type='way' ref='83724107' role='' />
     <member type='way' ref='37120886' role='' />
     <member type='way' ref='342609411' role='' />
@@ -9216,6 +9625,60 @@
     <tag k='to' v='La Défense' />
     <tag k='type' v='route' />
     <tag k='wheelchair' v='yes' />
+  </relation>
+  <relation id='11824084' timestamp='2020-11-02T16:03:11Z' uid='502891' user='chabe01' visible='true' version='1' changeset='93429609'>
+    <member type='way' ref='672280307' role='street' />
+    <member type='way' ref='507983548' role='street' />
+    <member type='way' ref='380740038' role='street' />
+    <member type='way' ref='342590611' role='street' />
+    <member type='way' ref='342590602' role='street' />
+    <member type='way' ref='83724043' role='street' />
+    <member type='way' ref='40362328' role='street' />
+    <member type='way' ref='390293627' role='house' />
+    <member type='way' ref='84171263' role='house' />
+    <member type='node' ref='5719924340' role='house' />
+    <member type='node' ref='5719924338' role='house' />
+    <member type='node' ref='5719924334' role='house' />
+    <member type='node' ref='5719924333' role='house' />
+    <member type='node' ref='5719923819' role='house' />
+    <member type='node' ref='5719923817' role='house' />
+    <member type='node' ref='5719923816' role='house' />
+    <member type='node' ref='5719923812' role='house' />
+    <member type='node' ref='5719923809' role='house' />
+    <member type='node' ref='5719923806' role='house' />
+    <member type='node' ref='5719923792' role='house' />
+    <member type='node' ref='5719923790' role='house' />
+    <member type='node' ref='5719923784' role='house' />
+    <member type='node' ref='5719923781' role='house' />
+    <member type='node' ref='5719923773' role='house' />
+    <member type='node' ref='5719923768' role='house' />
+    <member type='node' ref='5719923766' role='house' />
+    <member type='node' ref='5719923764' role='house' />
+    <member type='node' ref='5719923762' role='house' />
+    <member type='node' ref='5719923755' role='house' />
+    <member type='node' ref='5719923754' role='house' />
+    <member type='node' ref='5719923749' role='house' />
+    <member type='node' ref='5719923747' role='house' />
+    <member type='node' ref='5719923741' role='house' />
+    <member type='node' ref='5719923738' role='house' />
+    <member type='node' ref='5719923732' role='house' />
+    <member type='node' ref='5719923726' role='house' />
+    <member type='node' ref='5719923723' role='house' />
+    <member type='node' ref='5719923017' role='house' />
+    <member type='node' ref='5719923016' role='house' />
+    <member type='node' ref='5719923012' role='house' />
+    <member type='node' ref='5719923007' role='house' />
+    <member type='node' ref='5719923006' role='house' />
+    <member type='node' ref='5719923004' role='house' />
+    <member type='node' ref='5719922998' role='house' />
+    <member type='node' ref='5719922987' role='house' />
+    <member type='node' ref='5719922978' role='house' />
+    <member type='node' ref='5719922975' role='house' />
+    <tag k='addr:city' v='Levallois-Perret' />
+    <tag k='addr:postcode' v='92300' />
+    <tag k='name' v='Rue de Villiers' />
+    <tag k='ref:FR:FANTOIR' v='920449662N' />
+    <tag k='type' v='associatedStreet' />
   </relation>
   <relation id='424253843' timestamp='2016-02-11T22:27:49Z' uid='4242' user='nlehuby_fake' visible='true' version='1' changeset='37157390'>
     <member type='node' ref='26692092' role='center' />

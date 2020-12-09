@@ -1,8 +1,13 @@
 [package]
 name = "mimir"
-version = "1.18.1"
+version = "1.19.0-rc15"
 authors = ["Canal TP <dt.ro@canaltp.fr>"]
 edition = "2018"
+description = "Set of tools for inserting data into Elasticsearch"
+license = "AGPLv3"
+repository = "https://github.com/CanalTP/mimirsbrunn.git"
+keywords = [ "mimirsbrunn", "elasticsearch", "geocoding" ]
+categories = [ "database" ]
 
 [dependencies]
 slog = { version = "2.5", features = ["max_level_trace", "release_max_level_info"]}

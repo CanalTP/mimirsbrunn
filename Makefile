@@ -1,16 +1,3 @@
-#
-#   Based on Makefile from https://github.com/mvanholsteijn/docker-makefile
-#
-#
-#   Based on https://gist.github.com/mpneuried/0594963ad38e68917ef189b4e6a269db
-#
-#
-# import config.
-# You can change the default config with `make cnf="config_special.env" build`
-cnf ?= config.env
-include $(cnf)
-export $(shell sed 's/=.*//' $(cnf))
-
 # import deploy config
 # You can change the default deploy config with `make cnf="deploy_special.env" release`
 dpl ?= deploy.env
@@ -27,9 +14,9 @@ help: ## This help.
 
 RELEASE_SUPPORT := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/.make-release-support
 
-NAME=$(shell . $(RELEASE_SUPPORT) ; getBaseName)
 VERSION=$(shell . $(RELEASE_SUPPORT) ; getVersion)
-DOCKER_TAGS=$(addprefix $(DOCKER_REPO)/$(NAME):,$(shell . $(RELEASE_SUPPORT) ; getDockerTags))
+DOCKERS = $(patsubst ./docker/%/,%, $(dir $(wildcard ./docker/*/)))
+DOCKER_TAGS=$(shell . $(RELEASE_SUPPORT) ; getDockerTags)
 TAG=$(shell . $(RELEASE_SUPPORT); getTag)
 
 SHELL=/bin/bash
@@ -39,6 +26,8 @@ SHELL=/bin/bash
 	release patch-release minor-release major-release tag check-status check-release \
 	push pre-push do-push post-push \
 	changelog
+
+### Building ###
 
 build: pre-build docker-build post-build
 
@@ -52,26 +41,29 @@ pre-push:
 post-push:
 
 docker-build:
-	$(info $$DOCKER_TAGS is [${DOCKER_TAGS}])
-	@for ENV in $(BUILD_ENV); do \
-		TAGS=""; \
-		SPL=$${ENV/:/ }; \
-		DEB=$$(echo $$SPL | awk '{print $$1;}'); \
-		RST=$$(echo $$SPL | awk '{print $$2;}'); \
-		ARG_DEB="--build-arg DEBIAN_VERSION=$$DEB"; \
-		ARG_RST="--build-arg RUST_VERSION=$$RST"; \
-		for DOCKER_TAG in $(DOCKER_TAGS); do \
-			TAGS=$$TAGS" --tag $$DOCKER_TAG-$$DEB"; \
-		done; \
-		FIRST_ENV=$$(echo $(BUILD_ENV) | awk '{print $$1;}'); \
-		if [ $$FIRST_ENV = $$ENV ]; then \
+	$(info $$DOCKERS is [${DOCKERS}])
+	@for DOCKER in $(DOCKERS); do \
+		for ENV in $(BUILD_ENV); do \
+		  SPL=$${ENV/:/ }; \
+		  DEB=$$(echo $$SPL | awk '{print $$1;}'); \
+		  RST=$$(echo $$SPL | awk '{print $$2;}'); \
+			echo "Building $$DOCKER for debian $$DEB / rust $$RST"; \
+		  ARG_DEB="--build-arg DEBIAN_VERSION=$$DEB"; \
+		  ARG_RST="--build-arg RUST_VERSION=$$RST"; \
+			TAGS=""; \
 			for DOCKER_TAG in $(DOCKER_TAGS); do \
-				TAGS=$$TAGS" --tag $$DOCKER_TAG"; \
+			  TAGS=$$TAGS" --tag $$DOCKER_REPO/$$DOCKER:$$DOCKER_TAG-$$DEB"; \
 			done; \
-			TAGS=$$TAGS" --tag $(DOCKER_REPO)/$(NAME):latest"; \
-		fi; \
-		echo "docker build $(DOCKER_BUILD_ARGS) $$ARG_DEB $$ARG_RST $$TAGS -f $(DOCKER_FILE_PATH) $(DOCKER_BUILD_CONTEXT)"; \
-		docker build $(DOCKER_BUILD_ARGS) $$ARG_DEB $$ARG_RST $$TAGS -f $(DOCKER_FILE_PATH) $(DOCKER_BUILD_CONTEXT); \
+			FIRST_ENV=$$(echo $(BUILD_ENV) | awk '{print $$1;}'); \
+			if [ $$FIRST_ENV = $$ENV ]; then \
+				for DOCKER_TAG in $(DOCKER_TAGS); do \
+			  	TAGS=$$TAGS" --tag $$DOCKER_REPO/$$DOCKER:$$DOCKER_TAG"; \
+				done; \
+				TAGS=$$TAGS" --tag $$DOCKER_REPO/$$DOCKER:latest"; \
+			fi; \
+			echo "docker build $(DOCKER_BUILD_ARGS) $$ARG_DEB $$ARG_RST $$TAGS -f docker/$$DOCKER/Dockerfile $(DOCKER_BUILD_CONTEXT)"; \
+			docker build $(DOCKER_BUILD_ARGS) $$ARG_DEB $$ARG_RST $$TAGS -f docker/$$DOCKER/Dockerfile $(DOCKER_BUILD_CONTEXT); \
+		done; \
 	done
 
 release: check-status check-release build push
@@ -79,19 +71,21 @@ release: check-status check-release build push
 push: pre-push do-push post-push
 
 do-push:
-	@for ENV in $(BUILD_ENV); do \
-		SPL=$${ENV/:/ }; \
-		DEB=$$(echo $$SPL | awk '{print $$1;}'); \
-		for DOCKER_TAG in $(DOCKER_TAGS); do \
-			docker push $$DOCKER_TAG-$$DEB; \
-		done; \
-		FIRST_ENV=$$(echo $(BUILD_ENV) | awk '{print $$1;}'); \
-		if [ $$FIRST_ENV = $$ENV ]; then \
+	@for DOCKER in $(DOCKERS); do \
+		for ENV in $(BUILD_ENV); do \
+		  SPL=$${ENV/:/ }; \
+		  DEB=$$(echo $$SPL | awk '{print $$1;}'); \
 			for DOCKER_TAG in $(DOCKER_TAGS); do \
-			  docker push $$DOCKER_TAG; \
+			  docker push $$DOCKER_REPO/$$DOCKER:$$DOCKER_TAG-$$DEB; \
 			done; \
-			docker push $(DOCKER_REPO)/$(NAME):latest; \
-		fi; \
+			FIRST_ENV=$$(echo $(BUILD_ENV) | awk '{print $$1;}'); \
+			if [ $$FIRST_ENV = $$ENV ]; then \
+				for DOCKER_TAG in $(DOCKER_TAGS); do \
+			  	docker push $$DOCKER_REPO/$$DOCKER:$$DOCKER_TAG; \
+				done; \
+				docker push $$DOCKER_REPO/$$DOCKER:latest; \
+			fi; \
+		done; \
 	done
 
 snapshot: build push
@@ -136,7 +130,7 @@ tag: check-status ## Check that the tag does not already exist, changes the vers
 	git add .
 	git commit -m "[VER] new version $(VERSION)" ;
 	git tag -a $(TAG) -m "Version $(VERSION)";
-	@ if [ -n "$(shell git remote -v)" ] ; then git push --tags ; else echo 'no remote to push tags to' ; fi
+	@ if [ -n "$(shell git remote get-url origin)" ] ; then git push origin $(TAG) ; else echo 'no remote to push tags to' ; fi
 
 check-status: ## Check that there are no outstanding changes. (uses git status)
 	@. $(RELEASE_SUPPORT) ; ! hasChanges \

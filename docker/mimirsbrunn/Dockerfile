@@ -25,9 +25,9 @@ fi
 
 COPY . ./
 
-RUN cargo build --release
+RUN rm Cargo.lock
 
-ARG DEBIAN_VERSION
+RUN cargo build --release --features db-storage
 
 FROM debian:${DEBIAN_VERSION}-slim
 
@@ -39,22 +39,22 @@ ARG DEBIAN_VERSION
 
 RUN if [ "${DEBIAN_VERSION}" = "buster" ]; then \
   apt-get update \
-    && apt-get install -y libcurl4 \
+    && apt-get install -y libcurl4 sqlite3 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*; \
 elif [ "${DEBIAN_VERSION}" = "stretch" ]; then \
   apt-get update \
-    && apt-get install -y libcurl3 \
+    && apt-get install -y libcurl3 sqlite3 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*; \
 else \
   echo "Unsupported debian version '$DEBIAN_VERSION'"; \
 fi
 
-COPY --from=builder /srv/mimirsbrunn/target/release/bragi /srv/bragi
+RUN mkdir /etc/mimirsbrunn
 
-EXPOSE 4000
-ENV BRAGI_ES http://localhost:9200/munin
-ENV RUST_LOG=info,hyper=info
-
-CMD ["/srv/bragi", "-b", "0.0.0.0:4000"]
+COPY --from=builder /srv/mimirsbrunn/target/release/osm2mimir /usr/bin/osm2mimir
+COPY --from=builder /srv/mimirsbrunn/target/release/cosmogony2mimir /usr/bin/cosmogony2mimir
+COPY --from=builder /srv/mimirsbrunn/target/release/bano2mimir /usr/bin/bano2mimir
+COPY --from=builder /srv/mimirsbrunn/target/release/openaddresses2mimir /usr/bin/openaddresses2mimir
+COPY --from=builder /srv/mimirsbrunn/config/* /etc/mimirsbrunn/

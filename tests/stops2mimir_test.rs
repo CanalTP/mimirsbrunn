@@ -28,7 +28,6 @@
 // https://groups.google.com/d/forum/navitia
 // www.navitia.io
 
-use mimir;
 use std::path::Path;
 
 /// Simple call to a stops2mimir load into ES base

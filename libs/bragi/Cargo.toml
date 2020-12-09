@@ -1,8 +1,14 @@
 [package]
 name = "bragi"
-version = "1.18.1"
+version = "1.19.0-rc15"
 authors = ["dt.ro <dt.ro@canaltp.fr>"]
 edition = "2018"
+description = "Web interface to Elasticsearch for Mimirsbrunn"
+license = "AGPLv3"
+repository = "https://github.com/CanalTP/mimirsbrunn.git"
+keywords = [ "mimirsbrunn", "elasticsearch", "geocoding" ]
+categories = [ "database" ]
+readme = "README.md"
 
 [dependencies]
 structopt = "0.3"

@@ -29,7 +29,6 @@
 // www.navitia.io
 #![allow(clippy::cognitive_complexity)]
 use cosmogony::ZoneType;
-use mimir;
 use std::collections::BTreeMap;
 use std::f64;
 use std::path::Path;

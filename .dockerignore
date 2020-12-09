@@ -1,8 +1,5 @@
-*
-!src/
-!libs/
-!tests/
-!config/
-!Cargo*
-!build.rs
-!.git/
+target
+.dockerignore
+.gitignore
+ci
+scripts

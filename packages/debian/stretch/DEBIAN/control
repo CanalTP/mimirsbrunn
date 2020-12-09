@@ -1,0 +1,8 @@
+Package: mimirsbrunn
+Version: 1.19.0
+Section: base
+Priority: optional
+Architecture: all
+Depends: libssl1.0
+Maintainer: matthieu.paindavoine@kisiodigital.com
+Description: Mimirsbrunn binaries for importing data into Elasticsearch

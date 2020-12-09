@@ -100,9 +100,21 @@ function setRelease() {
   validate_version ${VERSION}
   [[ $? != 0 ]] &&
     { echo "${VERSION} is not valid semantic version"; return 1; } ||
-    { sed -i -e "s/^version\s*=\s*\".*\"/version = \"$VERSION\"/" Cargo.toml; }
+    {
+      setCargoTomlVersion $VERSION Cargo.toml;
+      setCargoTomlVersion $VERSION libs/bragi/Cargo.toml;
+      setCargoTomlVersion $VERSION libs/mimir/Cargo.toml;
+      setCargoTomlVersion $VERSION libs/tools/Cargo.toml;
+      setCargoTomlVersion $VERSION libs/docker_wrapper/Cargo.toml;
+    }
 
   return 0
+}
+
+## $1 Version
+## $2 Path to Cargo.toml
+function setCargoTomlVersion() {
+  sed -i -e "s/^version\s*=\s*\".*\"/version = \"$1\"/" $2
 }
 
 # Not used

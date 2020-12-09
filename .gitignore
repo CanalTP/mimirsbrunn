@@ -4,3 +4,4 @@ build_packages/*
 *~
 import2mimir-*.log
 scripts/*.log
+scripts/data

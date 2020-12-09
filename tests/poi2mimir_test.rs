@@ -28,7 +28,6 @@
 // https://groups.google.com/d/forum/navitia
 // www.navitia.io
 
-use reqwest;
 use serde_json::value::Value;
 use std::path::Path;
 

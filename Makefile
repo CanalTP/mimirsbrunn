@@ -19,9 +19,9 @@ help: ## This help.
 
 RELEASE_SUPPORT := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/.make-release-support
 
-NAME=$(shell . $(RELEASE_SUPPORT) ; getBaseName)
 VERSION=$(shell . $(RELEASE_SUPPORT) ; getVersion)
-DOCKER_TAGS=$(addprefix $(DOCKER_REPO)/$(NAME):,$(shell . $(RELEASE_SUPPORT) ; getDockerTags))
+DOCKERS = $(patsubst ./docker/%/,%, $(dir $(wildcard ./docker/*/)))
+DOCKER_TAGS=$(shell . $(RELEASE_SUPPORT) ; getDockerTags)
 TAG=$(shell . $(RELEASE_SUPPORT); getTag)
 
 SHELL=/bin/bash
@@ -34,6 +34,7 @@ SHELL=/bin/bash
 build: pre-build docker-build post-build ## Build one or more docker images
 
 check: pre-build          ## Runs validity checks (fmt, lint, unit tests)
+
 pre-build: fmt lint test
 
 post-build:
@@ -43,25 +44,29 @@ pre-push:
 post-push:
 
 docker-build:
-	@for ENV in $(BUILD_ENV); do \
-		TAGS=""; \
-		SPL=$${ENV/:/ }; \
-		DEB=$$(echo $$SPL | awk '{print $$1;}'); \
-		RST=$$(echo $$SPL | awk '{print $$2;}'); \
-		ARG_DEB="--build-arg DEBIAN_VERSION=$$DEB"; \
-		ARG_RST="--build-arg RUST_VERSION=$$RST"; \
-		for DOCKER_TAG in $(DOCKER_TAGS); do \
-			TAGS=$$TAGS" --tag $$DOCKER_TAG-$$DEB"; \
-		done; \
-		FIRST_ENV=$$(echo $(BUILD_ENV) | awk '{print $$1;}'); \
-		if [ $$FIRST_ENV = $$ENV ]; then \
+	$(info $$DOCKERS is [${DOCKERS}])
+	@for DOCKER in $(DOCKERS); do \
+		for ENV in $(BUILD_ENV); do \
+			TAGS=""; \
+			SPL=$${ENV/:/ }; \
+			DEB=$$(echo $$SPL | awk '{print $$1;}'); \
+			RST=$$(echo $$SPL | awk '{print $$2;}'); \
+			echo "Building $$DOCKER for debian $$DEB / rust $$RST"; \
+			ARG_DEB="--build-arg DEBIAN_VERSION=$$DEB"; \
+			ARG_RST="--build-arg RUST_VERSION=$$RST"; \
 			for DOCKER_TAG in $(DOCKER_TAGS); do \
-				TAGS=$$TAGS" --tag $$DOCKER_TAG"; \
+			  TAGS=$$TAGS" --tag $$DOCKER_REPO/$$DOCKER:$$DOCKER_TAG-$$DEB"; \
 			done; \
-			TAGS=$$TAGS" --tag $(DOCKER_REPO)/$(NAME):latest"; \
-		fi; \
-		echo "docker build $(DOCKER_BUILD_ARGS) $$ARG_DEB $$ARG_RST $$TAGS -f $(DOCKER_FILE_PATH) $(DOCKER_BUILD_CONTEXT)"; \
-		docker build $(DOCKER_BUILD_ARGS) $$ARG_DEB $$ARG_RST $$TAGS -f $(DOCKER_FILE_PATH) $(DOCKER_BUILD_CONTEXT); \
+			FIRST_ENV=$$(echo $(BUILD_ENV) | awk '{print $$1;}'); \
+			if [ $$FIRST_ENV = $$ENV ]; then \
+				for DOCKER_TAG in $(DOCKER_TAGS); do \
+				  TAGS=$$TAGS" --tag $$DOCKER_REPO/$$DOCKER:$$DOCKER_TAG"; \
+				done; \
+				TAGS=$$TAGS" --tag $$DOCKER_REPO/$$DOCKER:latest"; \
+			fi; \
+			echo "docker build $(DOCKER_BUILD_ARGS) $$ARG_DEB $$ARG_RST $$TAGS -f docker/$$DOCKER/Dockerfile ."; \
+			docker build $(DOCKER_BUILD_ARGS) $$ARG_DEB $$ARG_RST $$TAGS -f docker/$$DOCKER/Dockerfile . ; \
+		done; \
 	done
 
 release: check-status check-release build push
@@ -69,19 +74,21 @@ release: check-status check-release build push
 push: pre-push do-push post-push
 
 do-push:
-	@for ENV in $(BUILD_ENV); do \
-		SPL=$${ENV/:/ }; \
-		DEB=$$(echo $$SPL | awk '{print $$1;}'); \
-		for DOCKER_TAG in $(DOCKER_TAGS); do \
-			docker push $$DOCKER_TAG-$$DEB; \
-		done; \
-		FIRST_ENV=$$(echo $(BUILD_ENV) | awk '{print $$1;}'); \
-		if [ $$FIRST_ENV = $$ENV ]; then \
+	@for DOCKER in $(DOCKERS); do \
+		for ENV in $(BUILD_ENV); do \
+			SPL=$${ENV/:/ }; \
+			DEB=$$(echo $$SPL | awk '{print $$1;}'); \
 			for DOCKER_TAG in $(DOCKER_TAGS); do \
-			  docker push $$DOCKER_TAG; \
+			  docker push $$DOCKER_REPO/$$DOCKER:$$DOCKER_TAG-$$DEB; \
 			done; \
-			docker push $(DOCKER_REPO)/$(NAME):latest; \
-		fi; \
+			FIRST_ENV=$$(echo $(BUILD_ENV) | awk '{print $$1;}'); \
+			if [ $$FIRST_ENV = $$ENV ]; then \
+				for DOCKER_TAG in $(DOCKER_TAGS); do \
+				docker push $$DOCKER_REPO/$$DOCKER:$$DOCKER_TAG; \
+				done; \
+				docker push $$DOCKER_REPO/$$DOCKER:latest; \
+			fi; \
+		done; \
 	done
 
 snapshot: build push
@@ -127,9 +134,6 @@ check-release: ## Check that the current git tag matches the one in Cargo.toml a
 
 
 ######### Debug
-
-check-name:
-	@echo $(NAME)
 
 check-tag:
 	@echo $(TAG)

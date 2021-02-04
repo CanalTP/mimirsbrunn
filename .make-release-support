@@ -38,12 +38,6 @@ function getBaseTag() {
   getRelease
 }
 
-# This is the name used to make the base of the docker tag.
-# It is the basename of the directory in which lies the project.
-function getBaseName() {
-  echo ${BASE_NAME}
-}
-
 function getTag() {
   # FIXME Understand what arguments are provided
   if [ -z "$1" ] ; then

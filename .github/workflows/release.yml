@@ -49,6 +49,7 @@ jobs:
       - name: slack notification (the job has failed)
         if: failure()
         run: |
+          sudo apt install -y httpie
           echo '{"text":":Warning: Github Actions: build packages for branch release failed  ! (https://github.com/CanalTP/mimirsbrunn/actions/workflows/release.yml)."}' | http --json POST ${{secrets.SLACK_NAVITIA_AUTOCOMPLETE_TEAM_URL}}
 
   publish:

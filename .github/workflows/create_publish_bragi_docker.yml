@@ -15,6 +15,9 @@ jobs:
         shell: bash
         run: echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/} | tr / -)" >> $GITHUB_ENV
 
+      - name: install httpie dependency
+        run: sudo apt install -y httpie
+
       - name: create publish ${{ env.BRANCH_NAME }} images
         run: |
           make docker-build-bragi-${{ env.BRANCH_NAME }} DEBIAN_VERSION=buster RUST_VERSION=1.44.1

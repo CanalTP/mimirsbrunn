@@ -33,6 +33,6 @@ jobs:
           echo '{"text":":Warning: Github Actions: create_publish_bragi_docker for branch ${{ env.BRANCH_NAME }} failed ! (https://github.com/CanalTP/mimirsbrunn/actions/workflows/create_publish_bragi_docker.yml)."}' | http --json POST ${{secrets.SLACK_NAVITIA_AUTOCOMPLETE_TEAM_URL}}
 
       - name: trig publishing + notifications (the job has successed)
-        if: success() && ${{ env.BRANCH_NAME }} == 'release'
+        if: success() && env.BRANCH_NAME == 'release'
         run: |
           echo '{"text":":information_source: Github Actions: create_publish_bragi_docker for branch ${{ env.BRANCH_NAME }} succeded - New image bragi is available"}' | http --json POST ${{secrets.SLACK_NAVITIA_AUTOCOMPLETE_TEAM_URL}}

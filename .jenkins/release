@@ -1,0 +1,45 @@
+pipeline {
+    agent {
+        docker {
+            image 'python:3.6'
+            args '--user root'
+        }
+    }
+    stages {
+         stage('Prepare git env'){
+             steps{
+                 sh "git config --global user.email 'jenkins-core@kisio.com'"
+                 sh "git config --global user.name 'jenkins core'"
+                 sh "git tag -l | xargs git tag -d"
+             }
+         }
+        stage('Install extra packages') {
+            steps {
+                sh '''
+                    pip install git+git://github.com/CanalTP/githubflow_release.git@cc5cc83da7ef4f290cadf46ed6a11601dd15fa9c
+                '''
+            }
+        }
+        stage('Change version form cargo.toml files') {
+            steps {
+                sh '''
+                    $MIMIR_VERSION=`githubflow_get_new_version --release-type hotfix  --remote-name origin`
+                    sed -i -e "s/^version\s*=\s*\".*\"/version = \"$MIMIR_VERSION\"/" Cargo.toml
+                    sed -i -e "s/^version\s*=\s*\".*\"/version = \"$MIMIR_VERSION\"/" libs/bragi/Cargo.toml
+                    sed -i -e "s/^version\s*=\s*\".*\"/version = \"$MIMIR_VERSION\"/" libs/mimir/Cargo.toml
+                    sed -i -e "s/^version\s*=\s*\".*\"/version = \"$MIMIR_VERSION\"/" libs/tools/Cargo.toml
+                    sed -i -e "s/^version\s*=\s*\".*\"/version = \"$MIMIR_VERSION\"/" libs/docker_wrapper/Cargo.toml
+                    #git add .
+                    #git commit -m "[Versioned] New $RELEASE_TYPE version $MIMIR_VERSION"
+                '''
+            }
+        }
+        stage('Create and push new version') {
+            steps {
+                sh '''
+                    githubflow_release --release-type $RELEASE_TYPE --base-branch master --github-repo CanalTP/mimirsbrunn  --remote-name origin
+                '''
+            }
+        }
+    }
+}

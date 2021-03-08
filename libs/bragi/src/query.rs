@@ -39,7 +39,7 @@ use rs_es::query::compound::BoostMode;
 use rs_es::query::functions::{DecayOptions, FilteredFunction, Function, Modifier};
 use rs_es::query::Query;
 use rs_es::units as rs_u;
-use slog_scope::{debug, error, warn};
+use slog_scope::{debug, error, info, trace, warn};
 use std::{fmt, iter};
 
 lazy_static::lazy_static! {
@@ -452,7 +452,12 @@ fn query(
     langs: &[&str],
     debug: bool,
     query_settings: &QuerySettings,
+    request_id: Option<&str>,
 ) -> Result<Vec<mimir::Place>, EsError> {
+    if let Some(id) = request_id {
+        info!("query::autocomplete - enter - {} - ({})", id, q);
+    }
+
     let query_type = match_type.to_string();
     let query = build_query(
         q,
@@ -510,13 +515,28 @@ fn query(
     if let Some(timeout) = &timeout {
         search_query.with_timeout(timeout.as_str());
     }
+
+    if let Some(id) = request_id {
+        info!("query::autocomplete - es - enter - {} - ({})", id, q);
+    }
+
     let result = search_query.send()?;
+
+    if let Some(id) = request_id {
+        info!("query::autocomplete - es - exit - {} - ({})", id, q);
+    }
 
     if let Some(t) = timer {
         t.observe_duration();
     }
 
-    read_places(result, coord.as_ref())
+    let res = read_places(result, coord.as_ref());
+
+    if let Some(id) = request_id {
+        info!("query::autocomplete - exit - {} - ({})", id, q);
+    }
+
+    res
 }
 
 pub fn features(
@@ -600,7 +620,11 @@ pub fn autocomplete(
     mut rubber: Rubber,
     debug: bool,
     query_settings: &QuerySettings,
+    request_id: Option<&str>,
 ) -> Result<Vec<mimir::Place>, BragiError> {
+    info!("Info id: {:?}", request_id);
+    debug!("Debug id: {:?}", request_id);
+    trace!("Trace id: {:?}", request_id);
     // Perform parameters validation.
     if !zone_types.is_empty() && !types.iter().any(|s| *s == "zone") {
         return Err(BragiError::InvalidParam(
@@ -632,6 +656,7 @@ pub fn autocomplete(
         &langs,
         debug,
         query_settings,
+        request_id,
     )
     .map_err(model::BragiError::from)?;
     if results.is_empty() {
@@ -652,6 +677,7 @@ pub fn autocomplete(
             &langs,
             debug,
             query_settings,
+            request_id,
         )
         .map_err(model::BragiError::from)
     } else {

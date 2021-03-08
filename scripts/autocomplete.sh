@@ -11,6 +11,7 @@ curl_cmd="curl -s --data-urlencode \"q=${query}\""
   [[ ! -z "${input_type}" ]] && curl_cmd="${curl_cmd} --data-urlencode type[]=${input_type}"
 curl_cmd="${curl_cmd} --data-urlencode limit=${limit}"
 curl_cmd="${curl_cmd} --data-urlencode _debug=true"
+curl_cmd="${curl_cmd} --data-urlencode request_id=test"
 curl_cmd="${curl_cmd} --get ${bragi_endpoint}"
 
 #

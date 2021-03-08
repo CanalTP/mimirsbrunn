@@ -24,6 +24,8 @@ slog = { version = "2.5", features = ["max_level_trace", "release_max_level_debu
 slog-scope = "4.3"
 slog-envlogger = "2.2"
 slog-async = "2.5"
+slog-term = "2.8"
+slog-stdlog = "4.1"
 structopt = "0.3"
 csv = "1.1"
 rs-es = { git = "https://github.com/canaltp/rs-es", features = ["geo"], version = "0.12.3"}

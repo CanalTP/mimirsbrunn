@@ -7,6 +7,7 @@ use actix_web::web::{Data, HttpResponse, Json};
 use geojson::{GeoJson, Geometry};
 use mimir::objects::Coord;
 use serde::{Deserialize, Serialize};
+use slog_scope::trace;
 use std::time::Duration;
 
 #[derive(Copy, Clone, Debug, Deserialize, Serialize)]
@@ -92,6 +93,9 @@ pub struct Params {
     // It is prefixed by an underscore to indicate its not a public parameter.
     #[serde(default, rename = "_debug")]
     debug: Option<bool>,
+
+    // Embeds a client id into the request to improve tracing
+    request_id: Option<String>,
 }
 
 impl Params {
@@ -159,6 +163,10 @@ pub fn call_autocomplete(
         query_settings.importance_query.proximity.gaussian.decay = decay;
     }
 
+    if let Some(id) = &params.request_id {
+        trace!("routes::autocomplete by {} ({})", id, params.q);
+    }
+
     let res = query::autocomplete(
         &params.q,
         &params
@@ -183,6 +191,7 @@ pub fn call_autocomplete(
         rubber,
         params.debug.unwrap_or(false),
         &query_settings,
+        params.request_id.as_deref(),
     );
     res.map(|r| Autocomplete::from_with_lang(r, langs.into_iter().next()))
         .map(|v| {

@@ -2,8 +2,8 @@ name: Release_Packages
 
 on:
   push:
-    branches:
-      - release
+    tags:
+      - '*'
 
 jobs:
 

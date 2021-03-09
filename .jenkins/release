@@ -23,12 +23,12 @@ pipeline {
         stage('Change version form cargo.toml files') {
             steps {
                 sh '''
-                    $MIMIR_VERSION=`githubflow_get_new_version --release-type hotfix  --remote-name origin`
-                    sed -i -e "s/^version\s*=\s*\".*\"/version = \"$MIMIR_VERSION\"/" Cargo.toml
-                    sed -i -e "s/^version\s*=\s*\".*\"/version = \"$MIMIR_VERSION\"/" libs/bragi/Cargo.toml
-                    sed -i -e "s/^version\s*=\s*\".*\"/version = \"$MIMIR_VERSION\"/" libs/mimir/Cargo.toml
-                    sed -i -e "s/^version\s*=\s*\".*\"/version = \"$MIMIR_VERSION\"/" libs/tools/Cargo.toml
-                    sed -i -e "s/^version\s*=\s*\".*\"/version = \"$MIMIR_VERSION\"/" libs/docker_wrapper/Cargo.toml
+                    CARGO_FILES=["Cargo.toml", "libs/bragi/Cargo.toml", "libs/mimir/Cargo.toml", "libs/tools/Cargo.toml", "libs/docker_wrapper/Cargo.toml"]
+                    MIMIR_VERSION=`githubflow_get_new_version --release-type hotfix  --remote-name origin`
+                    for file_toml in "${CARGO_FILES[@]}"; do
+                        echo "$i"
+                        sed -i -e "s/^version\\s*=\\s*\\".*\\"/version = \\"$MIMIR_VERSION\\"/" $file_toml;
+                     done
                     #git add .
                     #git commit -m "[Versioned] New $RELEASE_TYPE version $MIMIR_VERSION"
                 '''

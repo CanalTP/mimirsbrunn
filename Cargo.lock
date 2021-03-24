@@ -524,7 +524,7 @@ dependencies = [
 
 [[package]]
 name = "bragi"
-version = "1.19.1"
+version = "1.20.0"
 dependencies = [
  "actix-cors",
  "actix-http",
@@ -962,7 +962,7 @@ dependencies = [
 
 [[package]]
 name = "docker_wrapper"
-version = "1.19.1"
+version = "1.20.0"
 dependencies = [
  "mimir",
  "reqwest",
@@ -1895,7 +1895,7 @@ dependencies = [
 
 [[package]]
 name = "mimir"
-version = "1.19.1"
+version = "1.20.0"
 dependencies = [
  "address-formatter",
  "chrono",
@@ -1927,7 +1927,7 @@ dependencies = [
 
 [[package]]
 name = "mimirsbrunn"
-version = "1.19.1"
+version = "1.20.0"
 dependencies = [
  "actix-web",
  "address-formatter",
@@ -3852,7 +3852,7 @@ dependencies = [
 
 [[package]]
 name = "tools"
-version = "1.19.1"
+version = "1.20.0"
 dependencies = [
  "actix-cors",
  "actix-http",

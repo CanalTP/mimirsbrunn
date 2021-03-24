@@ -87,6 +87,10 @@ pub struct Params {
     #[serde(default, rename = "poi_type")]
     poi_types: Vec<PoiType>,
     lang: Option<String>,
+    // The scope is a list of place types on which we apply the shape filter.
+    // Places found in this list are restricted to the shape.
+    #[serde(default)]
+    shape_scope: Vec<String>,
     // Forwards a request for explanation to Elastic Search.
     // This parameter is useful to analyze the order in which search results appear.
     // It is prefixed by an underscore to indicate its not a public parameter.
@@ -176,6 +180,11 @@ pub fn call_autocomplete(
         params.limit,
         params.coord()?,
         shape,
+        &params
+            .shape_scope
+            .iter()
+            .map(String::as_str)
+            .collect::<Vec<_>>(),
         &params.types_as_str(),
         &params.zone_types_as_str(),
         &params.poi_types_as_str(),

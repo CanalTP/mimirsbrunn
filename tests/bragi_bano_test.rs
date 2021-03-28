@@ -169,8 +169,56 @@ fn simple_bano_shape_filter_test(bragi: &mut BragiHandler) {
         )
     );
 
-    // Search with shape where house number out of shape
-    let r = bragi.post_as_json("/autocomplete?q=18 Rue Hector Malot, (Paris)", shape);
+    // Search with shape where house number out of shape and house not in scope
+    // since the house is not in the filter scope, it should be found
+    let r = bragi.post_as_json(
+        "/autocomplete?q=18 Rue Hector Malot, (Paris)&shape_scope[]=admin",
+        shape,
+    );
+    assert_eq!(
+        r,
+        json!({
+          "type": "FeatureCollection",
+          "geocoding": {
+            "version": "0.1.0",
+            "query": ""
+          },
+          "features": [
+            {
+              "type": "Feature",
+              "geometry": {
+                "coordinates": [
+                  2.376_379,
+                  48.846_495
+                ],
+                "type": "Point"
+              },
+              "properties": {
+                "geocoding": {
+                  "id": "addr:2.376379;48.846495:15",
+                  "type": "house",
+                  "label": "15 Rue Hector Malot (Paris)",
+                  "name": "15 Rue Hector Malot",
+                  "housenumber": "15",
+                  "street": "Rue Hector Malot",
+                  "postcode": "75012",
+                  "city": null,
+                  "citycode": null,
+                  "country_codes": ["fr"],
+                  "administrative_regions": []
+                }
+              }
+            }
+          ]
+        }
+        )
+    );
+    // Search with shape where house number out of shape and house not in scope
+    // since the house is in the filter scope, it should be filtered out.
+    let r = bragi.post_as_json(
+        "/autocomplete?q=18 Rue Hector Malot, (Paris)&shape_scope=addr",
+        shape,
+    );
     assert_eq!(
         r,
         json!({
@@ -182,7 +230,7 @@ fn simple_bano_shape_filter_test(bragi: &mut BragiHandler) {
           "features": []
         }
         )
-    )
+    );
 }
 
 fn simple_bano_lon_lat_test(bragi: &mut BragiHandler) {

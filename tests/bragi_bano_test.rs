@@ -126,6 +126,7 @@ fn simple_bano_autocomplete_test(bragi: &mut BragiHandler) {
 //      B ---------------------C
 fn simple_bano_shape_filter_test(bragi: &mut BragiHandler) {
     // Search with shape where house number in shape
+    // We don't use a scope_shape, so it should be as if we didn't use any shape.
     let shape = r#"{"shape":{"type":"Feature","properties":{},"geometry":{"type":"Polygon",
         "coordinates":[[[2.376488, 48.846431],
         [2.376306, 48.846430],[2.376309, 48.846606],[2.376486, 48.846603], [2.376488, 48.846431]]]}}}"#;
@@ -188,18 +189,18 @@ fn simple_bano_shape_filter_test(bragi: &mut BragiHandler) {
               "type": "Feature",
               "geometry": {
                 "coordinates": [
-                  2.376_379,
-                  48.846_495
+                  2.376_58,
+                  48.846_452
                 ],
                 "type": "Point"
               },
               "properties": {
                 "geocoding": {
-                  "id": "addr:2.376379;48.846495:15",
+                  "id": "addr:2.37658;48.846452:18",
                   "type": "house",
-                  "label": "15 Rue Hector Malot (Paris)",
-                  "name": "15 Rue Hector Malot",
-                  "housenumber": "15",
+                  "label": "18 Rue Hector Malot (Paris)",
+                  "name": "18 Rue Hector Malot",
+                  "housenumber": "18",
                   "street": "Rue Hector Malot",
                   "postcode": "75012",
                   "city": null,
@@ -216,7 +217,7 @@ fn simple_bano_shape_filter_test(bragi: &mut BragiHandler) {
     // Search with shape where house number out of shape and house not in scope
     // since the house is in the filter scope, it should be filtered out.
     let r = bragi.post_as_json(
-        "/autocomplete?q=18 Rue Hector Malot, (Paris)&shape_scope=addr",
+        "/autocomplete?q=18 Rue Hector Malot, (Paris)&shape_scope[]=addr",
         shape,
     );
     assert_eq!(

@@ -382,31 +382,37 @@ fn build_query<'a>(
         filters.push(build_coverage_condition(pt_datasets));
     }
 
-    // If there is a shape, all the places listed in shape_scoped are restricted to the shape.
+    // If there is a shape, all the places listed in shape_scope are restricted to the shape.
     // and the places that are not listed are not restricted.
     // So if shape_scope = {A, B}, we should end up with something like
     // should {
     //   must [               => filwer_w_shape
-    //     term _type = A
-    //     term _type = B
+    //     should [
+    //       term _type = A
+    //       term _type = B
+    //     ]
     //     geoshape
     //  ],
-    //  must_no [             => filter_wo_shape
+    //  must_not [            => filter_wo_shape
     //    term _type = A
     //    term _type = B
     //  ]
     //
     if let Some(s) = shape {
-        let mut filter_w_shape = shape_scope
-            .iter()
-            .map(|x| Query::build_term("_type", *x).build())
-            .collect::<Vec<_>>();
-        filter_w_shape.push(
-            Query::build_geo_shape("approx_coord")
-                .with_geojson(s)
-                .build(),
-        );
-        let filter_w_shape = Query::build_bool().with_must(filter_w_shape).build();
+        let filter_w_shape_term = Query::build_bool()
+            .with_should(
+                shape_scope
+                    .iter()
+                    .map(|x| Query::build_term("_type", *x).build())
+                    .collect::<Vec<_>>(),
+            )
+            .build();
+        let filter_w_shape_geo = Query::build_geo_shape("approx_coord")
+            .with_geojson(s)
+            .build();
+        let filter_w_shape = Query::build_bool()
+            .with_must(vec![filter_w_shape_term, filter_w_shape_geo])
+            .build();
         let filter_wo_shape = shape_scope
             .iter()
             .map(|x| Query::build_term("_type", *x).build())

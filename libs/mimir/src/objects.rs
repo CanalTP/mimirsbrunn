@@ -853,9 +853,9 @@ impl serde::Serialize for Coord {
     }
 }
 
-impl Into<Geometry> for Coord {
-    fn into(self) -> Geometry {
-        Geometry::new(geojson::Value::Point(vec![self.lon(), self.lat()]))
+impl From<Coord> for Geometry {
+    fn from(coord: Coord) -> Geometry {
+        Geometry::new(geojson::Value::Point(vec![coord.lon(), coord.lat()]))
     }
 }
 
@@ -869,7 +869,7 @@ impl<'de> Deserialize<'de> for Coord {
         enum Field {
             Lon,
             Lat,
-        }
+        };
 
         struct CoordVisitor;
 

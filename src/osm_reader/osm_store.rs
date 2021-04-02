@@ -48,7 +48,7 @@ use slog_scope::error;
 use std::fs;
 
 #[cfg(feature = "db-storage")]
-use std::path::PathBuf;
+use std::path::Path;
 
 #[cfg(feature = "db-storage")]
 use std::collections::HashMap;
@@ -110,14 +110,14 @@ impl Getter for BTreeMap<OsmId, OsmObj> {
 #[cfg(feature = "db-storage")]
 pub struct Db<'a> {
     conn: Connection,
-    db_file: &'a PathBuf,
+    db_file: &'a Path,
     buffer: HashMap<OsmId, OsmObj>,
     db_buffer_size: usize,
 }
 
 #[cfg(feature = "db-storage")]
 impl<'a> Db<'a> {
-    fn new(db_file: &'a PathBuf, db_buffer_size: usize) -> Result<Db<'a>, String> {
+    fn new(db_file: &'a Path, db_buffer_size: usize) -> Result<Db<'a>, String> {
         let _ = fs::remove_file(db_file); // we ignore any potential error
         let conn = Connection::open(&db_file)
             .map_err(|e| format!("failed to open SQLITE connection: {}", e))?;

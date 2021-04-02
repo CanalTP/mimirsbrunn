@@ -108,7 +108,7 @@ impl Getter for BTreeMap<OsmId, OsmObj> {
 }
 
 #[cfg(feature = "db-storage")]
-pub struct DB<'a> {
+pub struct Db<'a> {
     conn: Connection,
     db_file: &'a PathBuf,
     buffer: HashMap<OsmId, OsmObj>,
@@ -116,8 +116,8 @@ pub struct DB<'a> {
 }
 
 #[cfg(feature = "db-storage")]
-impl<'a> DB<'a> {
-    fn new(db_file: &'a PathBuf, db_buffer_size: usize) -> Result<DB<'a>, String> {
+impl<'a> Db<'a> {
+    fn new(db_file: &'a PathBuf, db_buffer_size: usize) -> Result<Db<'a>, String> {
         let _ = fs::remove_file(db_file); // we ignore any potential error
         let conn = Connection::open(&db_file)
             .map_err(|e| format!("failed to open SQLITE connection: {}", e))?;
@@ -132,7 +132,7 @@ impl<'a> DB<'a> {
             NO_PARAMS,
         )
         .map_err(|e| format!("failed to create table: {}", e))?;
-        Ok(DB {
+        Ok(Db {
             conn,
             db_file,
             buffer: HashMap::with_capacity(db_buffer_size),
@@ -147,17 +147,17 @@ impl<'a> DB<'a> {
         let mut stmt = err_logger!(
             self.conn
                 .prepare("SELECT obj FROM ids WHERE id=?1 AND kind=?2"),
-            "DB::get_from_id: prepare failed"
+            "Db::get_from_id: prepare failed"
         );
         let mut iter = err_logger!(
             stmt.query(&[&id.inner_id() as &dyn ToSql, get_kind!(id)]),
-            "DB::get_from_id: query_map failed"
+            "Db::get_from_id: query_map failed"
         );
-        while let Some(row) = err_logger!(iter.next(), "DB::get_from_id: next failed") {
-            let obj: Vec<u8> = err_logger!(row.get(0), "DB::get_from_id: failed to get obj field");
+        while let Some(row) = err_logger!(iter.next(), "Db::get_from_id: next failed") {
+            let obj: Vec<u8> = err_logger!(row.get(0), "Db::get_from_id: failed to get obj field");
             let obj: OsmObj = err_logger!(
                 bincode::deserialize(&obj),
-                "DB::for_each: serde conversion failed",
+                "Db::for_each: serde conversion failed",
                 None
             );
             return Some(Cow::Owned(obj));
@@ -172,16 +172,16 @@ impl<'a> DB<'a> {
         }
         let mut stmt = err_logger!(
             self.conn.prepare("SELECT obj FROM ids"),
-            "DB::for_each: prepare failed",
+            "Db::for_each: prepare failed",
             ()
         );
-        let mut rows = err_logger!(stmt.query(NO_PARAMS), "DB::for_each: query_map failed", ());
-        while let Some(row) = err_logger!(rows.next(), "DB::for_each: next failed", ()) {
-            let obj: Vec<u8> = err_logger!(row.get(0), "DB::for_each: failed to get obj field", ());
+        let mut rows = err_logger!(stmt.query(NO_PARAMS), "Db::for_each: query_map failed", ());
+        while let Some(row) = err_logger!(rows.next(), "Db::for_each: next failed", ()) {
+            let obj: Vec<u8> = err_logger!(row.get(0), "Db::for_each: failed to get obj field", ());
 
             let obj: OsmObj = err_logger!(
                 bincode::deserialize(&obj),
-                "DB::for_each: serde conversion failed",
+                "Db::for_each: serde conversion failed",
                 ()
             );
             f(Cow::Owned(obj));
@@ -195,20 +195,20 @@ impl<'a> DB<'a> {
             .for_each(|value| f(Cow::Borrowed(value)));
         let mut stmt = err_logger!(
             self.conn.prepare("SELECT obj FROM ids WHERE kind=?1"),
-            "DB::for_each: prepare failed",
+            "Db::for_each: prepare failed",
             ()
         );
         let mut rows = err_logger!(
             stmt.query(&[&(filter as i32) as &dyn ToSql]),
-            "DB::for_each: query_map failed",
+            "Db::for_each: query_map failed",
             ()
         );
-        while let Some(row) = err_logger!(rows.next(), "DB::for_each: next failed", ()) {
-            let obj: Vec<u8> = err_logger!(row.get(0), "DB::for_each: failed to get obj field", ());
+        while let Some(row) = err_logger!(rows.next(), "Db::for_each: next failed", ()) {
+            let obj: Vec<u8> = err_logger!(row.get(0), "Db::for_each: failed to get obj field", ());
 
             let obj: OsmObj = err_logger!(
                 bincode::deserialize(&obj),
-                "DB::for_each: serde conversion failed",
+                "Db::for_each: serde conversion failed",
                 ()
             );
             f(Cow::Owned(obj));
@@ -221,7 +221,7 @@ impl<'a> DB<'a> {
         }
         let mut tx = err_logger!(
             self.conn.transaction(),
-            "DB::flush_buffer: transaction creation failed",
+            "Db::flush_buffer: transaction creation failed",
             ()
         );
         tx.set_drop_behavior(DropBehavior::Ignore);
@@ -229,33 +229,33 @@ impl<'a> DB<'a> {
         {
             let mut stmt = err_logger!(
                 tx.prepare("INSERT OR IGNORE INTO ids(id, obj, kind) VALUES (?1, ?2, ?3)"),
-                "DB::flush_buffer: prepare failed",
+                "Db::flush_buffer: prepare failed",
                 ()
             );
             for (id, obj) in self.buffer.drain() {
                 let ser_obj = match bincode::serialize(&obj) {
                     Ok(s) => s,
                     Err(e) => {
-                        error!("DB::flush_buffer: failed to convert to json: {}", e);
+                        error!("Db::flush_buffer: failed to convert to json: {}", e);
                         continue;
                     }
                 };
                 let kind = get_kind!(obj);
                 if let Err(e) = stmt.execute(&[&id.inner_id() as &dyn ToSql, &ser_obj, kind]) {
-                    error!("DB::flush_buffer: insert failed: {}", e);
+                    error!("Db::flush_buffer: insert failed: {}", e);
                 }
             }
         }
         err_logger!(
             tx.commit(),
-            "DB::flush_buffer: transaction commit failed",
+            "Db::flush_buffer: transaction commit failed",
             ()
         );
     }
 }
 
 #[cfg(feature = "db-storage")]
-impl<'a> StoreObjs for DB<'a> {
+impl<'a> StoreObjs for Db<'a> {
     fn insert(&mut self, id: OsmId, obj: OsmObj) {
         if self.buffer.len() >= self.db_buffer_size {
             self.flush_buffer();
@@ -270,27 +270,27 @@ impl<'a> StoreObjs for DB<'a> {
         let mut stmt = err_logger!(
             self.conn
                 .prepare("SELECT id FROM ids WHERE id=?1 AND kind=?2"),
-            "DB::contains_key: prepare failed",
+            "Db::contains_key: prepare failed",
             false
         );
         let mut iter = err_logger!(
             stmt.query(&[&id.inner_id() as &dyn ToSql, get_kind!(id)]),
-            "DB::contains_key: query_map failed",
+            "Db::contains_key: query_map failed",
             false
         );
-        err_logger!(iter.next(), "DB::contains_key: no row", false).is_some()
+        err_logger!(iter.next(), "Db::contains_key: no row", false).is_some()
     }
 }
 
 #[cfg(feature = "db-storage")]
-impl<'a> Getter for DB<'a> {
+impl<'a> Getter for Db<'a> {
     fn get(&self, key: &OsmId) -> Option<Cow<OsmObj>> {
         self.get_from_id(key)
     }
 }
 
 #[cfg(feature = "db-storage")]
-impl<'a> Drop for DB<'a> {
+impl<'a> Drop for Db<'a> {
     fn drop(&mut self) {
         let _ = fs::remove_file(self.db_file); // we ignore any potential error
     }
@@ -299,7 +299,7 @@ impl<'a> Drop for DB<'a> {
 #[cfg(feature = "db-storage")]
 pub enum ObjWrapper<'a> {
     Map(BTreeMap<osmpbfreader::OsmId, osmpbfreader::OsmObj>),
-    Db(DB<'a>),
+    Db(Db<'a>),
 }
 
 #[cfg(not(feature = "db-storage"))]
@@ -311,8 +311,8 @@ pub enum ObjWrapper {
 impl<'a> ObjWrapper<'a> {
     pub fn new(db: &'a Option<Database>) -> Result<ObjWrapper<'a>, Error> {
         Ok(if let Some(ref db) = db {
-            info!("Running with DB storage");
-            ObjWrapper::Db(DB::new(&db.file, db.buffer_size).map_err(failure::err_msg)?)
+            info!("Running with Db storage");
+            ObjWrapper::Db(Db::new(&db.file, db.buffer_size).map_err(failure::err_msg)?)
         } else {
             info!("Running with BTreeMap (RAM) storage");
             ObjWrapper::Map(BTreeMap::new())

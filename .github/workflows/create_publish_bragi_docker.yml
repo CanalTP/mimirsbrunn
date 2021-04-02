@@ -16,7 +16,9 @@ jobs:
         run: echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/} | tr / -)" >> $GITHUB_ENV
 
       - name: install httpie dependency
-        run: sudo apt install -y httpie
+        run: |
+          apt-get update
+          sudo apt install -y httpie
 
       - name: create publish ${{ env.BRANCH_NAME }} images
         run: |

@@ -49,7 +49,7 @@ jobs:
       - name: slack notification (the job has failed)
         if: failure()
         run: |
-          sudo apt install -y httpie
+          apt install -y httpie
           echo '{"text":":Warning: Github Actions: build packages for branch release failed  ! (https://github.com/CanalTP/mimirsbrunn/actions/workflows/release.yml)."}' | http --json POST ${{secrets.SLACK_NAVITIA_AUTOCOMPLETE_TEAM_URL}}
 
   publish:
@@ -57,7 +57,8 @@ jobs:
     needs: package
     steps:
       - name: install  dependency
-        run: apt update && apt install -y httpie
+        run: apt update && sudo apt install -y httpie
+
       - name: run publish job & slack notification (the job has successed)
         run: |
           http --ignore-stdin -v -f POST https://${{secrets.JENKINS_TOKEN}}@jenkins-core.canaltp.fr/job/publish_autocomplete_packages/

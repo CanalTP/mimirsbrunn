@@ -38,7 +38,7 @@ use mimirsbrunn::{admin_geofinder::AdminGeoFinder, labels, utils};
 use navitia_poi_model::{Model as NavitiaModel, Poi as NavitiaPoi, PoiType as NavitiaPoiType};
 use std::collections::HashMap;
 use std::ops::Deref;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use structopt::StructOpt;
 
 lazy_static! {
@@ -113,7 +113,7 @@ fn import_pois(
     rubber: &mut Rubber,
     index: &TypedIndex<Poi>,
     admins_geofinder: AdminGeoFinder,
-    file: &PathBuf,
+    file: &Path,
 ) -> Result<(), mimirsbrunn::Error>
 where
 {
@@ -147,7 +147,7 @@ where
 fn index_poi(
     cnx_string: &str,
     dataset: &str,
-    file: &PathBuf,
+    file: &Path,
     visibility: IndexVisibility,
     nb_shards: usize,
     nb_replicas: usize,

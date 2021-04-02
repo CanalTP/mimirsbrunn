@@ -869,7 +869,7 @@ impl<'de> Deserialize<'de> for Coord {
         enum Field {
             Lon,
             Lat,
-        };
+        }
 
         struct CoordVisitor;
 

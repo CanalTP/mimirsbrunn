@@ -39,7 +39,7 @@ use rs_es::query::compound::BoostMode;
 use rs_es::query::functions::{DecayOptions, FilteredFunction, Function, Modifier};
 use rs_es::query::Query;
 use rs_es::units as rs_u;
-use slog_scope::{debug, error, info, trace, warn};
+use slog_scope::{debug, error, info, warn};
 use std::{fmt, iter};
 
 lazy_static::lazy_static! {

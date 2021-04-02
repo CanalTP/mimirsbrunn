@@ -157,7 +157,7 @@ fn three_cities_shape_test(bragi: &mut BragiHandler) {
         "coordinates": [[[2.656546, 48.537227],
         [2.657608, 48.537244],[2.657340, 48.536602],[2.656476, 48.536545],[2.656546, 48.537227]]]}}}"#;
 
-    let geocodings = bragi.post("/autocomplete?q=Rue du Port", shape);
+    let geocodings = bragi.post("/autocomplete?q=Rue du Port&shape_scope[]=street", shape);
     assert_eq!(geocodings.len(), 1);
     assert_eq!(
         get_values(&geocodings, "label"),
@@ -175,7 +175,7 @@ fn three_cities_shape_test(bragi: &mut BragiHandler) {
         "coordinates":[[[2.656546, 68.537227],
         [2.657608, 68.537244],[2.657340, 68.536602],[2.656476, 68.536545],[2.656546, 68.537227]]]}}}"#;
 
-    let geocodings = bragi.post("/autocomplete?q=Rue du Port", shape);
+    let geocodings = bragi.post("/autocomplete?q=Rue du Port&shape_scope[]=street", shape);
     assert_eq!(geocodings.len(), 0);
 
     //      A ---------------------D
@@ -189,7 +189,10 @@ fn three_cities_shape_test(bragi: &mut BragiHandler) {
         "coordinates":[[[2.656546, 48.538927]
         ,[2.670816, 48.538927],[2.676476, 48.546545],[2.656546, 48.546545],[2.656546, 48.538927]]]}}}"#;
 
-    let geocodings = bragi.post("/autocomplete?q=Melun", shape);
+    let geocodings = bragi.post(
+        "/autocomplete?q=Melun&shape_scope[]=admin&shape_scope[]=street",
+        shape,
+    );
     assert_eq!(geocodings.len(), 1);
     assert_eq!(get_values(&geocodings, "name"), vec!["Melun"]);
 
@@ -204,7 +207,10 @@ fn three_cities_shape_test(bragi: &mut BragiHandler) {
         "coordinates":[[[2.656546, 66.538927],
         [2.670816, 68.538927],[2.676476, 68.546545],[2.656546, 68.546545],[2.656546, 66.538927]]]}}}"#;
 
-    let geocodings = bragi.post("/autocomplete?q=Melun", shape);
+    let geocodings = bragi.post(
+        "/autocomplete?q=Melun&shape_scope[]=admin&shape_scope[]=street",
+        shape,
+    );
     assert_eq!(geocodings.len(), 0);
 
     // shape filtering does not apply to stop areas.
@@ -230,7 +236,7 @@ fn three_cities_shape_test(bragi: &mut BragiHandler) {
         "coordinates": [[[2.6565, 48.5372],
         [2.6576, 48.5372],[2.6573, 48.5366],[2.6564, 48.5365],[2.6565, 48.5372]]]}}}"#;
 
-    let geocodings = bragi.post("/autocomplete?q=Rue du Port", shape);
+    let geocodings = bragi.post("/autocomplete?q=Rue du Port&shape_scope[]=street", shape);
     assert_eq!(geocodings.len(), 1);
     assert_eq!(
         get_values(&geocodings, "label"),
@@ -245,7 +251,7 @@ fn three_cities_shape_test(bragi: &mut BragiHandler) {
     assert_eq!(geocodings.len(), 1);
     assert_eq!(get_values(&geocodings, "label"), vec!["Stop Out (Melun)"]);
 
-    let geocodings = bragi.post("/autocomplete?q=Four", shape);
+    let geocodings = bragi.post("/autocomplete?q=Four&shape_scope[]=street", shape);
     assert_eq!(geocodings.len(), 0);
 
     let geocodings = bragi.get("/autocomplete?q=Four");

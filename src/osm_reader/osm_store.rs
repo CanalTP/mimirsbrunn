@@ -299,7 +299,7 @@ impl<'a> Drop for DB<'a> {
 #[cfg(feature = "db-storage")]
 pub enum ObjWrapper<'a> {
     Map(BTreeMap<osmpbfreader::OsmId, osmpbfreader::OsmObj>),
-    DB(DB<'a>),
+    Db(DB<'a>),
 }
 
 #[cfg(not(feature = "db-storage"))]
@@ -312,7 +312,7 @@ impl<'a> ObjWrapper<'a> {
     pub fn new(db: &'a Option<Database>) -> Result<ObjWrapper<'a>, Error> {
         Ok(if let Some(ref db) = db {
             info!("Running with DB storage");
-            ObjWrapper::DB(DB::new(&db.file, db.buffer_size).map_err(failure::err_msg)?)
+            ObjWrapper::Db(DB::new(&db.file, db.buffer_size).map_err(failure::err_msg)?)
         } else {
             info!("Running with BTreeMap (RAM) storage");
             ObjWrapper::Map(BTreeMap::new())
@@ -327,7 +327,7 @@ impl<'a> ObjWrapper<'a> {
                     f(Cow::Borrowed(value));
                 }
             }
-            ObjWrapper::DB(ref db) => db.for_each(f),
+            ObjWrapper::Db(ref db) => db.for_each(f),
         }
     }
 
@@ -338,7 +338,7 @@ impl<'a> ObjWrapper<'a> {
                     .filter(|e| *get_kind!(e) == filter as i32)
                     .for_each(|value| f(Cow::Borrowed(value)));
             }
-            ObjWrapper::DB(ref db) => db.for_each_filter(filter, f),
+            ObjWrapper::Db(ref db) => db.for_each_filter(filter, f),
         }
     }
 }
@@ -348,7 +348,7 @@ impl<'a> Getter for ObjWrapper<'a> {
     fn get(&self, key: &OsmId) -> Option<Cow<OsmObj>> {
         match *self {
             ObjWrapper::Map(ref m) => m.get(key).map(|x| Cow::Borrowed(x)),
-            ObjWrapper::DB(ref db) => db.get(key),
+            ObjWrapper::Db(ref db) => db.get(key),
         }
     }
 }
@@ -360,14 +360,14 @@ impl<'a> StoreObjs for ObjWrapper<'a> {
             ObjWrapper::Map(ref mut m) => {
                 m.insert(id, obj);
             }
-            ObjWrapper::DB(ref mut db) => db.insert(id, obj),
+            ObjWrapper::Db(ref mut db) => db.insert(id, obj),
         }
     }
 
     fn contains_key(&self, id: &OsmId) -> bool {
         match *self {
             ObjWrapper::Map(ref m) => m.contains_key(id),
-            ObjWrapper::DB(ref db) => db.contains_key(id),
+            ObjWrapper::Db(ref db) => db.contains_key(id),
         }
     }
 }

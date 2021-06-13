@@ -53,35 +53,8 @@ impl Storage for ElasticsearchStorage {
             })
     }
 
-    // FIXME Move details to impl ElasticsearchStorage.
-    async fn insert_documents<S, D>(
-        &self,
-        index: String,
-        documents: S,
-    ) -> Result<usize, StorageError>
-    where
-        D: Serialize + Send + Sync + 'static,
-        S: Stream<Item = D> + Send + Sync + Unpin + 'static,
-    {
-        self.add_pipeline(
-            String::from(include_str!(
-                "../../../../../../config/pipeline/indexed_at.json"
-            )),
-            String::from("indexed_at"),
-        )
-        .await
-        .map_err(|err| StorageError::DocumentInsertionError {
-            source: Box::new(err),
-        })?;
-        self.insert_documents_in_index(index, documents)
-            .await
-            .map_err(|err| StorageError::DocumentInsertionError {
-                source: Box::new(err),
-            })
-    }
-
     // Maybe all this should be run in some kind of transaction.
-    async fn publish_index(
+    async fn publish_container(
         &self,
         index: Index,
         visibility: IndexVisibility,

@@ -76,15 +76,15 @@ impl<T: Document + Send + Sync + 'static> Import for GenerateIndex<T> {
             }
         })?;
 
-        self.storage
-            .insert_documents(index.name.clone(), documents)
-            .await
-            .map_err(|err| ImportError::DocumentStreamInsertion {
-                source: Box::new(err),
-            })?;
+        // self.storage
+        //     .insert_documents(index.name.clone(), documents)
+        //     .await
+        //     .map_err(|err| ImportError::DocumentStreamInsertion {
+        //         source: Box::new(err),
+        //     })?;
 
         self.storage
-            .publish_index(index.clone(), visibility)
+            .publish_container(index.clone(), visibility)
             .await
             .map_err(|err| ImportError::IndexPublication {
                 source: Box::new(err),

@@ -6,17 +6,17 @@ use crate::domain::model::configuration::Configuration;
 use crate::domain::model::document::Document;
 use crate::domain::model::index::{Index, IndexVisibility};
 use crate::domain::ports::import::{Error as ImportError, Import};
-use crate::domain::ports::storage::ErasedStorage;
+// use crate::domain::ports::storage::ErasedStorage;
 use crate::domain::ports::storage::Storage;
 use crate::domain::usecases::{Error as UseCaseError, UseCase};
 
-pub struct GenerateIndex<T> {
-    pub storage: Box<dyn ErasedStorage + Send + Sync + 'static>,
-    pub doc_type: PhantomData<T>,
+pub struct GenerateIndex<D> {
+    pub storage: Box<dyn Storage + Send + Sync + 'static>,
+    pub doc_type: PhantomData<D>,
 }
 
-impl<T> GenerateIndex<T> {
-    pub fn new(storage: Box<dyn ErasedStorage + Send + Sync + 'static>) -> Self {
+impl<D> GenerateIndex<D> {
+    pub fn new(storage: Box<dyn Storage + Send + Sync + 'static>) -> Self {
         GenerateIndex {
             storage,
             doc_type: PhantomData,
@@ -24,16 +24,16 @@ impl<T> GenerateIndex<T> {
     }
 }
 
-pub struct GenerateIndexParameters<T: Document + Send + Sync + 'static> {
+pub struct GenerateIndexParameters<D: Document + Send + Sync + 'static> {
     pub config: Configuration,
-    pub documents: Box<dyn Stream<Item = T> + Send + Sync + Unpin + 'static>,
+    pub documents: Box<dyn Stream<Item = D> + Send + Sync + Unpin + 'static>,
     pub visibility: IndexVisibility,
 }
 
 #[async_trait]
-impl<T: Document + Send + Sync + 'static> UseCase for GenerateIndex<T> {
-    type Res = Index;
-    type Param = GenerateIndexParameters<T>;
+impl<D: Document + Send + Sync + 'static> UseCase for GenerateIndex<D> {
+    type Res = Index<D>;
+    type Param = GenerateIndexParameters<D>;
 
     async fn execute(&self, param: Self::Param) -> Result<Self::Res, UseCaseError> {
         self.generate_index(param.documents, param.config, param.visibility)
@@ -45,15 +45,15 @@ impl<T: Document + Send + Sync + 'static> UseCase for GenerateIndex<T> {
 }
 
 #[async_trait]
-impl<T: Document + Send + Sync + 'static> Import for GenerateIndex<T> {
-    type Doc = T;
+impl<D: Document + Send + Sync + 'static> Import for GenerateIndex<D> {
+    type Doc = D;
 
     async fn generate_index<S>(
         &self,
         documents: S,
         config: Configuration,
         visibility: IndexVisibility,
-    ) -> Result<Index, ImportError>
+    ) -> Result<Index<D>, ImportError>
     where
         S: Stream<Item = Self::Doc> + Send + Sync + Unpin + 'static,
     {
@@ -65,16 +65,17 @@ impl<T: Document + Send + Sync + 'static> Import for GenerateIndex<T> {
         // 5. We search for the newly created index to return it.
         let config =
             config
-                .normalize_index_name(T::DOC_TYPE)
+                .normalize_index_name(D::DOC_TYPE)
                 .map_err(|err| ImportError::IndexCreation {
                     source: Box::new(err),
                 })?;
 
-        let index = self.storage.create_container(config).await.map_err(|err| {
-            ImportError::IndexCreation {
+        self.storage
+            .create_container(config)
+            .await
+            .map_err(|err| ImportError::IndexCreation {
                 source: Box::new(err),
-            }
-        })?;
+            })
 
         // self.storage
         //     .insert_documents(index.name.clone(), documents)
@@ -83,22 +84,22 @@ impl<T: Document + Send + Sync + 'static> Import for GenerateIndex<T> {
         //         source: Box::new(err),
         //     })?;
 
-        self.storage
-            .publish_container(index.clone(), visibility)
-            .await
-            .map_err(|err| ImportError::IndexPublication {
-                source: Box::new(err),
-            })?;
+        // self.storage
+        //     .publish_container(index.clone(), visibility)
+        //     .await
+        //     .map_err(|err| ImportError::IndexPublication {
+        //         source: Box::new(err),
+        //     })?;
 
-        self.storage
-            .find_container(index.name.clone())
-            .await
-            .map_err(|err| ImportError::DocumentStreamInsertion {
-                source: Box::new(err),
-            })?
-            .ok_or(ImportError::ExpectedIndex {
-                index: index.name.clone(),
-            })
+        // self.storage
+        //     .find_container(index.name.clone())
+        //     .await
+        //     .map_err(|err| ImportError::DocumentStreamInsertion {
+        //         source: Box::new(err),
+        //     })?
+        //     .ok_or(ImportError::ExpectedIndex {
+        //         index: index.name.clone(),
+        //     })
     }
 }
 

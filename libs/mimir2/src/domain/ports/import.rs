@@ -43,7 +43,7 @@ pub trait Import {
         mut docs: S,
         config: Configuration,
         visibility: IndexVisibility,
-    ) -> Result<Index, Error>
+    ) -> Result<Index<Self::Doc>, Error>
     where
         S: Stream<Item = Self::Doc> + Send + Sync + Unpin + 'static;
 }
@@ -59,7 +59,7 @@ where
         docs: S,
         config: Configuration,
         visibility: IndexVisibility,
-    ) -> Result<Index, Error>
+    ) -> Result<Index<Self::Doc>, Error>
     where
         S: Stream<Item = Self::Doc> + Send + Sync + Unpin + 'static,
     {
@@ -77,7 +77,7 @@ pub trait ErasedImport {
         docs: Box<dyn Stream<Item = Self::Doc> + Send + Sync + Unpin + 'static>,
         config: Configuration,
         visibility: IndexVisibility,
-    ) -> Result<Index, Error>;
+    ) -> Result<Index<Self::Doc>, Error>;
 }
 
 #[async_trait]
@@ -88,7 +88,7 @@ impl<T: Document + 'static> Import for (dyn ErasedImport<Doc = T> + Send + Sync)
         docs: S,
         config: Configuration,
         visibility: IndexVisibility,
-    ) -> Result<Index, Error>
+    ) -> Result<Index<Self::Doc>, Error>
     where
         S: Stream<Item = Self::Doc> + Send + Sync + Unpin + 'static,
     {
@@ -108,7 +108,7 @@ where
         docs: Box<dyn Stream<Item = Self::Doc> + Send + Sync + Unpin + 'static>,
         config: Configuration,
         visibility: IndexVisibility,
-    ) -> Result<Index, Error> {
+    ) -> Result<Index<Self::Doc>, Error> {
         self.generate_index(docs, config, visibility).await
     }
 }

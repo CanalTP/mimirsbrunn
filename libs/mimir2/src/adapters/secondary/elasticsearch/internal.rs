@@ -20,6 +20,7 @@ use std::sync::{Arc, Mutex};
 use super::ElasticsearchStorage;
 use crate::domain::model::configuration::{self, Configuration};
 use crate::domain::model::index::{Index, IndexStatus};
+use crate::domain::ports::container::ErasedContainer;
 
 static CHUNK_SIZE: usize = 10;
 
@@ -202,6 +203,9 @@ impl ElasticsearchStorage {
         ElasticsearchStorage(client)
     }
 
+    // This function returns nothing.... because the Elasticsearch API just returns an
+    // acknowledgment that the operation succeeded. To get the index that was created,
+    // you need to call find_index after that.
     pub(super) async fn create_index(&self, config: IndexConfiguration) -> Result<(), Error> {
         let body_str = format!(
             r#"{{ "mappings": {mappings}, "settings": {settings} }}"#,
@@ -326,8 +330,10 @@ impl ElasticsearchStorage {
         }
     }
 
-    // FIXME Move details to impl ElasticsearchStorage.
-    pub(super) async fn find_index(&self, index: String) -> Result<Option<Index>, Error> {
+    pub(super) async fn find_index(
+        &self,
+        index: String,
+    ) -> Result<Option<Box<dyn ErasedContainer>>, Error> {
         let response = self
             .0
             .cat()
@@ -765,8 +771,10 @@ impl ElasticsearchStorage {
         }
     }
 
-    pub(super) async fn get_previous_indices(&self, index: &Index) -> Result<Vec<String>, Error> {
-        let base_index = configuration::root_doctype_dataset(&index.doc_type, &index.dataset);
+    pub(super) async fn get_previous_indices(&self, index: &str) -> Result<Vec<String>, Error> {
+        let (doc_type, dataset) =
+            configuration::split_index_name(index).expect("invalid index name"); // FIXME map err instead of expect
+        let base_index = configuration::root_doctype_dataset(&doc_type, &dataset);
         // FIXME When available, we can use aliases.into_keys
         let aliases = self.find_aliases(base_index).await?;
         Ok(aliases
@@ -1024,6 +1032,7 @@ pub struct ElasticsearchIndex {
     pub uuid: String,
 }
 
+/*
 impl TryFrom<ElasticsearchIndex> for Index {
     type Error = Error;
     fn try_from(index: ElasticsearchIndex) -> Result<Self, Self::Error> {
@@ -1054,6 +1063,7 @@ impl TryFrom<ElasticsearchIndex> for Index {
         })
     }
 }
+*/
 
 impl From<String> for IndexStatus {
     fn from(status: String) -> Self {

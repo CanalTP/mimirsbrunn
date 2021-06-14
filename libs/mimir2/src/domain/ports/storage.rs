@@ -1,9 +1,9 @@
 use async_trait::async_trait;
+use erased_serde::Serialize as ErasedSerialize;
+use serde::Serialize;
 use snafu::Snafu;
 
 use crate::domain::model::configuration::Configuration;
-use crate::domain::model::document::Document;
-use crate::domain::model::index::{Index, IndexVisibility};
 use crate::domain::ports::container::ErasedContainer;
 
 #[derive(Debug, Snafu)]
@@ -23,47 +23,67 @@ pub enum Error {
 
 #[async_trait]
 pub trait Storage {
-    async fn create_container(
+    async fn create_container<D>(
         &self,
         config: Configuration,
-    ) -> Result<Box<dyn ErasedContainer>, Error>;
+    ) -> Result<Box<dyn ErasedContainer<Doc = D> + Send + Sync + 'static>, Error>
+    where
+        D: Serialize + Send + Sync + 'static;
 }
 
-// #[async_trait]
-// impl<'a, T: ?Sized> Storage for Box<T>
-// where
-//     T: Storage + Send + Sync,
-// {
-//     async fn create_container<D>(
-//         &self,
-//         config: Configuration,
-//     ) -> Result<Box<dyn ErasedContainer<Doc = D>>, Error>
-//     where
-//         D: Document,
-//     {
-//         (**self).create_container(config).await
-//     }
-// }
-//
-// // #[cfg_attr(test, mockall::automock)]
-// #[async_trait]
-// pub trait ErasedStorage {
-//     async fn erased_create_container(&self, config: Configuration) -> Result<Index, Error>;
-// }
-//
-// #[async_trait]
-// impl Storage for (dyn ErasedStorage + Send + Sync) {
-//     async fn create_container(&self, config: Configuration) -> Result<Index, Error> {
-//         self.erased_create_container(config).await
-//     }
-// }
-//
-// #[async_trait]
-// impl<T> ErasedStorage for T
-// where
-//     T: Storage + Send + Sync,
-// {
-//     async fn erased_create_container(&self, config: Configuration) -> Result<Index, Error> {
-//         self.create_container(config).await
-//     }
-// }
+#[async_trait]
+impl<'a, T: ?Sized> Storage for Box<T>
+where
+    T: Storage + Send + Sync,
+{
+    async fn create_container<D>(
+        &self,
+        config: Configuration,
+    ) -> Result<Box<dyn ErasedContainer<Doc = D> + Send + Sync + 'static>, Error>
+    where
+        D: Serialize + Send + Sync + 'static,
+    {
+        (**self).create_container(config).await
+    }
+}
+
+// #[cfg_attr(test, mockall::automock)]
+#[async_trait]
+pub trait ErasedStorage {
+    async fn erased_create_container(
+        &self,
+        config: Configuration,
+    ) -> Result<
+        Box<dyn ErasedContainer<Doc = Box<dyn ErasedSerialize>> + Send + Sync + 'static>,
+        Error,
+    >;
+}
+
+#[async_trait]
+impl Storage for (dyn ErasedStorage + Send + Sync) {
+    async fn create_container<D>(
+        &self,
+        config: Configuration,
+    ) -> Result<Box<dyn ErasedContainer<Doc = D> + Send + Sync + 'static>, Error>
+    where
+        D: Serialize + Send + Sync + 'static,
+    {
+        self.erased_create_container(config).await
+    }
+}
+
+#[async_trait]
+impl<T> ErasedStorage for T
+where
+    T: Storage + Send + Sync,
+{
+    async fn erased_create_container(
+        &self,
+        config: Configuration,
+    ) -> Result<
+        Box<dyn ErasedContainer<Doc = Box<dyn ErasedSerialize>> + Send + Sync + 'static>,
+        Error,
+    > {
+        self.create_container(config).await
+    }
+}

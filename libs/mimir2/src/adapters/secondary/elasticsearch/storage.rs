@@ -1,13 +1,11 @@
 use async_trait::async_trait;
 use futures::future::TryFutureExt;
-use futures::stream::Stream;
 use serde::Serialize;
 use std::convert::TryFrom;
 
 use super::internal;
 use super::ElasticsearchStorage;
-use crate::domain::model::configuration::{self, Configuration};
-use crate::domain::model::index::{Index, IndexVisibility};
+use crate::domain::model::configuration::Configuration;
 use crate::domain::ports::container::ErasedContainer;
 use crate::domain::ports::storage::{Error as StorageError, Storage};
 
@@ -15,10 +13,13 @@ use crate::domain::ports::storage::{Error as StorageError, Storage};
 impl Storage for ElasticsearchStorage {
     // This function delegates to elasticsearch the creation of the index. But since this
     // function returns nothing, we follow with a find index to return some details to the caller.
-    async fn create_container(
+    async fn create_container<D>(
         &self,
         config: Configuration,
-    ) -> Result<Box<dyn ErasedContainer>, StorageError> {
+    ) -> Result<Box<dyn ErasedContainer<Doc = D> + Send + Sync + 'static>, StorageError>
+    where
+        D: Serialize + Send + Sync + 'static,
+    {
         let config = internal::IndexConfiguration::try_from(config).map_err(|err| {
             StorageError::ContainerCreationError {
                 source: Box::new(err),

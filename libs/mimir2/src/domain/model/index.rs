@@ -4,7 +4,7 @@ use serde::Serialize;
 use std::marker::PhantomData;
 
 use crate::domain::ports::container::{Container, Error as ContainerError};
-use crate::domain::ports::storage::Storage;
+use crate::domain::ports::storage::ErasedStorage;
 
 #[derive(Debug, Clone)]
 pub enum IndexStatus {
@@ -24,7 +24,6 @@ impl Default for IndexVisibility {
     }
 }
 
-#[derive(Debug, Clone)]
 pub struct Index<D> {
     pub name: String,
     pub dataset: String,
@@ -32,7 +31,7 @@ pub struct Index<D> {
     pub docs_count: u32,
     pub status: IndexStatus,
     pub phantom: PhantomData<D>,
-    pub storage: Box<dyn Storage + Send + Sync + 'static>,
+    pub storage: Box<dyn ErasedStorage + Send + Sync + 'static>,
 }
 
 #[async_trait]

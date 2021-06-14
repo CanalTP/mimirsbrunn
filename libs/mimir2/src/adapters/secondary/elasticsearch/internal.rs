@@ -15,6 +15,7 @@ use serde_json::Value;
 use snafu::{ResultExt, Snafu};
 use std::collections::BTreeMap;
 use std::convert::TryFrom;
+use std::marker::PhantomData;
 use std::sync::{Arc, Mutex};
 
 use super::ElasticsearchStorage;
@@ -330,10 +331,13 @@ impl ElasticsearchStorage {
         }
     }
 
-    pub(super) async fn find_index(
+    pub(super) async fn find_index<D>(
         &self,
         index: String,
-    ) -> Result<Option<Box<dyn ErasedContainer>>, Error> {
+    ) -> Result<Option<Box<dyn ErasedContainer<Doc = D>>>, Error>
+    where
+        D: Serialize + Send + Sync + 'static,
+    {
         let response = self
             .0
             .cat()
@@ -356,7 +360,10 @@ impl ElasticsearchStorage {
                     details: String::from("could not deserialize Elasticsearch indices"),
                 })?;
 
-            indices.pop().map(Index::try_from).transpose()
+            indices
+                .pop()
+                .map(|ei| transmogrify(ei, self.clone()))
+                .transpose()
         } else {
             let exception = response.exception().await.ok().unwrap();
 
@@ -780,7 +787,7 @@ impl ElasticsearchStorage {
         Ok(aliases
             .into_iter()
             .map(|(k, _)| k)
-            .filter(|i| i.as_str() != index.name)
+            .filter(|i| i.as_str() != index)
             .collect())
     }
 
@@ -1032,38 +1039,42 @@ pub struct ElasticsearchIndex {
     pub uuid: String,
 }
 
-/*
-impl TryFrom<ElasticsearchIndex> for Index {
-    type Error = Error;
-    fn try_from(index: ElasticsearchIndex) -> Result<Self, Self::Error> {
-        let ElasticsearchIndex {
-            name,
-            docs_count,
-            status,
-            ..
-        } = index;
-        let (doc_type, dataset) =
-            configuration::split_index_name(&name).map_err(|err| Error::IndexConversion {
-                details: format!(
-                    "could not convert elasticsearch index into model index: {}",
-                    err.to_string()
-                ),
-            })?;
+fn transmogrify<D>(
+    index: ElasticsearchIndex,
+    storage: ElasticsearchStorage,
+) -> Result<Box<dyn ErasedContainer<Doc = D>>, Error>
+where
+    D: Serialize + Send + Sync + 'static,
+{
+    let ElasticsearchIndex {
+        name,
+        docs_count,
+        status,
+        ..
+    } = index;
+    let (doc_type, dataset) =
+        configuration::split_index_name(&name).map_err(|err| Error::IndexConversion {
+            details: format!(
+                "could not convert elasticsearch index into model index: {}",
+                err.to_string()
+            ),
+        })?;
 
-        let docs_count = match docs_count {
-            Some(val) => val.parse::<u32>().expect("docs count"),
-            None => 0,
-        };
-        Ok(Index {
-            name,
-            doc_type,
-            dataset,
-            docs_count,
-            status: IndexStatus::from(status),
-        })
-    }
+    let docs_count = match docs_count {
+        Some(val) => val.parse::<u32>().expect("docs count"),
+        None => 0,
+    };
+    let index = Index {
+        name,
+        doc_type,
+        dataset,
+        docs_count,
+        status: IndexStatus::from(status),
+        phantom: PhantomData,
+        storage: Box::new(storage.clone()),
+    };
+    Ok(Box::new(index))
 }
-*/
 
 impl From<String> for IndexStatus {
     fn from(status: String) -> Self {

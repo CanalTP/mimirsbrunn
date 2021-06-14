@@ -5,6 +5,7 @@ pub mod query;
 pub mod remote;
 pub mod storage;
 
+#[derive(Debug, Clone)]
 pub struct ElasticsearchStorage(Elasticsearch);
 
 #[cfg(test)]

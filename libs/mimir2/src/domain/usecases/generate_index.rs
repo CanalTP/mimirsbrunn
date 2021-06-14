@@ -6,17 +6,17 @@ use crate::domain::model::configuration::Configuration;
 use crate::domain::model::document::Document;
 use crate::domain::model::index::{Index, IndexVisibility};
 use crate::domain::ports::import::{Error as ImportError, Import};
-// use crate::domain::ports::storage::ErasedStorage;
+use crate::domain::ports::storage::ErasedStorage;
 use crate::domain::ports::storage::Storage;
 use crate::domain::usecases::{Error as UseCaseError, UseCase};
 
 pub struct GenerateIndex<D> {
-    pub storage: Box<dyn Storage + Send + Sync + 'static>,
+    pub storage: Box<dyn ErasedStorage + Send + Sync + 'static>,
     pub doc_type: PhantomData<D>,
 }
 
 impl<D> GenerateIndex<D> {
-    pub fn new(storage: Box<dyn Storage + Send + Sync + 'static>) -> Self {
+    pub fn new(storage: Box<dyn ErasedStorage + Send + Sync + 'static>) -> Self {
         GenerateIndex {
             storage,
             doc_type: PhantomData,

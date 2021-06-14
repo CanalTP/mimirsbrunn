@@ -1,11 +1,7 @@
 use async_trait::async_trait;
-use erased_serde::Serialize as ErasedSerialize;
-use futures::stream::{Stream, StreamExt};
+use futures::stream::Stream;
 use serde::Serialize;
 use snafu::Snafu;
-
-use crate::domain::model::configuration::Configuration;
-use crate::domain::model::index::{Index, IndexVisibility};
 
 #[derive(Debug, Snafu)]
 pub enum Error {
@@ -38,21 +34,18 @@ where
 // #[cfg_attr(test, mockall::automock)]
 #[async_trait]
 pub trait ErasedContainer {
+    type Doc: Serialize + Send + Sync + 'static;
     async fn erased_insert_documents(
         &self,
         index: String,
-        documents: Box<
-            dyn Stream<Item = Box<dyn ErasedSerialize + Send + Sync>>
-                + Send
-                + Sync
-                + Unpin
-                + 'static,
-        >,
+        documents: Box<dyn Stream<Item = Self::Doc> + Send + Sync + Unpin + 'static>,
     ) -> Result<usize, Error>;
 }
 
 #[async_trait]
-impl<D> Container for (dyn ErasedContainer + Send + Sync) {
+impl<D: Serialize + Send + Sync + 'static> Container
+    for (dyn ErasedContainer<Doc = D> + Send + Sync)
+{
     type Doc = D;
     async fn insert_documents<S>(&self, index: String, documents: S) -> Result<usize, Error>
     where
@@ -72,16 +65,11 @@ where
     T: Container<Doc = D> + Send + Sync,
     D: Serialize + Send + Sync + 'static,
 {
+    type Doc = D;
     async fn erased_insert_documents(
         &self,
         index: String,
-        documents: Box<
-            dyn Stream<Item = Box<dyn ErasedSerialize + Send + Sync>>
-                + Send
-                + Sync
-                + Unpin
-                + 'static,
-        >,
+        documents: Box<dyn Stream<Item = Self::Doc> + Send + Sync + Unpin + 'static>,
     ) -> Result<usize, Error> {
         self.insert_documents(index, documents).await
     }

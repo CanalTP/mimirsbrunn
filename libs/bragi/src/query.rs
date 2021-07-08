@@ -428,37 +428,50 @@ fn build_query<'a>(
         filters.push(geo_filter);
     }
 
-    let mut query = Query::build_bool()
-        .with_must(vec![type_query, string_query])
-        .with_should(importance_queries)
-        .with_filter(Query::build_bool().with_must(filters).build());
-
     if !zone_types.is_empty() {
-        query = query.with_filter(
+        filters.push(
             Query::build_bool()
                 .with_should(
-                    zone_types
-                        .iter()
-                        .map(|x| Query::build_match("zone_type", *x).build())
-                        .collect::<Vec<_>>(),
+                    iter::once(
+                        Query::build_bool()
+                            .with_must_not(Query::build_term("_type", Admin::doc_type()).build())
+                            .build(),
+                    )
+                    .chain(
+                        zone_types
+                            .iter()
+                            .map(|x| Query::build_term("zone_type", *x).build()),
+                    )
+                    .collect::<Vec<_>>(),
                 )
                 .build(),
         );
     }
     if !poi_types.is_empty() {
-        query = query.with_filter(
+        filters.push(
             Query::build_bool()
                 .with_should(
-                    poi_types
-                        .iter()
-                        .map(|x| Query::build_match("poi_type.id", *x).build())
-                        .collect::<Vec<_>>(),
+                    iter::once(
+                        Query::build_bool()
+                            .with_must_not(Query::build_term("_type", Poi::doc_type()).build())
+                            .build(),
+                    )
+                    .chain(
+                        poi_types
+                            .iter()
+                            .map(|x| Query::build_match("poi_type.id", *x).build()),
+                    )
+                    .collect::<Vec<_>>(),
                 )
                 .build(),
         );
     }
 
-    query.build()
+    Query::build_bool()
+        .with_must(vec![type_query, string_query])
+        .with_should(importance_queries)
+        .with_filter(Query::build_bool().with_must(filters).build())
+        .build()
 }
 
 #[allow(clippy::too_many_arguments)]

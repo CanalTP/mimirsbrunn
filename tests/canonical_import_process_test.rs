@@ -394,6 +394,16 @@ fn filter_zone_type_test(bragi: &mut BragiHandler) {
     let types = get_values(&geocodings, "zone_type");
     assert_eq!(count_types(&types, "state_district"), 1);
     assert_eq!(count_types(&types, "country"), 1);
+
+    // all terms in query should match
+    let geocodings = bragi.get("/autocomplete?q=Melun%20France&type[]=zone&zone_type[]=city");
+    assert_eq!(geocodings.len(), 1);
+    assert_eq!(get_values(&geocodings, "zone_type"), &["city"]);
+
+    // zone_type and poi_type should be applied separately to zones and pois
+    let geocodings = bragi.get("/autocomplete?q=Melun%20France&type[]=zone&type[]=poi&zone_type[]=city&poi_type[]=amenity:college");
+    assert_eq!(geocodings.len(), 1);
+    assert_eq!(get_values(&geocodings, "zone_type"), &["city"]);
 }
 
 fn zone_filter_error_message_test(bragi: &mut BragiHandler) {

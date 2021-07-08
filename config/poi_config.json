@@ -1,0 +1,3115 @@
+{
+  "poi_types": [
+    { "id": "ACCOMMO_ALPINEHUT", "name": "ACCOMMO_ALPINEHUT" },
+    { "id": "ACCOMMO_CAMPING", "name": "ACCOMMO_CAMPING" },
+    { "id": "ACCOMMO_CARAVAN", "name": "ACCOMMO_CARAVAN" },
+    { "id": "ACCOMMO_CHALET", "name": "ACCOMMO_CHALET" },
+    { "id": "ACCOMMO_HOSTEL", "name": "ACCOMMO_HOSTEL" },
+    { "id": "ACCOMMO_HOTEL", "name": "ACCOMMO_HOTEL" },
+    { "id": "ACCOMMO_MOTEL", "name": "ACCOMMO_MOTEL" },
+    { "id": "AMENITY_COURT", "name": "AMENITY_COURT" },
+    { "id": "AMENITY_FIRESTATION", "name": "AMENITY_FIRESTATION" },
+    { "id": "AMENITY_LIBRARY", "name": "AMENITY_LIBRARY" },
+    { "id": "AMENITY_PLAYGROUND", "name": "AMENITY_PLAYGROUND" },
+    { "id": "AMENITY_POLICE", "name": "AMENITY_POLICE" },
+    { "id": "AMENITY_POSTOFFICE", "name": "AMENITY_POSTOFFICE" },
+    { "id": "AMENITY_PRISON", "name": "AMENITY_PRISON" },
+    { "id": "AMENITY_PUBLICBUILDING", "name": "AMENITY_PUBLICBUILDING" },
+    { "id": "AMENITY_TOWNHALL", "name": "AMENITY_TOWNHALL" },
+    { "id": "BARRIER_BLOCKS", "name": "BARRIER_BLOCKS" },
+    { "id": "EDUCATION_COLLEGE", "name": "EDUCATION_COLLEGE" },
+    { "id": "EDUCATION_NURSERY", "name": "EDUCATION_NURSERY" },
+    { "id": "EDUCATION_SCHOOL", "name": "EDUCATION_SCHOOL" },
+    { "id": "EDUCATION_UNIVERSITY", "name": "EDUCATION_UNIVERSITY" },
+    { "id": "FOOD_BAR", "name": "FOOD_BAR" },
+    { "id": "FOOD_BIERGARTEN", "name": "FOOD_BIERGARTEN" },
+    { "id": "FOOD_CAFE", "name": "FOOD_CAFE" },
+    { "id": "FOOD_FASTFOOD", "name": "FOOD_FASTFOOD" },
+    { "id": "FOOD_ICECREAM", "name": "FOOD_ICECREAM" },
+    { "id": "FOOD_PUB", "name": "FOOD_PUB" },
+    { "id": "FOOD_RESTAURANT", "name": "FOOD_RESTAURANT" },
+    { "id": "HEALTH_ALTERNATIVE", "name": "HEALTH_ALTERNATIVE"},
+    { "id": "HEALTH_DENTIST", "name": "HEALTH_DENTIST" },
+    { "id": "HEALTH_DOCTORS", "name": "HEALTH_DOCTORS" },
+    { "id": "HEALTH_HOSPITAL", "name": "HEALTH_HOSPITAL" },
+    { "id": "HEALTH_HOSPITALEMERGENCY", "name": "HEALTH_HOSPITALEMERGENCY" },
+    { "id": "HEALTH_PHARMACY", "name": "HEALTH_PHARMACY" },
+    { "id": "HEALTH_VETERINARY", "name": "HEALTH_VETERINARY" },
+    { "id": "LANDUSE_ALLOTMENTS", "name": "LANDUSE_ALLOTMENTS" },
+    { "id": "LANDUSE_CONIFEROUS", "name": "LANDUSE_CONIFEROUS" },
+    { "id": "LANDUSE_CONIFEROUSDECIDUOUS", "name": "LANDUSE_CONIFEROUSDECIDUOUS" },
+    { "id": "LANDUSE_DECIDUOUS", "name": "LANDUSE_DECIDUOUS" },
+    { "id": "LANDUSE_GRASS", "name": "LANDUSE_GRASS" },
+    { "id": "LANDUSE_HILLS", "name": "LANDUSE_HILLS" },
+    { "id": "LANDUSE_MILITARY", "name": "LANDUSE_MILITARY" },
+    { "id": "LANDUSE_QUARY", "name": "LANDUSE_QUARY" },
+    { "id": "LANDUSE_SCRUB", "name": "LANDUSE_SCRUB" },
+    { "id": "LANDUSE_SWAMP", "name": "LANDUSE_SWAMP" },
+    { "id": "MONEY_ATM", "name": "MONEY_ATM" },
+    { "id": "MONEY_BANK", "name": "MONEY_BANK" },
+    { "id": "MONEY_EXCHANGE", "name": "MONEY_EXCHANGE" },
+    { "id": "POI_BUNKER", "name": "POI_BUNKER" },
+    { "id": "POI_CAVE", "name": "POI_CAVE" },
+    { "id": "POI_CITY", "name": "POI_CITY" },
+    { "id": "POI_CRANE", "name": "POI_CRANE" },
+    { "id": "POI_EMBASSY", "name": "POI_EMBASSY" },
+    { "id": "POI_HAMLET", "name": "POI_HAMLET" },
+    { "id": "POI_MINE", "name": "POI_MINE" },
+    { "id": "POI_PEAK", "name": "POI_PEAK" },
+    { "id": "POI_PEAK1", "name": "POI_PEAK1" },
+    { "id": "POI_SUBURB", "name": "POI_SUBURB" },
+    { "id": "POI_TOWERCOMMUNICATION", "name": "POI_TOWERCOMMUNICATION" },
+    { "id": "POI_TOWERLOOKOUT", "name": "POI_TOWERLOOKOUT" },
+    { "id": "POI_TOWN", "name": "POI_TOWN" },
+    { "id": "POI_VILLAGE", "name": "POI_VILLAGE" },
+    { "id": "POW_BAHAI", "name": "POW_BAHAI" },
+    { "id": "POW_BUDDHIST", "name": "POW_BUDDHIST" },
+    { "id": "POW_CHRISTIAN", "name": "POW_CHRISTIAN" },
+    { "id": "POW_HINDU", "name": "POW_HINDU" },
+    { "id": "POW_ISLAMIC", "name": "POW_ISLAMIC" },
+    { "id": "POW_JAIN", "name": "POW_JAIN" },
+    { "id": "POW_JEWISH", "name": "POW_JEWISH" },
+    { "id": "POW_SHINTO", "name": "POW_SHINTO" },
+    { "id": "POW_SIKH", "name": "POW_SIKH" },
+    { "id": "POW_UNKOWN", "name": "POW_UNKOWN" },
+    { "id": "SHOP", "name": "SHOP" },
+    { "id": "SHOP_ALCOHOL", "name": "SHOP_ALCOHOL" },
+    { "id": "SHOP_BAKERY", "name": "SHOP_BAKERY" },
+    { "id": "SHOP_BICYCLE", "name": "SHOP_BICYCLE" },
+    { "id": "SHOP_BOOK", "name": "SHOP_BOOK" },
+    { "id": "SHOP_BUTCHER", "name": "SHOP_BUTCHER" },
+    { "id": "SHOP_CAR", "name": "SHOP_CAR" },
+    { "id": "SHOP_CARREPAIR", "name": "SHOP_CARREPAIR" },
+    { "id": "SHOP_CHEMIST", "name": "SHOP_CHEMIST" },
+    { "id": "SHOP_CLOTHES", "name": "SHOP_CLOTHES" },
+    { "id": "SHOP_COMPUTER", "name": "SHOP_COMPUTER" },
+    { "id": "SHOP_CONFECTIONERY", "name": "SHOP_CONFECTIONERY" },
+    { "id": "SHOP_CONVENIENCE", "name": "SHOP_CONVENIENCE" },
+    { "id": "SHOP_COPYSHOP", "name": "SHOP_COPYSHOP" },
+    { "id": "SHOP_COSMETICS", "name": "SHOP_COSMETICS"},
+    { "id": "SHOP_DEPARTMENTSTORE", "name": "SHOP_DEPARTMENTSTORE" },
+    { "id": "SHOP_DIY", "name": "SHOP_DIY" },
+    { "id": "SHOP_FISH", "name": "SHOP_FISH" },
+    { "id": "SHOP_FLORIST", "name": "SHOP_FLORIST" },
+    { "id": "SHOP_GARDENCENTRE", "name": "SHOP_GARDENCENTRE" },
+    { "id": "SHOP_GIFT", "name": "SHOP_GIFT" },
+    { "id": "SHOP_GREENGROCER", "name": "SHOP_GREENGROCER" },
+    { "id": "SHOP_HAIRDRESSER", "name": "SHOP_HAIRDRESSER" },
+    { "id": "SHOP_HEARINGAIDS", "name": "SHOP_HEARINGAIDS" },
+    { "id": "SHOP_HIFI", "name": "SHOP_HIFI" },
+    { "id": "SHOP_JEWELRY", "name": "SHOP_JEWELRY" },
+    { "id": "SHOP_KIOSK", "name": "SHOP_KIOSK" },
+    { "id": "SHOP_LAUNDRETTE", "name": "SHOP_LAUNDRETTE" },
+    { "id": "SHOP_MARKETPLACE", "name": "SHOP_MARKETPLACE" },
+    { "id": "SHOP_MOTORCYCLE", "name": "SHOP_MOTORCYCLE" },
+    { "id": "SHOP_MUSIC", "name": "SHOP_MUSIC" },
+    { "id": "SHOP_NEWSPAPER", "name": "SHOP_NEWSPAPER" },
+    { "id": "SHOP_PET", "name": "SHOP_PET" },
+    { "id": "SHOP_PHONE", "name": "SHOP_PHONE" },
+    { "id": "SHOP_PHOTO", "name": "SHOP_PHOTO"},
+    { "id": "SHOP_SHOES", "name": "SHOP_SHOES" },
+    { "id": "SHOP_SUPERMARKET", "name": "SHOP_SUPERMARKET" },
+    { "id": "SHOP_TOBACCO", "name": "SHOP_TOBACCO" },
+    { "id": "SHOP_TOYS", "name": "SHOP_TOYS" },
+    { "id": "SHOP_VENDINGMASCHINE", "name": "SHOP_VENDINGMASCHINE" },
+    { "id": "SHOP_VIDEORENTAL", "name": "SHOP_VIDEORENTAL" },
+    { "id": "SPORT_ARCHERY", "name": "SPORT_ARCHERY" },
+    { "id": "SPORT_BASEBALL", "name": "SPORT_BASEBALL" },
+    { "id": "SPORT_BASKETBALL", "name": "SPORT_BASKETBALL" },
+    { "id": "SPORT_BOWLING", "name": "SPORT_BOWLING" },
+    { "id": "SPORT_CANOE", "name": "SPORT_CANOE" },
+    { "id": "SPORT_CLIMBING", "name": "SPORT_CLIMBING" },
+    { "id": "SPORT_CRICKET", "name": "SPORT_CRICKET" },
+    { "id": "SPORT_DIVING", "name": "SPORT_DIVING" },
+    { "id": "SPORT_FOOTBALL", "name": "SPORT_FOOTBALL" },
+    { "id": "SPORT_GOLF", "name": "SPORT_GOLF" },
+    { "id": "SPORT_GYM", "name": "SPORT_GYM" },
+    { "id": "SPORT_GYMNASIUM", "name": "SPORT_GYMNASIUM" },
+    { "id": "SPORT_HORSE", "name": "SPORT_HORSE" },
+    { "id": "SPORT_ICESKATING", "name": "SPORT_ICESKATING" },
+    { "id": "SPORT_LEISURECENTER", "name": "SPORT_LEISURECENTER" },
+    { "id": "SPORT_MINIATURGOLF", "name": "SPORT_MINIATURGOLF" },
+    { "id": "SPORT_MOTORRACING", "name": "SPORT_MOTORRACING" },
+    { "id": "SPORT_SHOOTING", "name": "SPORT_SHOOTING" },
+    { "id": "SPORT_SKATING", "name": "SPORT_SKATING" },
+    { "id": "SPORT_SKIINGDOWNHILL", "name": "SPORT_SKIINGDOWNHILL" },
+    { "id": "SPORT_SNOOKER", "name": "SPORT_SNOOKER" },
+    { "id": "SPORT_SOCCER", "name": "SPORT_SOCCER" },
+    { "id": "SPORT_STADIUM", "name": "SPORT_STADIUM" },
+    { "id": "SPORT_SURFING", "name": "SPORT_SURFING" },
+    { "id": "SPORT_SWIMMING", "name": "SPORT_SWIMMING" },
+    { "id": "SPORT_TENNIS", "name": "SPORT_TENNIS" },
+    { "id": "SPORT_WATERSKI", "name": "SPORT_WATERSKI" },
+    { "id": "TOURIST_ARCHAELOGICAL", "name": "TOURIST_ARCHAELOGICAL" },
+    { "id": "TOURIST_ART", "name": "TOURIST_ART" },
+    { "id": "TOURIST_ATTRACTION", "name": "TOURIST_ATTRACTION" },
+    { "id": "TOURIST_BATTLEFIELD", "name": "TOURIST_BATTLEFIELD" },
+    { "id": "TOURIST_BEACH", "name": "TOURIST_BEACH" },
+    { "id": "TOURIST_CASTLE", "name": "TOURIST_CASTLE" },
+    { "id": "TOURIST_CASTLE2", "name": "TOURIST_CASTLE2" },
+    { "id": "TOURIST_CINEMA", "name": "TOURIST_CINEMA" },
+    { "id": "TOURIST_FOUNTAIN", "name": "TOURIST_FOUNTAIN" },
+    { "id": "TOURIST_INFORMATION", "name": "TOURIST_INFORMATION" },
+    { "id": "TOURIST_LEISURE", "name": "TOURIST_LEISURE" },
+    { "id": "TOURIST_MEMORIAL", "name": "TOURIST_MEMORIAL" },
+    { "id": "TOURIST_MONUMENT", "name": "TOURIST_MONUMENT" },
+    { "id": "TOURIST_MUSEUM", "name": "TOURIST_MUSEUM" },
+    { "id": "TOURIST_NIGHTCLUB", "name": "TOURIST_NIGHTCLUB" },
+    { "id": "TOURIST_RUINS", "name": "TOURIST_RUINS" },
+    { "id": "TOURIST_THEATRE", "name": "TOURIST_THEATRE" },
+    { "id": "TOURIST_THEMEPARK", "name": "TOURIST_THEMEPARK" },
+    { "id": "TOURIST_WINDMILL", "name": "TOURIST_WINDMILL" },
+    { "id": "TOURIST_WRECK", "name": "TOURIST_WRECK" },
+    { "id": "TOURIST_ZOO", "name": "TOURIST_ZOO" },
+    { "id": "TRANSPORT_AIRPORT", "name": "TRANSPORT_AIRPORT" },
+    { "id": "TRANSPORT_FUEL", "name": "TRANSPORT_FUEL" },
+    { "id": "TRANSPORT_LIGHTHOUSE", "name": "TRANSPORT_LIGHTHOUSE" },
+    { "id": "TRANSPORT_MARINA", "name": "TRANSPORT_MARINA" },
+    { "id": "TRANSPORT_PARKING_BICYCLE", "name": "TRANSPORT_PARKING_BICYCLE"},
+    { "id": "TRANSPORT_PARKING_CAR", "name": "TRANSPORT_PARKING_CAR"},
+    { "id": "TRANSPORT_RENTALCAR", "name": "TRANSPORT_RENTALCAR" },
+    { "id": "TRANSPORT_STATION", "name": "TRANSPORT_STATION" },
+    { "id": "TRANSPORT_SUBWAY", "name": "TRANSPORT_SUBWAY" },
+    { "id": "TRANSPORT_TAXI", "name": "TRANSPORT_TAXI"},
+    { "id": "TRANSPORT_TERMINAL", "name": "TRANSPORT_TERMINAL" },
+    { "id": "WATER_DAM", "name": "WATER_DAM" },
+    { "id": "WATER_TOWER", "name": "WATER_TOWER" },
+    { "id": "WATER_WEIR", "name": "WATER_WEIR" },
+    { "id": "WORK_COWORKING", "name": "WORK_COWORKING"}
+  ],
+  "rules": [
+    {
+      "osm_tags_filters": [{"key": "amenity", "value": "bicycle_parking"}],
+      "poi_type_id": "TRANSPORT_PARKING_BICYCLE"
+    },
+    {
+      "osm_tags_filters": [{"key": "health", "value": "alternative"}],
+      "poi_type_id": "HEALTH_ALTERNATIVE"
+    },
+    {
+      "osm_tags_filters": [{"key": "amenity", "value": "parking"}],
+      "poi_type_id": "TRANSPORT_PARKING_CAR"
+    },
+    {
+      "osm_tags_filters": [{"key": "amenity", "value": "parking_space"}],
+      "poi_type_id": "TRANSPORT_PARKING_CAR"
+    },
+    {
+      "osm_tags_filters": [{"key": "building", "value": "parking"}],
+      "poi_type_id": "TRANSPORT_PARKING_CAR"
+    },
+    {
+      "osm_tags_filters": [{"key": "shop", "value": "fuel"}],
+      "poi_type_id": "TRANSPORT_FUEL"
+    },
+    {
+      "osm_tags_filters": [{"key": "shop", "value": "photo"}],
+      "poi_type_id": "SHOP_PHOTO"
+    },
+    {
+      "osm_tags_filters": [{"key": "shop", "value": "cosmetics"}],
+      "poi_type_id": "SHOP_COSMETICS"
+    },
+    {
+      "osm_tags_filters": [{"key": "industrial", "value": "bakery"}],
+      "poi_type_id": "SHOP_BAKERY"
+    },
+    {
+      "osm_tags_filters": [{"key": "shop", "value": "pastry"}],
+      "poi_type_id": "SHOP_BAKERY"
+    },
+    {
+      "osm_tags_filters": [{"key": "amenity", "value": "atm"}],
+      "poi_type_id": "MONEY_ATM"
+    },
+    {
+      "osm_tags_filters": [{"key": "amenity", "value": "taxi"}],
+      "poi_type_id": "TRANSPORT_TAXI"
+    },
+    {
+      "osm_tags_filters": [{"key": "amenity", "value": "bus_station"}],
+      "poi_type_id": "TRANSPORT_STATION"
+    },
+    {
+      "osm_tags_filters": [{"key": "railway", "value": "station"}],
+      "poi_type_id": "TRANSPORT_STATION"
+    },
+    {
+      "osm_tags_filters": [{"key": "public_transport", "value": "station"}],
+      "poi_type_id": "TRANSPORT_STATION"
+    },
+    {
+      "osm_tags_filters": [{"key": "office", "value": "coworking"}],
+      "poi_type_id": "WORK_COWORKING"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "bar"
+        }
+      ],
+      "poi_type_id": "FOOD_BAR"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "biergarten"
+        }
+      ],
+      "poi_type_id": "FOOD_BIERGARTEN"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "cafe"
+        }
+      ],
+      "poi_type_id": "FOOD_CAFE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "fast_food"
+        }
+      ],
+      "poi_type_id": "FOOD_FASTFOOD"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "food_court"
+        }
+      ],
+      "poi_type_id": "FOOD_FASTFOOD"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "ice_cream"
+        }
+      ],
+      "poi_type_id": "FOOD_ICECREAM"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "pub"
+        }
+      ],
+      "poi_type_id": "FOOD_PUB"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "restaurant"
+        }
+      ],
+      "poi_type_id": "FOOD_RESTAURANT"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "college"
+        }
+      ],
+      "poi_type_id": "EDUCATION_COLLEGE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "kindergarten"
+        }
+      ],
+      "poi_type_id": "EDUCATION_NURSERY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "school"
+        }
+      ],
+      "poi_type_id": "EDUCATION_SCHOOL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "university"
+        }
+      ],
+      "poi_type_id": "EDUCATION_UNIVERSITY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "clinic"
+        }
+      ],
+      "poi_type_id": "HEALTH_HOSPITAL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "dentist"
+        }
+      ],
+      "poi_type_id": "HEALTH_DENTIST"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "doctors"
+        }
+      ],
+      "poi_type_id": "HEALTH_DOCTORS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "hospital"
+        }
+      ],
+      "poi_type_id": "HEALTH_HOSPITAL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "pharmacy"
+        }
+      ],
+      "poi_type_id": "HEALTH_PHARMACY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "veterinary"
+        }
+      ],
+      "poi_type_id": "HEALTH_VETERINARY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "arts_centre"
+        }
+      ],
+      "poi_type_id": "TOURIST_ART"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "cinema"
+        }
+      ],
+      "poi_type_id": "TOURIST_CINEMA"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "community_centre"
+        }
+      ],
+      "poi_type_id": "TOURIST_THEATRE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "theatre"
+        }
+      ],
+      "poi_type_id": "TOURIST_THEATRE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "nightclub"
+        }
+      ],
+      "poi_type_id": "TOURIST_NIGHTCLUB"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "stripclub"
+        }
+      ],
+      "poi_type_id": "TOURIST_NIGHTCLUB"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "courthouse"
+        }
+      ],
+      "poi_type_id": "AMENITY_COURT"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "fire_station"
+        }
+      ],
+      "poi_type_id": "AMENITY_FIRESTATION"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "police"
+        }
+      ],
+      "poi_type_id": "AMENITY_POLICE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "post_office"
+        }
+      ],
+      "poi_type_id": "AMENITY_POSTOFFICE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "prison"
+        }
+      ],
+      "poi_type_id": "AMENITY_PRISON"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "townhall"
+        }
+      ],
+      "poi_type_id": "AMENITY_TOWNHALL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "library"
+        }
+      ],
+      "poi_type_id": "AMENITY_LIBRARY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "social_centre"
+        }
+      ],
+      "poi_type_id": "AMENITY_PUBLICBUILDING"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "nursing_home"
+        }
+      ],
+      "poi_type_id": "AMENITY_PUBLICBUILDING"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "social_facility"
+        }
+      ],
+      "poi_type_id": "AMENITY_PUBLICBUILDING"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "public_building"
+        }
+      ],
+      "poi_type_id": "AMENITY_PUBLICBUILDING"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "grave_yard"
+        }
+      ],
+      "poi_type_id": "BARRIER_BLOCKS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "bicycle_rental"
+        }
+      ],
+      "poi_type_id": "SHOP_BICYCLE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "marketplace"
+        }
+      ],
+      "poi_type_id": "SHOP_MARKETPLACE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "fuel"
+        }
+      ],
+      "poi_type_id": "TRANSPORT_FUEL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "car_rental"
+        }
+      ],
+      "poi_type_id": "TRANSPORT_RENTALCAR"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "car_wash"
+        }
+      ],
+      "poi_type_id": "TRANSPORT_RENTALCAR"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "bank"
+        }
+      ],
+      "poi_type_id": "MONEY_BANK"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "bureau_de_change"
+        }
+      ],
+      "poi_type_id": "MONEY_EXCHANGE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "embassy"
+        }
+      ],
+      "poi_type_id": "POI_EMBASSY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "place_of_worship"
+        }
+      ],
+      "poi_type_id": "POW_UNKOWN"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "place_of_worship"
+        },
+        {
+          "key": "religion",
+          "value": "place_of_worship"
+        },
+        {
+          "key": "religion",
+          "value": "bahai"
+        }
+      ],
+      "poi_type_id": "POW_BAHAI"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "place_of_worship"
+        },
+        {
+          "key": "religion",
+          "value": "place_of_worship"
+        },
+        {
+          "key": "religion",
+          "value": "buddhist"
+        }
+      ],
+      "poi_type_id": "POW_BUDDHIST"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "place_of_worship"
+        },
+        {
+          "key": "religion",
+          "value": "place_of_worship"
+        },
+        {
+          "key": "religion",
+          "value": "christian"
+        }
+      ],
+      "poi_type_id": "POW_CHRISTIAN"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "place_of_worship"
+        },
+        {
+          "key": "religion",
+          "value": "place_of_worship"
+        },
+        {
+          "key": "religion",
+          "value": "hindu"
+        }
+      ],
+      "poi_type_id": "POW_HINDU"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "place_of_worship"
+        },
+        {
+          "key": "religion",
+          "value": "place_of_worship"
+        },
+        {
+          "key": "religion",
+          "value": "jain"
+        }
+      ],
+      "poi_type_id": "POW_JAIN"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "place_of_worship"
+        },
+        {
+          "key": "religion",
+          "value": "place_of_worship"
+        },
+        {
+          "key": "religion",
+          "value": "jewish"
+        }
+      ],
+      "poi_type_id": "POW_JEWISH"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "place_of_worship"
+        },
+        {
+          "key": "religion",
+          "value": "place_of_worship"
+        },
+        {
+          "key": "religion",
+          "value": "muslim"
+        }
+      ],
+      "poi_type_id": "POW_ISLAMIC"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "place_of_worship"
+        },
+        {
+          "key": "religion",
+          "value": "place_of_worship"
+        },
+        {
+          "key": "religion",
+          "value": "shinto"
+        }
+      ],
+      "poi_type_id": "POW_SHINTO"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "amenity",
+          "value": "place_of_worship"
+        },
+        {
+          "key": "religion",
+          "value": "place_of_worship"
+        },
+        {
+          "key": "religion",
+          "value": "sikh"
+        }
+      ],
+      "poi_type_id": "POW_SIKH"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "geological",
+          "value": "palaeontological_site"
+        }
+      ],
+      "poi_type_id": "TOURIST_ARCHAELOGICAL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "geological",
+          "value": "outcrop"
+        }
+      ],
+      "poi_type_id": "LANDUSE_HILLS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "highway",
+          "value": "rest_area"
+        }
+      ],
+      "poi_type_id": "TRANSPORT_FUEL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "highway",
+          "value": "pedestrian"
+        }
+      ],
+      "poi_type_id": "TOURIST_FOUNTAIN"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "highway",
+          "value": "services"
+        }
+      ],
+      "poi_type_id": "TRANSPORT_FUEL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "historic",
+          "value": "archaeological_site"
+        }
+      ],
+      "poi_type_id": "TOURIST_ARCHAELOGICAL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "historic",
+          "value": "battlefield"
+        }
+      ],
+      "poi_type_id": "TOURIST_BATTLEFIELD"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "historic",
+          "value": "castle"
+        }
+      ],
+      "poi_type_id": "TOURIST_CASTLE2"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "historic",
+          "value": "city_gate"
+        }
+      ],
+      "poi_type_id": "TOURIST_CASTLE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "historic",
+          "value": "fort"
+        }
+      ],
+      "poi_type_id": "TOURIST_CASTLE2"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "historic",
+          "value": "memorial"
+        }
+      ],
+      "poi_type_id": "TOURIST_MEMORIAL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "historic",
+          "value": "monument"
+        }
+      ],
+      "poi_type_id": "TOURIST_MONUMENT"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "historic",
+          "value": "ruins"
+        }
+      ],
+      "poi_type_id": "TOURIST_RUINS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "historic",
+          "value": "rune_stone"
+        }
+      ],
+      "poi_type_id": "TOURIST_MEMORIAL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "historic",
+          "value": "wreck"
+        }
+      ],
+      "poi_type_id": "TOURIST_WRECK"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "man_made",
+          "value": "tower"
+        }
+      ],
+      "poi_type_id": "POI_TOWERLOOKOUT"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "man_made",
+          "value": "tower"
+        },
+        {
+          "key": "tower:type",
+          "value": "communication"
+        }
+      ],
+      "poi_type_id": "POI_TOWERCOMMUNICATION"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "man_made",
+          "value": "water_tower"
+        }
+      ],
+      "poi_type_id": "WATER_TOWER"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "man_made",
+          "value": "watermill"
+        }
+      ],
+      "poi_type_id": "TOURIST_WINDMILL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "man_made",
+          "value": "windmill"
+        }
+      ],
+      "poi_type_id": "TOURIST_WINDMILL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "man_made",
+          "value": "lighthouse"
+        }
+      ],
+      "poi_type_id": "TRANSPORT_LIGHTHOUSE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "man_made",
+          "value": "mineshaft"
+        }
+      ],
+      "poi_type_id": "POI_MINE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "man_made",
+          "value": "water_works"
+        }
+      ],
+      "poi_type_id": "WATER_WEIR"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "military",
+          "value": "bunker"
+        }
+      ],
+      "poi_type_id": "POI_BUNKER"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "military",
+          "value": "airfield"
+        }
+      ],
+      "poi_type_id": "TRANSPORT_AIRPORT"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "military",
+          "value": "danger_area"
+        }
+      ],
+      "poi_type_id": "LANDUSE_MILITARY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "military",
+          "value": "naval_base"
+        }
+      ],
+      "poi_type_id": "TRANSPORT_MARINA"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "military",
+          "value": "range"
+        }
+      ],
+      "poi_type_id": "LANDUSE_MILITARY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "place",
+          "value": "city"
+        }
+      ],
+      "poi_type_id": "POI_CITY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "place",
+          "value": "town"
+        }
+      ],
+      "poi_type_id": "POI_TOWN"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "place",
+          "value": "village"
+        }
+      ],
+      "poi_type_id": "POI_VILLAGE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "place",
+          "value": "hamlet"
+        }
+      ],
+      "poi_type_id": "POI_HAMLET"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "place",
+          "value": "isolated_dwelling"
+        }
+      ],
+      "poi_type_id": "POI_HAMLET"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "place",
+          "value": "farm"
+        }
+      ],
+      "poi_type_id": "POI_HAMLET"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "place",
+          "value": "suburb"
+        }
+      ],
+      "poi_type_id": "POI_SUBURB"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "place",
+          "value": "neighbourhood"
+        }
+      ],
+      "poi_type_id": "POI_HAMLET"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "train",
+          "value": "yes"
+        }
+      ],
+      "poi_type_id": "TRANSPORT_STATION"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "subway",
+          "value": "yes"
+        }
+      ],
+      "poi_type_id": "TRANSPORT_SUBWAY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "monorail",
+          "value": "yes"
+        }
+      ],
+      "poi_type_id": "TRANSPORT_STATION"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "railway",
+          "value": "station"
+        }
+      ],
+      "poi_type_id": "TRANSPORT_STATION"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "railway",
+          "value": "station"
+        },
+        {
+          "key": "station",
+          "value": "subway"
+        }
+      ],
+      "poi_type_id": "TRANSPORT_SUBWAY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "alcohol"
+        }
+      ],
+      "poi_type_id": "SHOP_ALCOHOL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "appliance"
+        }
+      ],
+      "poi_type_id": "SHOP_LAUNDRETTE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "baby_goods"
+        }
+      ],
+      "poi_type_id": "SHOP_TOYS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "bakery"
+        }
+      ],
+      "poi_type_id": "SHOP_BAKERY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "beauty"
+        }
+      ],
+      "poi_type_id": "SHOP_HAIRDRESSER"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "beverages"
+        }
+      ],
+      "poi_type_id": "SHOP_ALCOHOL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "bicycle"
+        }
+      ],
+      "poi_type_id": "SHOP_BICYCLE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "books"
+        }
+      ],
+      "poi_type_id": "SHOP_BOOK"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "boutique"
+        }
+      ],
+      "poi_type_id": "SHOP_CLOTHES"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "butcher"
+        }
+      ],
+      "poi_type_id": "SHOP_BUTCHER"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "car"
+        }
+      ],
+      "poi_type_id": "SHOP_CAR"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "car_repair"
+        }
+      ],
+      "poi_type_id": "SHOP_CARREPAIR"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "car_parts"
+        }
+      ],
+      "poi_type_id": "SHOP_CARREPAIR"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "convenience"
+        }
+      ],
+      "poi_type_id": "SHOP_CONVENIENCE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "chemist"
+        }
+      ],
+      "poi_type_id": "SHOP_CHEMIST"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "clothes"
+        }
+      ],
+      "poi_type_id": "SHOP_CLOTHES"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "computer"
+        }
+      ],
+      "poi_type_id": "SHOP_COMPUTER"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "confectionery"
+        }
+      ],
+      "poi_type_id": "SHOP_CONFECTIONERY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "convenience"
+        }
+      ],
+      "poi_type_id": "SHOP_CONVENIENCE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "copyshop"
+        }
+      ],
+      "poi_type_id": "SHOP_COPYSHOP"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "curtain"
+        }
+      ],
+      "poi_type_id": "SHOP_CLOTHES"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "deli"
+        }
+      ],
+      "poi_type_id": "SHOP_CONFECTIONERY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "department_store"
+        }
+      ],
+      "poi_type_id": "SHOP_SUPERMARKET"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "dive"
+        }
+      ],
+      "poi_type_id": "SHOP_FISH"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "dry_cleaning"
+        }
+      ],
+      "poi_type_id": "SHOP_LAUNDRETTE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "doityourself"
+        }
+      ],
+      "poi_type_id": "SHOP_DIY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "drugstore"
+        }
+      ],
+      "poi_type_id": "SHOP_CONVENIENCE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "electronics"
+        }
+      ],
+      "poi_type_id": "SHOP_HIFI"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "fabric"
+        }
+      ],
+      "poi_type_id": "SHOP_CLOTHES"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "farm"
+        }
+      ],
+      "poi_type_id": "SHOP_DIY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "florist"
+        }
+      ],
+      "poi_type_id": "SHOP_FLORIST"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "garden_centre"
+        }
+      ],
+      "poi_type_id": "SHOP_GARDENCENTRE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "gas"
+        }
+      ],
+      "poi_type_id": "SHOP_DIY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "general"
+        }
+      ],
+      "poi_type_id": "SHOP_CONVENIENCE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "gift"
+        }
+      ],
+      "poi_type_id": "SHOP_GIFT"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "glaziery"
+        }
+      ],
+      "poi_type_id": "SHOP_DIY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "greengrocer"
+        }
+      ],
+      "poi_type_id": "SHOP_GREENGROCER"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "hairdresser"
+        }
+      ],
+      "poi_type_id": "SHOP_HAIRDRESSER"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "hardware"
+        }
+      ],
+      "poi_type_id": "SHOP_DIY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "hearing_aids"
+        }
+      ],
+      "poi_type_id": "SHOP_HEARINGAIDS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "herbalist"
+        }
+      ],
+      "poi_type_id": "SHOP_FLORIST"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "hifi"
+        }
+      ],
+      "poi_type_id": "SHOP_HIFI"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "hunting"
+        }
+      ],
+      "poi_type_id": "SHOP_DIY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "jewelry"
+        }
+      ],
+      "poi_type_id": "SHOP_JEWELRY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "kiosk"
+        }
+      ],
+      "poi_type_id": "SHOP_KIOSK"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "kitchen"
+        }
+      ],
+      "poi_type_id": "SHOP_LAUNDRETTE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "laundry"
+        }
+      ],
+      "poi_type_id": "SHOP_LAUNDRETTE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "mall"
+        }
+      ],
+      "poi_type_id": "SHOP_SUPERMARKET"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "mobile_phone"
+        }
+      ],
+      "poi_type_id": "SHOP_PHONE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "money_lender"
+        }
+      ],
+      "poi_type_id": "SHOP_VENDINGMASCHINE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "motorcycle"
+        }
+      ],
+      "poi_type_id": "SHOP_MOTORCYCLE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "musical_instrument"
+        }
+      ],
+      "poi_type_id": "SHOP_MUSIC"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "newsagent"
+        }
+      ],
+      "poi_type_id": "SHOP_NEWSPAPER"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "organic"
+        }
+      ],
+      "poi_type_id": "SHOP_CONVENIENCE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "outdoor"
+        }
+      ],
+      "poi_type_id": "SHOP_DIY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "pawnbroker"
+        }
+      ],
+      "poi_type_id": "SHOP_VENDINGMASCHINE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "pet"
+        }
+      ],
+      "poi_type_id": "SHOP_PET"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "radiotechnics"
+        }
+      ],
+      "poi_type_id": "SHOP_HIFI"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "seafood"
+        }
+      ],
+      "poi_type_id": "SHOP_FISH"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "fish"
+        }
+      ],
+      "poi_type_id": "SHOP_FISH"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "second_hand"
+        }
+      ],
+      "poi_type_id": "SHOP_CLOTHES"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "shoes"
+        }
+      ],
+      "poi_type_id": "SHOP_SHOES"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "sports"
+        }
+      ],
+      "poi_type_id": "SHOP_MOTORCYCLE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "stationery"
+        }
+      ],
+      "poi_type_id": "SHOP_COPYSHOP"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "supermarket"
+        }
+      ],
+      "poi_type_id": "SHOP_SUPERMARKET"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "ticket"
+        }
+      ],
+      "poi_type_id": "SHOP_KIOSK"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "tobacco"
+        }
+      ],
+      "poi_type_id": "SHOP_TOBACCO"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "toys"
+        }
+      ],
+      "poi_type_id": "SHOP_TOYS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "trade"
+        }
+      ],
+      "poi_type_id": "SHOP_DIY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "vacuum_cleaner"
+        }
+      ],
+      "poi_type_id": "SHOP_LAUNDRETTE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "variety_store"
+        }
+      ],
+      "poi_type_id": "SHOP_CONVENIENCE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "variety"
+        }
+      ],
+      "poi_type_id": "SHOP_CONVENIENCE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "video"
+        }
+      ],
+      "poi_type_id": "SHOP_VIDEORENTAL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "window_blind"
+        }
+      ],
+      "poi_type_id": "SHOP_DIY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "shop",
+          "value": "*"
+        }
+      ],
+      "poi_type_id": "SHOP"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "9pin"
+        }
+      ],
+      "poi_type_id": "SPORT_BOWLING"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "10pin"
+        }
+      ],
+      "poi_type_id": "SPORT_BOWLING"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "american_football"
+        }
+      ],
+      "poi_type_id": "SPORT_FOOTBALL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "archery"
+        }
+      ],
+      "poi_type_id": "SPORT_ARCHERY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "athletics"
+        }
+      ],
+      "poi_type_id": "SPORT_GYMNASIUM"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "australian_football"
+        }
+      ],
+      "poi_type_id": "SPORT_FOOTBALL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "badminton"
+        }
+      ],
+      "poi_type_id": "SPORT_TENNIS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "baseball"
+        }
+      ],
+      "poi_type_id": "SPORT_BASEBALL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "basketball"
+        }
+      ],
+      "poi_type_id": "SPORT_BASKETBALL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "beachvolleyball"
+        }
+      ],
+      "poi_type_id": "SPORT_BASKETBALL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "boules"
+        }
+      ],
+      "poi_type_id": "SPORT_SNOOKER"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "bowls"
+        }
+      ],
+      "poi_type_id": "SPORT_BOWLING"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "canadian_football"
+        }
+      ],
+      "poi_type_id": "SPORT_FOOTBALL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "canoe"
+        }
+      ],
+      "poi_type_id": "SPORT_CANOE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "climbing"
+        }
+      ],
+      "poi_type_id": "SPORT_CLIMBING"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "cricket"
+        }
+      ],
+      "poi_type_id": "SPORT_CRICKET"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "cricket_nets"
+        }
+      ],
+      "poi_type_id": "SPORT_CRICKET"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "croquet"
+        }
+      ],
+      "poi_type_id": "SPORT_CRICKET"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "diving"
+        }
+      ],
+      "poi_type_id": "SPORT_DIVING"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "equestrian"
+        }
+      ],
+      "poi_type_id": "SPORT_HORSE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "football"
+        }
+      ],
+      "poi_type_id": "SPORT_FOOTBALL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "gaelic_games"
+        }
+      ],
+      "poi_type_id": "SPORT_CRICKET"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "golf"
+        }
+      ],
+      "poi_type_id": "SPORT_GOLF"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "gymnastics"
+        }
+      ],
+      "poi_type_id": "SPORT_GYM"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "hockey"
+        }
+      ],
+      "poi_type_id": "SPORT_BASEBALL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "horseshoes"
+        }
+      ],
+      "poi_type_id": "SPORT_HORSE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "horse_racing"
+        }
+      ],
+      "poi_type_id": "SPORT_HORSE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "ice_stock"
+        }
+      ],
+      "poi_type_id": "SPORT_SNOOKER"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "karting"
+        }
+      ],
+      "poi_type_id": "SPORT_MOTORRACING"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "korfball"
+        }
+      ],
+      "poi_type_id": "SPORT_BASKETBALL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "motor"
+        }
+      ],
+      "poi_type_id": "SPORT_MOTORRACING"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "paddle_tennis"
+        }
+      ],
+      "poi_type_id": "SPORT_TENNIS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "pelota"
+        }
+      ],
+      "poi_type_id": "SPORT_BASEBALL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "racquet"
+        }
+      ],
+      "poi_type_id": "SPORT_CRICKET"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "rowing"
+        }
+      ],
+      "poi_type_id": "SPORT_CANOE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "rugby_league"
+        }
+      ],
+      "poi_type_id": "SPORT_FOOTBALL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "rugby_union"
+        }
+      ],
+      "poi_type_id": "SPORT_FOOTBALL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "shooting"
+        }
+      ],
+      "poi_type_id": "SPORT_SHOOTING"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "skating"
+        }
+      ],
+      "poi_type_id": "SPORT_ICESKATING"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "skateboard"
+        }
+      ],
+      "poi_type_id": "SPORT_SKATING"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "skiing"
+        }
+      ],
+      "poi_type_id": "SPORT_SKIINGDOWNHILL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "soccer"
+        }
+      ],
+      "poi_type_id": "SPORT_SOCCER"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "surfing"
+        }
+      ],
+      "poi_type_id": "SPORT_SURFING"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "swimming"
+        }
+      ],
+      "poi_type_id": "SPORT_SWIMMING"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "table_tennis"
+        }
+      ],
+      "poi_type_id": "SPORT_TENNIS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "team_handball"
+        }
+      ],
+      "poi_type_id": "SPORT_BASKETBALL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "tennis"
+        }
+      ],
+      "poi_type_id": "SPORT_TENNIS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "volleyball"
+        }
+      ],
+      "poi_type_id": "SPORT_BASKETBALL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "sport",
+          "value": "water_ski"
+        }
+      ],
+      "poi_type_id": "SPORT_WATERSKI"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "tourism",
+          "value": "alpine_hut"
+        }
+      ],
+      "poi_type_id": "ACCOMMO_ALPINEHUT"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "tourism",
+          "value": "attraction"
+        }
+      ],
+      "poi_type_id": "TOURIST_ATTRACTION"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "tourism",
+          "value": "artwork"
+        }
+      ],
+      "poi_type_id": "TOURIST_ART"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "tourism",
+          "value": "camp_site"
+        }
+      ],
+      "poi_type_id": "ACCOMMO_CAMPING"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "tourism",
+          "value": "caravan_site"
+        }
+      ],
+      "poi_type_id": "ACCOMMO_CARAVAN"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "tourism",
+          "value": "chalet"
+        }
+      ],
+      "poi_type_id": "ACCOMMO_CHALET"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "tourism",
+          "value": "guest_house"
+        }
+      ],
+      "poi_type_id": "ACCOMMO_HOTEL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "tourism",
+          "value": "hostel"
+        }
+      ],
+      "poi_type_id": "ACCOMMO_HOSTEL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "tourism",
+          "value": "hotel"
+        }
+      ],
+      "poi_type_id": "ACCOMMO_HOTEL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "tourism",
+          "value": "information"
+        },
+        {
+          "key": "information",
+          "value": "information"
+        },
+        {
+          "key": "information",
+          "value": "office"
+        }
+      ],
+      "poi_type_id": "TOURIST_INFORMATION"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "tourism",
+          "value": "information"
+        },
+        {
+          "key": "information",
+          "value": "information"
+        },
+        {
+          "key": "information",
+          "value": "terminal"
+        }
+      ],
+      "poi_type_id": "TOURIST_INFORMATION"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "tourism",
+          "value": "motel"
+        }
+      ],
+      "poi_type_id": "ACCOMMO_MOTEL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "tourism",
+          "value": "museum"
+        }
+      ],
+      "poi_type_id": "TOURIST_MUSEUM"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "tourism",
+          "value": "theme_park"
+        }
+      ],
+      "poi_type_id": "TOURIST_THEMEPARK"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "tourism",
+          "value": "zoo"
+        }
+      ],
+      "poi_type_id": "TOURIST_ZOO"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "aeroway",
+          "value": "aerodrome"
+        }
+      ],
+      "poi_type_id": "TRANSPORT_AIRPORT"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "aeroway",
+          "value": "terminal"
+        }
+      ],
+      "poi_type_id": "TRANSPORT_TERMINAL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "emergency",
+          "value": "ambulance_station"
+        }
+      ],
+      "poi_type_id": "HEALTH_HOSPITALEMERGENCY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "emergency",
+          "value": "ses_station"
+        }
+      ],
+      "poi_type_id": "HEALTH_HOSPITALEMERGENCY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "waterway",
+          "value": "riverbank"
+        }
+      ],
+      "poi_type_id": "WATER_WEIR"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "waterway",
+          "value": "dam"
+        }
+      ],
+      "poi_type_id": "WATER_DAM"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "leisure",
+          "value": "common"
+        }
+      ],
+      "poi_type_id": "LANDUSE_GRASS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "leisure",
+          "value": "dance"
+        }
+      ],
+      "poi_type_id": "TOURIST_NIGHTCLUB"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "leisure",
+          "value": "dog_park"
+        }
+      ],
+      "poi_type_id": "LANDUSE_GRASS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "leisure",
+          "value": "golf_course"
+        }
+      ],
+      "poi_type_id": "SPORT_GOLF"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "leisure",
+          "value": "ice_rink"
+        }
+      ],
+      "poi_type_id": "SPORT_ICESKATING"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "leisure",
+          "value": "marina"
+        }
+      ],
+      "poi_type_id": "TRANSPORT_MARINA"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "leisure",
+          "value": "miniature_golf"
+        }
+      ],
+      "poi_type_id": "SPORT_MINIATURGOLF"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "leisure",
+          "value": "nature_reserve"
+        }
+      ],
+      "poi_type_id": "LANDUSE_GRASS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "leisure",
+          "value": "park"
+        }
+      ],
+      "poi_type_id": "LANDUSE_GRASS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "leisure",
+          "value": "pitch"
+        }
+      ],
+      "poi_type_id": "SPORT_STADIUM"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "leisure",
+          "value": "playground"
+        }
+      ],
+      "poi_type_id": "AMENITY_PLAYGROUND"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "leisure",
+          "value": "sports_centre"
+        }
+      ],
+      "poi_type_id": "SPORT_LEISURECENTER"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "leisure",
+          "value": "stadium"
+        }
+      ],
+      "poi_type_id": "SPORT_STADIUM"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "leisure",
+          "value": "water_park"
+        }
+      ],
+      "poi_type_id": "SPORT_SWIMMING"
+    },
+    {
+      "osm_tags_filters": [{"key": "leisure", "value": "*"}],
+      "poi_type_id": "TOURIST_LEISURE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "building",
+          "value": "hotel"
+        }
+      ],
+      "poi_type_id": "ACCOMMO_HOTEL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "building",
+          "value": "school"
+        }
+      ],
+      "poi_type_id": "EDUCATION_SCHOOL"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "building",
+          "value": "supermarket"
+        }
+      ],
+      "poi_type_id": "SHOP_CONVENIENCE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "building",
+          "value": "train_station"
+        }
+      ],
+      "poi_type_id": "TRANSPORT_STATION"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "building",
+          "value": "university"
+        }
+      ],
+      "poi_type_id": "EDUCATION_UNIVERSITY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "landuse",
+          "value": "allotments"
+        }
+      ],
+      "poi_type_id": "LANDUSE_ALLOTMENTS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "landuse",
+          "value": "brownfield"
+        }
+      ],
+      "poi_type_id": "LANDUSE_QUARY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "landuse",
+          "value": "cemetery"
+        }
+      ],
+      "poi_type_id": "BARRIER_BLOCKS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "landuse",
+          "value": "farmland"
+        }
+      ],
+      "poi_type_id": "LANDUSE_GRASS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "landuse",
+          "value": "farm"
+        }
+      ],
+      "poi_type_id": "LANDUSE_GRASS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "landuse",
+          "value": "forest"
+        }
+      ],
+      "poi_type_id": "LANDUSE_CONIFEROUSDECIDUOUS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "landuse",
+          "value": "forest"
+        },
+        {
+          "key": "wood",
+          "value": "forest"
+        },
+        {
+          "key": "wood",
+          "value": "coniferous"
+        }
+      ],
+      "poi_type_id": "LANDUSE_CONIFEROUS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "landuse",
+          "value": "forest"
+        },
+        {
+          "key": "wood",
+          "value": "forest"
+        },
+        {
+          "key": "wood",
+          "value": "deciduous"
+        }
+      ],
+      "poi_type_id": "LANDUSE_DECIDUOUS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "landuse",
+          "value": "grass"
+        }
+      ],
+      "poi_type_id": "LANDUSE_GRASS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "landuse",
+          "value": "greenfield"
+        }
+      ],
+      "poi_type_id": "LANDUSE_GRASS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "landuse",
+          "value": "meadow"
+        }
+      ],
+      "poi_type_id": "LANDUSE_GRASS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "landuse",
+          "value": "greenhouse_horticulture"
+        }
+      ],
+      "poi_type_id": "LANDUSE_GRASS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "landuse",
+          "value": "industrial"
+        }
+      ],
+      "poi_type_id": "POI_CRANE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "landuse",
+          "value": "landfill"
+        }
+      ],
+      "poi_type_id": "LANDUSE_HILLS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "landuse",
+          "value": "military"
+        }
+      ],
+      "poi_type_id": "LANDUSE_MILITARY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "landuse",
+          "value": "orchard"
+        }
+      ],
+      "poi_type_id": "LANDUSE_SCRUB"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "landuse",
+          "value": "plant_nursery"
+        }
+      ],
+      "poi_type_id": "LANDUSE_GRASS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "landuse",
+          "value": "quarry"
+        }
+      ],
+      "poi_type_id": "LANDUSE_QUARY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "landuse",
+          "value": "recreation_ground"
+        }
+      ],
+      "poi_type_id": "LANDUSE_GRASS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "landuse",
+          "value": "village_green"
+        }
+      ],
+      "poi_type_id": "LANDUSE_GRASS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "landuse",
+          "value": "vineyard"
+        }
+      ],
+      "poi_type_id": "LANDUSE_GRASS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "landuse",
+          "value": "retail"
+        }
+      ],
+      "poi_type_id": "SHOP_VENDINGMASCHINE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "natural",
+          "value": "bay"
+        }
+      ],
+      "poi_type_id": "TOURIST_BEACH"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "natural",
+          "value": "beach"
+        }
+      ],
+      "poi_type_id": "TOURIST_BEACH"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "natural",
+          "value": "cave_entrance"
+        }
+      ],
+      "poi_type_id": "POI_CAVE"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "natural",
+          "value": "cliff"
+        }
+      ],
+      "poi_type_id": "POI_PEAK"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "natural",
+          "value": "glacier"
+        }
+      ],
+      "poi_type_id": "POI_PEAK"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "natural",
+          "value": "peak"
+        }
+      ],
+      "poi_type_id": "POI_PEAK"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "natural",
+          "value": "spring"
+        }
+      ],
+      "poi_type_id": "WATER_WEIR"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "natural",
+          "value": "stone"
+        }
+      ],
+      "poi_type_id": "BARRIER_BLOCKS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "natural",
+          "value": "volcano"
+        }
+      ],
+      "poi_type_id": "POI_PEAK1"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "natural",
+          "value": "fell"
+        }
+      ],
+      "poi_type_id": "LANDUSE_GRASS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "natural",
+          "value": "grassland"
+        }
+      ],
+      "poi_type_id": "LANDUSE_GRASS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "natural",
+          "value": "heath"
+        }
+      ],
+      "poi_type_id": "LANDUSE_SCRUB"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "natural",
+          "value": "marsh"
+        }
+      ],
+      "poi_type_id": "LANDUSE_SWAMP"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "natural",
+          "value": "wetland"
+        }
+      ],
+      "poi_type_id": "LANDUSE_SWAMP"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "natural",
+          "value": "mud"
+        }
+      ],
+      "poi_type_id": "LANDUSE_SWAMP"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "natural",
+          "value": "sand"
+        }
+      ],
+      "poi_type_id": "TOURIST_BEACH"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "natural",
+          "value": "scree"
+        }
+      ],
+      "poi_type_id": "LANDUSE_QUARY"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "natural",
+          "value": "scrub"
+        }
+      ],
+      "poi_type_id": "LANDUSE_SCRUB"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "natural",
+          "value": "spring"
+        }
+      ],
+      "poi_type_id": "WATER_WEIR"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "natural",
+          "value": "wood"
+        }
+      ],
+      "poi_type_id": "LANDUSE_CONIFEROUSDECIDUOUS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "natural",
+          "value": "wood"
+        },
+        {
+          "key": "wood",
+          "value": "wood"
+        },
+        {
+          "key": "wood",
+          "value": "coniferous"
+        }
+      ],
+      "poi_type_id": "LANDUSE_CONIFEROUS"
+    },
+    {
+      "osm_tags_filters": [
+        {
+          "key": "natural",
+          "value": "wood"
+        },
+        {
+          "key": "wood",
+          "value": "wood"
+        },
+        {
+          "key": "wood",
+          "value": "deciduous"
+        }
+      ],
+      "poi_type_id": "LANDUSE_DECIDUOUS"
+    },
+
+    {
+      "osm_tags_filters": [
+        {
+          "key": "museum",
+          "value": "*"
+        }
+      ],
+      "poi_type_id": "TOURIST_MUSEUM"
+    }
+  ]
+}

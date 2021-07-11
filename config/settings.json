@@ -4,7 +4,25 @@
             "filter": {
                 "synonym_filter": {
                     "type": "synonym",
-                    "synonyms": []
+                    "synonyms": [
+                      "cc,centre commercial",
+                      "hotel de ville,mairie",
+                      "gare sncf,gare",
+                      "chu,chr,hopital",
+                      "ld,lieu-dit",
+                      "st,saint",
+                      "ste,sainte",
+                      "bvd,bld,bd,boulevard",
+                      "pt,pont",
+                      "rle,ruelle",
+                      "rte,route",
+                      "vla,villa",
+                      "grand-champ,grandchamp",
+                      "fac,faculte,ufr,universite",
+                      "embarcadere,gare maritime",
+                      "cpam,securite sociale",
+                      "anpe,pole emploi"
+                    ]
                 }
             }
         },

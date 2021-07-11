@@ -1,0 +1,28 @@
+{
+    "settings": {
+        "analysis": {
+            "filter": {
+                "synonym_filter": {
+                    "type": "synonym",
+                    "synonyms": [
+                      "burg,burgemeester",
+                      "fac,faculteit",
+                      "fietsenstalling,fietsstalling,rijwielstalling",
+                      "gr,gracht",
+                      "halte,bushalte,tramhalte",
+                      "kantoor,buro,bureau",
+                      "politie,politiebureau,politieburo,politiekantoor",
+                      "sngl,singel",
+                      "st,sint",
+                      "station,treinstation,spoorwegstation,busstation,metrostation",
+                      "str,straat",
+                      "umc,universitair medisch centrum",
+                      "zkh,ziekenhuis,kliniek,medisch centrum"
+                    ]
+                }
+            }
+        },
+        "number_of_shards": "to_be_replaced",
+        "number_of_replicas": "to_be_replaced"
+    }
+}

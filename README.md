@@ -35,22 +35,27 @@ If you use it too, feel free to open a pull request, we'll be happy to add your 
 
 Mimirsbrunn exposes a [REST](https://en.wikipedia.org/wiki/Representational_state_transfer) Json api (with [bragi](https://github.com/CanalTP/mimirsbrunn/tree/master/libs/bragi)).
 
-This API provices several services:
+This API provices several services. All are documented in [OpenAPI format](https://www.openapis.org/) and can be found [documentation/openapi.yml](./documentation/openapi.yml).
+All endpoints, their parameters and responses are documented in there.
+
+OpenAPI yml files can be used in many tools and documentation environments, including swagger-ui, postman, insomnia [and many more](https://apis.guru/awesome-openapi3/).
+
+Our openapi documentation is a work-in-progress, so feel free to suggest improvements to that openapi.yml documentation.
 
 ### Autocomplete
 
-| feature              | route            | Parameters                                                                                                                                   | response                                                                                                                                                                                                                                                                                      |
-| -------------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| geocoding            | `/autocomplete`  | TODO (in the meantime, can be seen [here](https://github.com/CanalTP/mimirsbrunn/blob/master/libs/bragi/src/routes/autocomplete.rs#L58-L80)) | The response is formated using [geocodejson](https://github.com/geocoders/geocodejson-spec), the same format as [pelias](https://github.com/pelias/pelias), [photon](https://github.com/komoot/photon) and [addok](https://github.com/addok/addok). TODO: give more details and some examples |
-| reverse geocoding    | `/reverse`       | TODO (in the meantime, can be seen [here](https://github.com/CanalTP/mimirsbrunn/blob/master/libs/bragi/src/routes/reverse.rs#L9-L14))       | TODO: give more details and some examples                                                                                                                                                                                                                                                     |
-| Detail on one object | `/features/{id}` | TODO (in the meantime, can be seen [here](https://github.com/CanalTP/mimirsbrunn/blob/master/libs/bragi/src/routes/features.rs#L8))          | TODO: give more details and some examples                                                                                                                                                                                                                                                     |
+| feature              | route            |                                                                                        |
+| -------------------- | ---------------- | --                                                                                     |
+| geocoding            | `/autocomplete`  | Full text search. Tunable with optional filters, prioroties and pagination parameters. |
+| reverse geocoding    | `/reverse`       | Find place closest to a lcoation at certain coordinates                                |
+| Detail on one object | `/features/{id}` | Get details for a single object.                                                       |
 
 ### Monitoring API
 
-| feature            | route      | Parameters |
-| ------------------ | ---------- | ---------- |
-| staus              | `/status`  | None       |
-| Prometheus metrics | `/metrics` | None       |
+| feature            | route      |                              |
+| ------------------ | ---------- | --                           |
+| status             | `/status`  | Simple JSON status object    |
+| Prometheus metrics | `/metrics` | Metrics in prometheus format |
 
 
 ## handled datasets

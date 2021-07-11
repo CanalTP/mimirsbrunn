@@ -1,0 +1,648 @@
+openapi: 3.0.0
+info:
+  description: 'Mimirsbrunn (also called Mimir) is an independent geocoding and reverse-geocoding system written in Rust, and built upon Elasticsearch. It can handle addresses, streets, points-of-interest (POI), administrative regions or public transport stops. Mimirsbrunn exposes a REST JSON api through bragi.'
+  version: 1.15.0
+  title: Mimirsbrunn REST API
+  contact:
+    url: 'https://github.com/CanalTP/mimirsbrunn'
+  license:
+    name: AGPL 3
+    url: 'https://github.com/CanalTP/mimirsbrunn/blob/master/LICENSE'
+servers:
+  - url: 'http://localhost:4000'
+    description: Local development version
+paths:
+  /autocomplete:
+    get:
+      summary: Geocoding free text search
+      description: Free text search.
+      operationId: autocomplete
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Query string. URL encoded string
+          schema:
+            type: string
+        - name: lat
+          in: query
+          description: Latitude Coordinate for proximity weighting. Requires `lat` to be defined too. Prefers results closer to the point described by the proximity.
+          schema:
+            type: string
+        - name: lon
+          in: query
+          description: Longitude Coordinate for proximity weighting. Requires `lon` to be defined too. Prefers results closer to the point described by the proximity.
+          schema:
+            type: string
+        - name: types
+          in: query
+          description: 'Limit to defined types of results only: `public_transport:stop_area`, `city`, `zone`, `house`, `poi` or `street`'
+          schema:
+            type: array
+            items:
+              type: string
+        - name: lang
+          in: query
+          description: Search in localised fields for this language.
+          schema:
+            type: string
+            default: null
+        - name: zone_types
+          in: query
+          description: 'Limits to defined zone_types only. Requires `type[]=zone` to be set. For example `village`, `city`, `state` or `country`.'
+          schema:
+            type: array
+            items:
+              type: string
+        - name: poi_types
+          in: query
+          description: 'Limits to defined poi_types only. Requires `type[]=poi` to be set. POI types depend on configuration of imported POIs. Uses the ID. E.g. `poi_type:amenity:police`.'
+          schema:
+            type: array
+            items:
+              type: string
+        - name: all_data
+          in: query
+          description: Force usage of all datasets
+          schema:
+            type: boolean
+        - name: limit
+          in: query
+          description: Amount of items to return at most
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
+            maximum: 18446744073709552000
+        - name: offset
+          in: query
+          description: Offset in result set. Used for paging through results.
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+            maximum: 18446744073709552000
+        - name: pt_datasets
+          in: query
+          description: Limit to certain public transport datasets
+          schema:
+            type: array
+            items:
+              type: string
+          style: deepObject
+          explode: true
+        - name: poi_datasets
+          in: query
+          description: Limit to certain POI datasets
+          schema:
+            type: array
+            items:
+              type: string
+          style: deepObject
+          explode: true
+        - name: timeout
+          in: query
+          description: Timeout in milliseconds
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+            maximum: 18446744073709552000
+      responses:
+        '200':
+          description: A geocode JSON list of Features
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeatureCollection'
+        '400':
+          description: 'validation error: invalid argument: failed with reason: missing field `q`'
+    post:
+      summary: Geocoding free text search within a shape
+      description: Free text search with additional shape as filter.
+      operationId: autocomplete-post
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Query string. URL encoded string
+          schema:
+            type: string
+        - name: lat
+          in: query
+          description: Latitude Coordinate for proximity weighting. Requires `lat` to be defined too. Prefers results closer to the point described by the proximity.
+          schema:
+            type: string
+        - name: lon
+          in: query
+          description: Longitude Coordinate for proximity weighting. Requires `lon` to be defined too. Prefers results closer to the point described by the proximity.
+          schema:
+            type: string
+        - name: types
+          in: query
+          description: 'Limit to defined types of results only: `public_transport:stop_area`, `city`, `zone`, `house`, `poi` or `street`'
+          schema:
+            type: array
+            items:
+              type: string
+        - name: lang
+          in: query
+          description: Search in localised fields for this language.
+          schema:
+            type: string
+            default: null
+        - name: zone_types
+          in: query
+          description: 'Limits to defined zone_types only. Requires `type[]=zone` to be set. For example `village`, `city`, `state` or `country`.'
+          schema:
+            type: array
+            items:
+              type: string
+        - name: poi_types
+          in: query
+          description: 'Limits to defined poi_types only. Requires `type[]=poi` to be set. POI types depend on configuration of imported POIs. Uses the ID. E.g. `poi_type:amenity:police`.'
+          schema:
+            type: array
+            items:
+              type: string
+        - name: all_data
+          in: query
+          description: Force usage of all datasets
+          schema:
+            type: boolean
+        - name: limit
+          in: query
+          description: Amount of items to return at most
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
+            maximum: 18446744073709552000
+        - name: offset
+          in: query
+          description: Offset in result set. Used for paging through results.
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+            maximum: 18446744073709552000
+        - name: pt_datasets
+          in: query
+          description: Limit to certain public transport datasets
+          schema:
+            type: array
+            items:
+              type: string
+          style: deepObject
+          explode: true
+        - name: poi_datasets
+          in: query
+          description: Limit to certain POI datasets
+          schema:
+            type: array
+            items:
+              type: string
+          style: deepObject
+          explode: true
+        - name: timeout
+          in: query
+          description: Timeout in milliseconds
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+            maximum: 18446744073709552000
+      requestBody:
+        description: A geojson polygon shape form describing the bounding shape. Only elements within this shape will be included in the results.
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                shape:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      enum:
+                        - Feature
+                    properties:
+                      type: object
+                    geometry:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          enum:
+                            - Polygon
+                        coordinates:
+                          type: array
+                          items:
+                            type: array
+                            items:
+                              type: array
+                              items:
+                                type: number
+                                description: 'lat,long of point'
+            examples:
+              simple_shape:
+                value:
+                  shape:
+                    type: Feature
+                    properties: {}
+                    geometry:
+                      type: Polygon
+                      coordinates:
+                        - - - 5.84
+                            - 51.85
+                          - - 5.81
+                            - 51.83
+                          - - 5.84
+                            - 51.85
+      responses:
+        '200':
+          description: A geocode JSON list of Features
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: 'validation error: invalid argument: failed with reason: missing field `q`'
+  '/features/{id}':
+    get:
+      summary: Details of one object
+      description: Get all the details for an object.
+      operationId: features-details
+      parameters:
+        - name: id
+          required: true
+          description: 'Id of an object. Find them from the `autocomplete` endpoint. E.g. `osm:way:5013364`'
+          in: path
+          schema:
+            type: string
+        - name: all_data
+          in: query
+          description: Force usage of all datasets
+          schema:
+            type: boolean
+        - name: pt_dataset
+          in: query
+          description: Limit to a certain public transport dataset
+          schema:
+            type: string
+        - name: poi_dataset
+          in: query
+          description: Limit to certain POI dataset
+          schema:
+            type: string
+        - name: timeout
+          in: query
+          description: Timeout in milliseconds
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+            maximum: 18446744073709552000
+      responses:
+        '200':
+          description: A geocode JSON list of Features for this Id. Typically only one.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeatureCollection'
+  /reverse:
+    get:
+      summary: Reverse Geocoding Addresses
+      description: Get the address closest to a point described by a pair of latitude and longitude coordinates.
+      operationId: reverse
+      parameters:
+        - name: lat
+          in: query
+          required: true
+          description: Latitude coordinate for the address to be found.
+          schema:
+            type: string
+        - name: lon
+          in: query
+          required: true
+          description: Longitude coordinate for the address to be found.
+          schema:
+            type: string
+        - name: timeout
+          in: query
+          description: Timeout in milliseconds
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+            maximum: 18446744073709552000
+      responses:
+        '200':
+          description: A geocode JSON list of Features for this point. Typically only one.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeatureCollection'
+externalDocs:
+  description: "About Mimirsbrunn and it's setup"
+  url: 'https://github.com/CanalTP/mimirsbrunn/tree/master/documentation'
+components:
+  schemas:
+    FeatureCollection:
+      title: FeatureCollection
+      type: object
+      x-examples:
+        example-search-hema-nijmegen:
+          type: FeatureCollection
+          geocoding:
+            version: 0.1.0
+            query: ''
+          features:
+            - type: Feature
+              geometry:
+                coordinates:
+                  - 5.8636849
+                  - 51.8472468
+                type: Point
+              properties:
+                geocoding:
+                  id: 'poi:osm:node:584118888'
+                  type: poi
+                  label: HEMA Nijmegen-Centrum (Nijmegen)
+                  name: HEMA Nijmegen-Centrum
+                  postcode: 6511KA
+                  city: Nijmegen
+                  citycode: ''
+                  administrative_regions:
+                    - id: 'admin:osm:relation:1200994'
+                      insee: ''
+                      level: 10
+                      label: 'Nijmegen, Gelderland, Nederland'
+                      name: Nijmegen
+                      zip_codes: []
+                      coord:
+                        lon: 5.833201295180625
+                        lat: 51.83480929574818
+                      bbox:
+                        - 5.7576206
+                        - 51.7905891
+                        - 5.9083469
+                        - 51.8946209
+                      zone_type: city
+                      parent_id: 'admin:osm:relation:47554'
+                      codes:
+                        - name: 'ref:woonplaatscode'
+                          value: '3030'
+                        - name: wikidata
+                          value: Q47887
+                    - id: 'admin:osm:relation:47554'
+                      insee: ''
+                      level: 4
+                      label: 'Gelderland, Nederland'
+                      name: Gelderland
+                      zip_codes: []
+                      coord:
+                        lon: 5.9108573
+                        lat: 51.984257
+                      bbox:
+                        - 4.9938547
+                        - 51.7335807
+                        - 6.8328017
+                        - 52.522025
+                      zone_type: state
+                      parent_id: 'admin:osm:relation:47796'
+                      codes:
+                        - name: ISO3166-2
+                          value: NL-GE
+                        - name: 'ref:provinciecode'
+                          value: '25'
+                        - name: wikidata
+                          value: Q775
+                    - id: 'admin:osm:relation:47796'
+                      insee: ''
+                      level: 3
+                      label: Nederland
+                      name: Nederland
+                      zip_codes: []
+                      coord:
+                        lon: 4.8936041
+                        lat: 52.3727598
+                      bbox:
+                        - 3.080161
+                        - 50.7503658
+                        - 7.227498499999999
+                        - 53.744025
+                      zone_type: country
+                      parent_id: null
+                      codes:
+                        - name: wikidata
+                          value: Q55
+                  poi_types:
+                    - id: 'poi_type:shop:department_store'
+                      name: Warenhuis
+                  properties:
+                    - key: 'addr:city'
+                      value: Nijmegen
+                    - key: 'addr:country'
+                      value: NL
+                    - key: 'addr:housenumber'
+                      value: '5'
+                    - key: 'addr:postcode'
+                      value: 6511KA
+                    - key: 'addr:street'
+                      value: Grote Markt
+                    - key: brand
+                      value: HEMA
+                    - key: 'brand:wikidata'
+                      value: Q903805
+                    - key: 'brand:wikipedia'
+                      value: 'en:HEMA (store)'
+                    - key: 'hema:id'
+                      value: '4'
+                    - key: name
+                      value: HEMA Nijmegen-Centrum
+                    - key: opening_hours
+                      value: 'Mo-We,Fr-Sa 09:00-19:00; Th 09:00-21:00; Su 12:00-18:00'
+                    - key: operator
+                      value: HEMA
+                    - key: phone
+                      value: +31 24 3220557
+                    - key: shop
+                      value: department_store
+                    - key: source
+                      value: BAG
+                    - key: 'source:date'
+                      value: '2014-05-07'
+                    - key: website
+                      value: 'https://www.hema.nl/'
+                    - key: wheelchair
+                      value: 'yes'
+                  address:
+                    id: 'addr:5.8636849;51.8472468:5'
+                    type: house
+                    label: Grote Markt 5 (Nijmegen)
+                    name: Grote Markt 5
+                    housenumber: '5'
+                    street: Grote Markt
+                    postcode: 6511KA
+                    city: Nijmegen
+                    citycode: ''
+                    administrative_regions:
+                      - id: 'admin:osm:relation:1200994'
+                        insee: ''
+                        level: 10
+                        label: 'Nijmegen, Gelderland, Nederland'
+                        name: Nijmegen
+                        zip_codes: []
+                        coord:
+                          lon: 5.833201295180625
+                          lat: 51.83480929574818
+                        bbox:
+                          - 5.7576206
+                          - 51.7905891
+                          - 5.9083469
+                          - 51.8946209
+                        zone_type: city
+                        parent_id: 'admin:osm:relation:47554'
+                        codes:
+                          - name: 'ref:woonplaatscode'
+                            value: '3030'
+                          - name: wikidata
+                            value: Q47887
+                      - id: 'admin:osm:relation:47554'
+                        insee: ''
+                        level: 4
+                        label: 'Gelderland, Nederland'
+                        name: Gelderland
+                        zip_codes: []
+                        coord:
+                          lon: 5.9108573
+                          lat: 51.984257
+                        bbox:
+                          - 4.9938547
+                          - 51.7335807
+                          - 6.8328017
+                          - 52.522025
+                        zone_type: state
+                        parent_id: 'admin:osm:relation:47796'
+                        codes:
+                          - name: ISO3166-2
+                            value: NL-GE
+                          - name: 'ref:provinciecode'
+                            value: '25'
+                          - name: wikidata
+                            value: Q775
+                      - id: 'admin:osm:relation:47796'
+                        insee: ''
+                        level: 3
+                        label: Nederland
+                        name: Nederland
+                        zip_codes: []
+                        coord:
+                          lon: 4.8936041
+                          lat: 52.3727598
+                        bbox:
+                          - 3.080161
+                          - 50.7503658
+                          - 7.227498499999999
+                          - 53.744025
+                        zone_type: country
+                        parent_id: null
+                        codes:
+                          - name: wikidata
+                            value: Q55
+      properties:
+        type:
+          type: string
+        geocoding:
+          type: object
+          properties:
+            version:
+              type: string
+            query:
+              type: string
+        features:
+          type: array
+          items:
+            $ref: '#/components/schemas/Feature'
+    Feature:
+      title: Feature
+      type: object
+      properties:
+        type:
+          type: string
+        geometry:
+          type: object
+          properties:
+            coordinates:
+              type: array
+              items:
+                type: number
+            type:
+              type: string
+        properties:
+          type: object
+          properties:
+            geocoding:
+              type: object
+              properties:
+                id:
+                  type: string
+                type:
+                  type: string
+                lable:
+                  type: string
+                name:
+                  type: string
+                postcode:
+                  type: string
+                city:
+                  type: string
+                citycode:
+                  type: string
+                administrative_regions:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Feature'
+                poi_types:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                properties:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      key:
+                        type: string
+                      value:
+                        type: string
+                address:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    type:
+                      type: string
+                    label:
+                      type: string
+                    name:
+                      type: string
+                    housenumber:
+                      type: string
+                    street:
+                      type: string
+                    postcode:
+                      type: string
+                    city:
+                      type: string
+                    citycode:
+                      type: string
+                    administrative_regions:
+                      type: array
+                      items: {}

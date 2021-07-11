@@ -23,8 +23,11 @@ BANO_REGION="75 77 78 92 93 94 95"
 # NTFS Region to download
 NTFS_REGION="fr-idf"
 
+# OSM Download
+OSM_DOWNLOAD_URL="https://download.geofabrik.de/europe/france/ile-de-france-latest.osm.pbf"
+
 # OSM Region
-OSM_REGION="ile-de-france"
+OSM_REGION="france-ile-de-france"
 
 # Base directory for cosmogony
 COSMO_DIR=""

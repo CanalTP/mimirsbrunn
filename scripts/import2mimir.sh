@@ -247,7 +247,7 @@ import_osm() {
 download_osm() {
   log_info "Downloading osm into mimir for ${OSM_REGION}"
   mkdir -p "$DATA_DIR/osm"
-  wget --quiet --directory-prefix="${DATA_DIR}/osm" "https://download.geofabrik.de/europe/france/${OSM_REGION}-latest.osm.pbf"
+  wget --quiet --output-document="${DATA_DIR}/osm/${OSM_REGION}-latest.osm.pbf" "${OSM_DOWNLOAD_URL}"
   [[ $? != 0 ]] && { log_error "Could not download OSM PBF data for ${OSM_REGION}. Aborting"; return 1; }
   return 0
 }

@@ -360,6 +360,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "ansi_term"
+version = "0.12.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d52a9bb7ec0cf484c551830a7ce27bd20d67eac647e1befb56b0be4ee39a55d2"
+dependencies = [
+ "winapi 0.3.9",
+]
+
+[[package]]
 name = "anyhow"
 version = "1.0.34"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -370,6 +379,15 @@ name = "approx"
 version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f0e60b75072ecd4168020818c0107f2857bb6c4e64252d8d3983f6263b40a5c3"
+dependencies = [
+ "num-traits 0.2.14",
+]
+
+[[package]]
+name = "approx"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3f2a05fd1bd10b2527e20a2cd32d8873d115b8b39fe219ee25f42a8aca6ba278"
 dependencies = [
  "num-traits 0.2.14",
 ]
@@ -524,7 +542,7 @@ dependencies = [
 
 [[package]]
 name = "bragi"
-version = "1.21.0"
+version = "1.22.0"
 dependencies = [
  "actix-cors",
  "actix-http",
@@ -536,7 +554,7 @@ dependencies = [
  "docker_wrapper",
  "failure",
  "futures",
- "geo-types",
+ "geo-types 0.6.2",
  "geojson 0.19.0",
  "git-version",
  "heck",
@@ -697,7 +715,7 @@ version = "2.33.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "37e58ac78573c40708d45522f0d80fa2f01cc4f9b4e2bf749807255454312002"
 dependencies = [
- "ansi_term",
+ "ansi_term 0.11.0",
  "atty",
  "bitflags",
  "strsim",
@@ -793,7 +811,7 @@ checksum = "a59f3fc31e60b83adc2a0850e8b145126af6834f05f7f50678e687b2cdb386ed"
 dependencies = [
  "failure",
  "flate2",
- "geo-types",
+ "geo-types 0.6.2",
  "geojson 0.20.1",
  "log",
  "osmpbfreader",
@@ -925,10 +943,10 @@ dependencies = [
 ]
 
 [[package]]
-name = "difference"
-version = "2.0.0"
+name = "diff"
+version = "0.1.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "524cbf6897b527295dff137cec09ecf3a05f4fddffd7dfcd1585403449e74198"
+checksum = "0e25ea47919b1560c4e3b7fe0aaab9becf5b84a10325ddf7db0f0ba5e1026499"
 
 [[package]]
 name = "digest"
@@ -962,7 +980,7 @@ dependencies = [
 
 [[package]]
 name = "docker_wrapper"
-version = "1.21.0"
+version = "1.22.0"
 dependencies = [
  "mimir",
  "reqwest",
@@ -1274,7 +1292,7 @@ version = "0.14.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "139007e3210dfc1d010e166e779059be5e0f31967a71f3edae97116aefb74450"
 dependencies = [
- "geo-types",
+ "geo-types 0.6.2",
  "geographiclib-rs",
  "num-traits 0.2.14",
  "rstar",
@@ -1286,8 +1304,22 @@ version = "0.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d893ed768bba4866e3e16b756c96ed7ef23ca270eac190000fc4e40c5d733467"
 dependencies = [
- "geo-types",
+ "geo-types 0.6.2",
  "geographiclib-rs",
+ "num-traits 0.2.14",
+ "robust",
+ "rstar",
+]
+
+[[package]]
+name = "geo"
+version = "0.18.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "02bf7fb342abefefb0abbb8d033f37233e6f857a1a970805d15f96560834d699"
+dependencies = [
+ "geo-types 0.7.2",
+ "geographiclib-rs",
+ "log",
  "num-traits 0.2.14",
  "robust",
  "rstar",
@@ -1299,7 +1331,18 @@ version = "0.6.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7583925a1fdb2b450c461fe0878ba6e99a8f1332b2bc72fb1383fd25b2f13bf2"
 dependencies = [
- "approx",
+ "approx 0.3.2",
+ "num-traits 0.2.14",
+ "rstar",
+]
+
+[[package]]
+name = "geo-types"
+version = "0.7.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d8bd2e95dd9f5c8ff74159ed9205ad7fd239a9569173a550863976421b45d2bb"
+dependencies = [
+ "approx 0.4.0",
  "num-traits 0.2.14",
  "rstar",
 ]
@@ -1319,7 +1362,7 @@ version = "0.19.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "da98686bca3298df46f3957c78166cfbf0fa399e9efcdac0cb7ff2cfed1fd2ab"
 dependencies = [
- "geo-types",
+ "geo-types 0.6.2",
  "num-traits 0.2.14",
  "serde 1.0.117",
  "serde_json",
@@ -1331,7 +1374,7 @@ version = "0.20.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "df48768ce77d725b32f692a4653d4529a24e2882c8740bcaa03a0f788c853af6"
 dependencies = [
- "geo-types",
+ "geo-types 0.6.2",
  "num-traits 0.2.14",
  "serde 1.0.117",
  "serde_json",
@@ -1895,14 +1938,14 @@ dependencies = [
 
 [[package]]
 name = "mimir"
-version = "1.21.0"
+version = "1.22.0"
 dependencies = [
  "address-formatter",
  "chrono",
  "cosmogony",
  "failure",
  "geo 0.16.0",
- "geo-types",
+ "geo-types 0.6.2",
  "geojson 0.19.0",
  "human-sort",
  "lazy_static",
@@ -1927,11 +1970,11 @@ dependencies = [
 
 [[package]]
 name = "mimirsbrunn"
-version = "1.21.0"
+version = "1.22.0"
 dependencies = [
  "actix-web",
  "address-formatter",
- "approx",
+ "approx 0.3.2",
  "assert_float_eq",
  "bincode",
  "bragi",
@@ -1944,7 +1987,7 @@ dependencies = [
  "failure",
  "flate2",
  "geo 0.16.0",
- "geo-types",
+ "geo-types 0.6.2",
  "human-sort",
  "itertools 0.9.0",
  "json",
@@ -2235,7 +2278,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c2fd6aff2e6e543f245868de3caa9c5ef33db1d81b494de3323f7d82ff45f0fa"
 dependencies = [
  "geo 0.16.0",
- "geo-types",
+ "geo-types 0.6.2",
  "log",
  "osmpbfreader",
 ]
@@ -2448,13 +2491,13 @@ checksum = "ac74c624d6b2d21f425f752262f42188365d7b8ff1aff74c82e45136510a4857"
 
 [[package]]
 name = "pretty_assertions"
-version = "0.6.1"
+version = "0.7.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3f81e1644e1b54f5a68959a29aa86cde704219254669da328ecfdf6a1f09d427"
+checksum = "1cab0e7c02cf376875e9335e0ba1da535775beb5450d21e1dffca068818ed98b"
 dependencies = [
- "ansi_term",
+ "ansi_term 0.12.1",
  "ctor",
- "difference",
+ "diff",
  "output_vt100",
 ]
 
@@ -2597,9 +2640,9 @@ dependencies = [
 
 [[package]]
 name = "quick-xml"
-version = "0.18.1"
+version = "0.22.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3cc440ee4802a86e357165021e3e255a9143724da31db1e2ea540214c96a0f82"
+checksum = "8533f14c8382aaad0d592c812ac3b826162128b65662331e1127b45c3d18536b"
 dependencies = [
  "memchr",
 ]
@@ -2861,9 +2904,9 @@ checksum = "3b181ba2dcf07aaccad5448e8ead58db5b742cf85dfe035e2227f137a539a189"
 
 [[package]]
 name = "relational_types"
-version = "1.0.1"
+version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "588fb457b5e236f210416ec2a831ecbef4eceba078bf7f7d681a2474a2c285c5"
+checksum = "55826fbb774caf0f5c7d295c3af2b964243a8350982b4794d9ab3872784d455f"
 dependencies = [
  "derivative 1.0.4",
  "relational_types_procmacro",
@@ -2873,9 +2916,9 @@ dependencies = [
 
 [[package]]
 name = "relational_types_procmacro"
-version = "1.0.0"
+version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "af13cc8ad52b7a598c82f1dfd452a0b94bf91e6c8bdf070ba823c00fc8b24387"
+checksum = "d01be4cee22c1c7f209f5a0e0959c5ca25f609e94baa69fd4ed311096f88128e"
 dependencies = [
  "quote 0.3.15",
  "syn 0.11.11",
@@ -3278,9 +3321,9 @@ dependencies = [
 
 [[package]]
 name = "skip_error"
-version = "1.0.1"
+version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f1f4fea4f8264edb50a211ff59c812107a0596205b4c513e2ccfa8c26e2a4a08"
+checksum = "96edb94bda2275489758e04ce515816a42fa9ee57ab8a0cf87119f9b98f05279"
 dependencies = [
  "log",
 ]
@@ -3599,18 +3642,18 @@ dependencies = [
 
 [[package]]
 name = "thiserror"
-version = "1.0.22"
+version = "1.0.26"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0e9ae34b84616eedaaf1e9dd6026dbe00dcafa92aa0c8077cb69df1fcfe5e53e"
+checksum = "93119e4feac1cbe6c798c34d3a53ea0026b0b1de6a120deef895137c0529bfe2"
 dependencies = [
  "thiserror-impl",
 ]
 
 [[package]]
 name = "thiserror-impl"
-version = "1.0.22"
+version = "1.0.26"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9ba20f23e85b10754cd195504aebf6a27e2e6cbe28c17778a0c930724628dd56"
+checksum = "060d69a0afe7796bf42e9e2ff91f5ee691fb15c53d38b4b62a9a53eb23164745"
 dependencies = [
  "proc-macro2 1.0.24",
  "quote 1.0.7",
@@ -3852,7 +3895,7 @@ dependencies = [
 
 [[package]]
 name = "tools"
-version = "1.21.0"
+version = "1.22.0"
 dependencies = [
  "actix-cors",
  "actix-http",
@@ -3911,16 +3954,17 @@ dependencies = [
 
 [[package]]
 name = "transit_model"
-version = "0.31.4"
+version = "0.39.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e6f6c4c427a6d15197144edff4cfc9a19b03152778a2b93068f8e27a1e23e918"
+checksum = "785121862e0aac9559fb25b79a8b1e50f59b3db09c686f11a825823242fdff65"
 dependencies = [
  "chrono",
  "chrono-tz",
  "csv",
  "derivative 2.1.1",
  "failure",
- "geo 0.14.2",
+ "geo 0.18.0",
+ "git-version",
  "iso4217",
  "lazy_static",
  "log",
@@ -3930,13 +3974,14 @@ dependencies = [
  "minidom_writer",
  "num-traits 0.2.14",
  "pretty_assertions",
- "quick-xml 0.18.1",
+ "quick-xml 0.22.0",
  "relational_types",
  "rust_decimal",
  "serde 1.0.117",
  "serde_json",
  "skip_error",
  "tempfile",
+ "thiserror",
  "typed_index_collection",
  "walkdir",
  "wkt",
@@ -3995,9 +4040,9 @@ checksum = "59547bce71d9c38b83d9c0e92b6066c4253371f15005def0c30d9657f50c7642"
 
 [[package]]
 name = "typed_index_collection"
-version = "1.1.0"
+version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "20c992a23515d92622a9860b62e1b62adfcfcb82c71207c8977a6ff2817697d9"
+checksum = "1a626050df4415898ac0d99c0052921925d3f6c90bbe0f6503d2719304d22e8e"
 dependencies = [
  "derivative 2.1.1",
  "log",
@@ -4319,12 +4364,13 @@ dependencies = [
 
 [[package]]
 name = "wkt"
-version = "0.8.0"
+version = "0.9.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cd5f08ce23c6e6a296762b8f4d8beadeae1f58e8184226197818db8885d458e6"
+checksum = "a3cb4f61f748cb9de30eef5508a212c6edf9c0926847247fcad7ec969907112a"
 dependencies = [
- "geo-types",
+ "geo-types 0.7.2",
  "num-traits 0.2.14",
+ "thiserror",
 ]
 
 [[package]]
